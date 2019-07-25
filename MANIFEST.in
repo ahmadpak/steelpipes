@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include steelpipes *.css
+recursive-include steelpipes *.csv
+recursive-include steelpipes *.html
+recursive-include steelpipes *.ico
+recursive-include steelpipes *.js
+recursive-include steelpipes *.json
+recursive-include steelpipes *.md
+recursive-include steelpipes *.png
+recursive-include steelpipes *.py
+recursive-include steelpipes *.svg
+recursive-include steelpipes *.txt
+recursive-exclude steelpipes *.pyc
