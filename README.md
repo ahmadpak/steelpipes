@@ -32,5 +32,6 @@ discription: This is app is intended to add additional functionality to ERPNEXT 
 #### 3. Create .py and .js files for required operations and validations.
 
 ### Todo
-1. Export fixtures for custom fields
-2. Create manufacturing module
+1. Pipe manufacturing module
+2. Pipe manufacturing doctype
+3. Code for pipe manufacturing 
