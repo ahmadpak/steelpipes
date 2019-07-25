@@ -27,6 +27,22 @@ app_license = "MIT"
 
 # include js in doctype views
 # doctype_js = {"doctype" : "public/js/doctype.js"}
+
+fixtures = [{
+        "dt":"Custom Field", "filters": [
+            [
+                "dt","in", (
+                            "Sales Order","Sales Order Item",
+                            "Delivery Note","Delivery Note Item",
+                            "Sales Invoice","Sales Invoice Item",
+                            "Purhcase Order","Purchase Order Item",
+                            "Purchase Receipt","Purchase Receipt Item",
+                            "Purchase Invoice","Purchase Invoice Item"
+                            )
+            ]
+        ]
+}]
+
 doctype_js = {
     #"Sales Order"   :   [   "sp_delivery_note/sp_delivery_note_item.js"
      #                   ],
