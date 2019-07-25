@@ -125,7 +125,9 @@ frappe.ui.form.on("Purchase Receipt Item", {
             if (item_code.qty <0){
                 qty_temp = item_code.qty*-1;
             }
-             
+            else{
+                qty_temp = item_code.qty;
+            } 
             var total_scale_weight_um_temp = qty_temp*item_code.scale_weight_um;
             var total_weight_um_temp    = qty_temp*item_code.weight_um;
             var total_length_um_temp    = qty_temp*item_code.length_um;
