@@ -1,5 +1,5 @@
 # frappe-app
-Custom app built with frappe framework
+Custom app built with Frappe Framework
 
 ## Currently working on
 app: steelpipes  
