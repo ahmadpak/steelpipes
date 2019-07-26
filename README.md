@@ -15,11 +15,11 @@ In the manfacturing module of this app. User will be able to make workorders as 
 
 ## Installation:
 In your frappe-bench folder create a new site:  
-  a-  bench new-site site-name
-  b-  bench --site new-site install-app erpnext
-  c-  bench get-app --branch master steelpipes https://github.com/MohammadAhmad1990/steelpipes.git
-  d-  bench include-app steelpipes # To get updates when running bench update
-  c-  bench --site new-site install-app steelpipes
+  a-  bench new-site site-name  
+  b-  bench --site new-site install-app erpnext  
+  c-  bench get-app --branch master steelpipes https://github.com/MohammadAhmad1990/steelpipes.git  
+  d-  bench include-app steelpipes # To get updates when running bench update  
+  c-  bench --site new-site install-app steelpipes  
 
 Login as administrator
 
