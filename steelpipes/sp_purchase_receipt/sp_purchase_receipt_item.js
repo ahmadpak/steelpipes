@@ -195,7 +195,8 @@ frappe.ui.form.on("Purchase Receipt Item", {
 
         if (item_code.item_code){
             if(item_code.item_code.includes("Pipe-MS",0)){
-                frappe.model.set_value(cdt,cdn,'rate', rate_temp);
+                item_code.rate = rate_temp;
+                refresh_field("rate");
             }
         }
     }
