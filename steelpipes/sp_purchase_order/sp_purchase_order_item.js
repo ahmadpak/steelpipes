@@ -127,8 +127,9 @@ frappe.ui.form.on("Purchase Order Item",{
             else{
                 rate_temp   = item_code.rate_um*item_code.length_um;
             }
-
+            
             if (item_code.item_code){
+                console.log("If ran");
                 if(item_code.item_code.includes("Pipe-MS",0)){
                     item_code.rate = rate_temp;
                     refresh_field("rate");
