@@ -26,6 +26,8 @@ def calculate_pipe_weight_um(itemcode, um):
 
 def update_pipe_weight_um(self, cdt):
     estimate_weight_um_temp = 0
+    total_um_temp = 0
+    discount_temp = 0
     total_scale_weight_um_temp = 0
     weight_difference_um_temp = 0
     weight_difference_percentage_um_temp = 0
@@ -33,20 +35,41 @@ def update_pipe_weight_um(self, cdt):
 
     for d in self.items:
         if 'Pipe-MS' in str(d.item_code):
-            estimate_weight_um_temp += d.total_weight_um
-            total_scale_weight_um_temp += d.total_scale_weight_um
+            qty_temp = 0
+            if d.qty <0:
+                qty_temp = d.qty*-1
+                if d.rate_um_per_qty <=0:
+                    d.rate_um_per_qty = d.rate_um_per_qty*-1
+                else:
+                    d.rate_um_per_qty = d.rate_um_per_qty*1    
+            else:
+                qty_temp = d.qty
+                d.rate_um_per_qty = d.rate_um_per_qty
+             
+            d.amount_um                  = d.qty*d.rate_um_per_qty
+            d.total_scale_weight_um      = qty_temp*d.scale_weight_um
+            d.total_weight_um            = qty_temp*d.weight_um
+            d.total_length_um            = qty_temp*d.length_um
+            
+            total_um_temp               += d.amount_um
+            total_scale_weight_um_temp  += d.total_scale_weight_um
+            estimate_weight_um_temp     += d.total_weight_um
             has_pipe = 1
 
     if has_pipe == 1:
-        self.total_weight_um = self.loaded_vehicle_weight_um - self.empty_vehicle_weight_um
-        weight_difference_um_temp = self.total_weight_um - estimate_weight_um_temp
-        weight_difference_percentage_um_temp = (weight_difference_um_temp / estimate_weight_um_temp) * 100
+        self.total_weight_um                    = self.loaded_vehicle_weight_um - self.empty_vehicle_weight_um
+        weight_difference_um_temp               = self.total_weight_um - estimate_weight_um_temp
+        weight_difference_percentage_um_temp    = (weight_difference_um_temp / estimate_weight_um_temp) * 100
+        discount_temp                           = self.total - total_um_temp
 
-        self.estimate_weight_um = estimate_weight_um_temp
-        self.weight_difference_um = weight_difference_um_temp
-        self.weight_difference_percentage_um = weight_difference_percentage_um_temp
-        self.total_scale_weight_um = total_scale_weight_um_temp
-
+        self.estimate_weight_um                 = estimate_weight_um_temp
+        self.total_um                           = total_um_temp
+        self.weight_difference_um               = weight_difference_um_temp
+        self.weight_difference_percentage_um    = weight_difference_percentage_um_temp
+        self.total_scale_weight_um              = total_scale_weight_um_temp
+        self.apply_discount_on                  = 'Net Total'
+        self.discount_amount                    = discount_temp
+        self.calculate_taxes_and_totals()
 
 def validate_weight_threshold(self, cdt):
     show_instructions_1 = 0
@@ -57,8 +80,8 @@ def validate_weight_threshold(self, cdt):
     if self.has_weight == 1:
         for d in self.items:
             if 'Pipe-MS' in str(d.item_code):
-                weight_difference_um_temp = d.scale_weight_um - d.weight_um
-                weight_difference_percentage_um_temp = round((weight_difference_um_temp / d.weight_um) * 100, 2)
+                weight_difference_um_temp               = d.scale_weight_um - d.weight_um
+                weight_difference_percentage_um_temp    = round((weight_difference_um_temp / d.weight_um) * 100, 2)
                 if weight_difference_percentage_um_temp < -3 or weight_difference_percentage_um_temp > 3 or d.scale_weight_um == 0:
                     show_exception = 1
 
@@ -68,21 +91,21 @@ def validate_weight_threshold(self, cdt):
 
                     elif weight_difference_percentage_um_temp > 0:
                         frappe.msgprint("{0} weight exceeds by {1}%".format(d.item_code,
-                                                                            weight_difference_percentage_um_temp) + " and {0}Kg".format(
-                            weight_difference_um_temp))
+                        weight_difference_percentage_um_temp) + " and {0}Kg".format(
+                        weight_difference_um_temp))
                         show_instructions_2 = 1
 
                     elif weight_difference_percentage_um_temp < 0:
-                        weight_difference_percentage_um_temp = weight_difference_percentage_um_temp * -1
-                        weight_difference_um_temp = weight_difference_um_temp * -1
+                        weight_difference_percentage_um_temp    = weight_difference_percentage_um_temp * -1
+                        weight_difference_um_temp               = weight_difference_um_temp * -1
 
                         frappe.msgprint("{0} weight is less by {1}%".format(d.item_code,
-                                                                            weight_difference_percentage_um_temp) + " and {0}Kg".format(
-                            weight_difference_um_temp))
+                        weight_difference_percentage_um_temp) + " and {0}Kg".format(
+                        weight_difference_um_temp))
                         show_instructions_2 = 1
 
-        self_weight_difference_um_temp = self.weight_difference_um
-        self_weight_difference_percentage_um_temp = round(self.weight_difference_percentage_um, 2)
+        self_weight_difference_um_temp              = self.weight_difference_um
+        self_weight_difference_percentage_um_temp   = round(self.weight_difference_percentage_um, 2)
         if self.weight_difference_percentage_um < -3 or self.weight_difference_percentage_um > 3 or self.loaded_vehicle_weight_um == 0:
             show_exception = 1
 
@@ -91,15 +114,15 @@ def validate_weight_threshold(self, cdt):
                 show_instructions_1 = 1
 
             elif self.weight_difference_percentage_um > 0:
-                frappe.msgprint("Net Weight exceeds by {0}%".format(
-                    self_weight_difference_percentage_um_temp) + "and {0}Kg ".format(self_weight_difference_um_temp))
+                frappe.msgprint("Net Weight exceeds by {0}%".format(self_weight_difference_percentage_um_temp) 
+                + "and {0}Kg ".format(self_weight_difference_um_temp))
                 show_instructions_2 = 1
 
             elif self.weight_difference_percentage_um < 0:
                 self_weight_difference_um_temp = self_weight_difference_um_temp * -1
                 self_weight_difference_percentage_um_temp = self_weight_difference_percentage_um_temp * -1
-                frappe.msgprint("Net Weight is less by {0}%".format(
-                    self_weight_difference_percentage_um_temp) + " and {0}Kg ".format(self_weight_difference_um_temp))
+                frappe.msgprint("Net Weight is less by {0}%".format(self_weight_difference_percentage_um_temp) 
+                + " and {0}Kg ".format(self_weight_difference_um_temp))
                 show_instructions_2 = 1
 
     else:

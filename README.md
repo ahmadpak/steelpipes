@@ -19,7 +19,7 @@ In your frappe-bench folder create a new site:
   b-  bench --site new-site install-app erpnext  
   c-  bench get-app --branch master steelpipes https://github.com/MohammadAhmad1990/steelpipes.git  
   d-  bench include-app steelpipes # To get updates when running bench update  
-  c-  bench --site new-site install-app steelpipes  
+  e-  bench --site new-site install-app steelpipes  
 
 Login as administrator
 

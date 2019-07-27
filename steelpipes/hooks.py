@@ -35,7 +35,7 @@ fixtures = [{
                             "Sales Order","Sales Order Item",
                             "Delivery Note","Delivery Note Item",
                             "Sales Invoice","Sales Invoice Item",
-                            "Purhcase Order","Purchase Order Item",
+                            "Purchase Order","Purchase Order Item",
                             "Purchase Receipt","Purchase Receipt Item",
                             "Purchase Invoice","Purchase Invoice Item"
                             )
@@ -131,16 +131,22 @@ doc_events = {
     "Sales Order":{
         "validate"  :   "steelpipes.sp_sales_order.sp_sales_order.update_estimate_weight"
     },
-    "Delivery Note": {
+    "Delivery Note":{
         "validate"  :   "steelpipes.sp_delivery_note.sp_delivery_note_item.update_pipe_weight_um",
         "on_submit" :   "steelpipes.sp_delivery_note.sp_delivery_note_item.validate_weight_threshold"
+    },
+    "Sales Invoice":{
+        "validate"  :   "steelpipes.sp_delivery_note.sp_delivery_note_item.update_pipe_weight_um"
     },
     "Purchase Order":{
         "validate"  :   "steelpipes.sp_sales_order.sp_sales_order.update_estimate_weight"
     },
-    "Purchase Receipt": {
+    "Purchase Receipt":{
         "validate"  :   "steelpipes.sp_delivery_note.sp_delivery_note_item.update_pipe_weight_um",
         "on_submit" :   "steelpipes.sp_delivery_note.sp_delivery_note_item.validate_weight_threshold"
+    },
+    "Purchase Invoice":{
+        "validate"  :   "steelpipes.sp_delivery_note.sp_delivery_note_item.update_pipe_weight_um"
     }
 }
 
