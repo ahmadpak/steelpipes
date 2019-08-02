@@ -28,19 +28,138 @@ app_license = "MIT"
 # include js in doctype views
 # doctype_js = {"doctype" : "public/js/doctype.js"}
 
+#fixtures = [{
+#        "dt":"Custom Field", "filters": [
+#            [
+#                "dt","in", (
+#                            "Sales Order","Sales Order Item",
+#                            "Delivery Note","Delivery Note Item",
+#                            "Sales Invoice","Sales Invoice Item",
+#                            "Purchase Order","Purchase Order Item",
+#                            "Purchase Receipt","Purchase Receipt Item",
+#                            "Purchase Invoice","Purchase Invoice Item"
+#                            )
+#            ]
+#        ]
+#}]
+
 fixtures = [{
-        "dt":"Custom Field", "filters": [
-            [
-                "dt","in", (
-                            "Sales Order","Sales Order Item",
-                            "Delivery Note","Delivery Note Item",
-                            "Sales Invoice","Sales Invoice Item",
-                            "Purchase Order","Purchase Order Item",
-                            "Purchase Receipt","Purchase Receipt Item",
-                            "Purchase Invoice","Purchase Invoice Item"
-                            )
+    'dt': 'Custom Field', 'filters':[
+        [
+            'name', 'in', [
+                "Sales Order-estimate_weight_um"
+                "Sales Order Item-weight_section",
+                "Sales Order Item-um",
+                "Sales Order Item-rate_um",
+                "Sales Order Item-column_break_8",
+                "Sales Order Item-weight_um",
+                "Sales Order Item-length_um",
+                "Sales Order Item-total_length_um",
+                "Sales Order Item-total_weight_um",
+                "Delivery Note-empty_vehicle_weight_um",
+                "Delivery Note-loaded_vehicle_weight_um",
+                "Delivery Note-estimate_weight_um",
+                "Delivery Note-section_break_61",
+                "Delivery Note-weight_difference_um",
+                "Delivery Note-weight_difference_percentage_um",
+                "Delivery Note-column_break_64",
+                "Delivery Note-total_weight_um",
+                "Delivery Note-total_scale_weight_um",
+                "Delivery Note-has_weight",
+                "Delivery Note-update_weight_calculations_um",
+                "Delivery Note-total_um",
+                "Delivery Note Item-um",
+                "Delivery Note Item-rate_um",
+                "Delivery Note Item-weight_section",
+                "Delivery Note Item-scale_weight_um",
+                "Delivery Note Item-weight_um",
+                "Delivery Note Item-length_um",
+                "Delivery Note Item-column_break_11",
+                "Delivery Note Item-total_scale_weight_um",
+                "Delivery Note Item-total_weight_um",
+                "Delivery Note Item-total_length_um",
+                "Delivery Note Item-rate_um_per_qty",
+                "Delivery Note Item-amount_um",
+                "Sales Invoice-weight_calculations",
+                "Sales Invoice-empty_vehicle_weight_um",
+                "Sales Invoice-loaded_vehicle_weight_um",
+                "Sales Invoice-total_scale_weight_um",
+                "Sales Invoice-column_break_72",
+                "Sales Invoice-estimate_weight_um",
+                "Sales Invoice-total_weight_um",
+                "Sales Invoice-weight_difference_um",
+                "Sales Invoice-weight_difference_percentage_um",
+                "Sales Invoice-total_um",
+                "Sales Invoice Item-weight_section",
+                "Sales Invoice Item-rate_um",
+                "Sales Invoice Item-scale_weight_um",
+                "Sales Invoice Item-weight_um",
+                "Sales Invoice Item-length_um",
+                "Sales Invoice Item-column_break_10",
+                "Sales Invoice Item-total_scale_weight_um",
+                "Sales Invoice Item-total_weight_um",
+                "Sales Invoice Item-total_length_um",
+                "Sales Invoice Item-um",
+                "Sales Invoice Item-rate_um_per_qty",
+                "Sales Invoice Item-amount_um",
+                "Purchase Order-estimate_weight_um",
+                "Purchase Order Item-weight_section",
+                "Purchase Order Item-um",
+                "Purchase Order Item-rate_um",
+                "Purchase Order Item-length_um",
+                "Purchase Order Item-column_break_10",
+                "Purchase Order Item-weight_um",
+                "Purchase Order Item-total_weight_um",
+                "Purchase Order Item-total_length_um",
+                "Purchase Receipt-has_weight",
+                "Purchase Receipt-weight_calculations",
+                "Purchase Receipt-empty_vehicle_weight_um",
+                "Purchase Receipt-loaded_vehicle_weight_um",
+                "Purchase Receipt-total_scale_weight_um",
+                "Purchase Receipt-weight_difference_percentage_um",
+                "Purchase Receipt-column_break_58",
+                "Purchase Receipt-estimate_weight_um",
+                "Purchase Receipt-total_weight_um",
+                "Purchase Receipt-weight_difference_um",
+                "Purchase Receipt-update_weight_calculations_um",
+                "Purchase Receipt-total_um",
+                "Purchase Receipt Item-weight_section",
+                "Purchase Receipt Item-um",
+                "Purchase Receipt Item-rate_um",
+                "Purchase Receipt Item-scale_weight_um",
+                "Purchase Receipt Item-weight_um",
+                "Purchase Receipt Item-length_um",
+                "Purchase Receipt Item-column_break_12",
+                "Purchase Receipt Item-total_scale_weight_um",
+                "Purchase Receipt Item-total_weight_um",
+                "Purchase Receipt Item-total_length_um",
+                "Purchase Receipt Item-rate_um_per_qty",
+                "Purchase Receipt Item-amount_um",
+                "Purchase Invoice-weight_calculations",
+                "Purchase Invoice-empty_vehicle_weight_um",
+                "Purchase Invoice-loaded_vehicle_weight_um",
+                "Purchase Invoice-total_scale_weight_um",
+                "Purchase Invoice-column_break_69",
+                "Purchase Invoice-estimate_weight_um",
+                "Purchase Invoice-total_weight_um",
+                "Purchase Invoice-weight_difference_um",
+                "Purchase Invoice-weight_difference_percentage_um",
+                "Purchase Invoice-total_um",
+                "Purchase Invoice Item-weight_section",
+                "Purchase Invoice Item-rate_um",
+                "Purchase Invoice Item-scale_weight_um",
+                "Purchase Invoice Item-weight_um",
+                "Purchase Invoice Item-length_um",
+                "Purchase Invoice Item-column_break_8",
+                "Purchase Invoice Item-um",
+                "Purchase Invoice Item-total_scale_weight_um",
+                "Purchase Invoice Item-total_weight_um",
+                "Purchase Invoice Item-total_length_um",
+                "Purchase Invoice Item-rate_um_per_qty",
+                "Purchase Invoice Item-amount_um"
             ]
         ]
+    ]
 }]
 
 doctype_js = {
