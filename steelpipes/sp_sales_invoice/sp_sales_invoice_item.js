@@ -25,15 +25,7 @@ frappe.ui.form.on("Sales Invoice Item", {
     rate: function (frm,cdt,cdn){
         var item_code   = frappe.model.get_doc(cdt, cdn);
         var rate_temp = 0;
-        /*
-        var qty_sign = 0;
-        if (item_code.qty <0){
-            qty_sign = -1;
-        }
-        else {
-            qty_sign = 1;
-        }
-        */    
+            
         if (item_code.um == "Kg"){
             rate_temp   = item_code.rate_um*item_code.weight_um; 
         }

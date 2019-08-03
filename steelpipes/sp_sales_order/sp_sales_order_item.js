@@ -91,23 +91,25 @@ frappe.ui.form.on("Sales Order Item",{
     },
     rate_um: function (frm,cdt,cdn){
         var item_code = frappe.model.get_doc(cdt, cdn);
-        
-        if(item_code.um == "Kg"){
-            var rate_temp          = item_code.rate_um*item_code.weight_um;
-            var amount_temp        = rate_temp*item_code.qty;
-            frappe.model.set_value(cdt, cdn, "rate", rate_temp);
-            frappe.model.set_value(cdt, cdn, "amount", amount_temp); 
-            
+        if (item_code.item_code){
+            if(item_code.item_code.includes("Pipe-MS",0)){
+                if(item_code.um == "Kg"){
+                    var rate_temp          = item_code.rate_um*item_code.weight_um;
+                    var amount_temp        = rate_temp*item_code.qty;
+                    frappe.model.set_value(cdt, cdn, "rate", rate_temp); 
+                    
+                }
+                else{
+                    var rate_temp          = item_code.rate_um*item_code.length_um;
+                    var amount_temp        = rate_temp*item_code.qty;
+                    frappe.model.set_value(cdt, cdn, "rate", rate_temp);
+                    
+                }
+            }
+            else{
+                frappe.model.set_value(cdt, cdn, "rate", item_code.rate_um)
+            }
         }
-        else{
-            var rate_temp          = item_code.rate_um*item_code.length_um;
-            var amount_temp        = rate_temp*item_code.qty;
-            frappe.model.set_value(cdt, cdn, "rate", rate_temp);
-            frappe.model.set_value(cdt, cdn, "amount", amount_temp);
-            
-        }
-        
-        
     },
 
     qty: function (frm,cdt,cdn){
