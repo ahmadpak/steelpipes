@@ -266,6 +266,9 @@ doc_events = {
     },
     "Purchase Invoice":{
         "validate"  :   "steelpipes.sp_delivery_note.sp_delivery_note_item.update_pipe_weight_um"
+    },
+    "Item":{
+        "validate"  :   "steelpipes.sp_item.item.pipe_custom_name"
     }
 }
 
