@@ -149,7 +149,7 @@ fixtures = [{
                 "Purchase Invoice-weight_difference_um",
                 "Purchase Invoice-weight_difference_percentage_um",
                 "Purchase Invoice-total_um",
-                "Purchase Invoice-no_double_ledger"
+                "Purchase Invoice-no_double_ledger",
                 "Purchase Invoice-apply_auto_discount",
                 "Purchase Invoice Item-weight_section",
                 "Purchase Invoice Item-rate_um",
