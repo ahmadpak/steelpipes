@@ -105,13 +105,12 @@ frappe.ui.form.on("Purchase Order Item",{
     price_list_rate: function(frm,cdt,cdn){
         var item_code = frappe.model.get_doc(cdt, cdn);
         if (item_code.item_code){
-            var rate_um_temp = 0;
-            var price_temp = 0;
+            var rate_temp = 0;
             if (item_code.last_purchase_rate!=undefined){
-                price_temp = item_code.last_purchase_rate;
+                rate_temp = item_code.last_purchase_rate;
             }
             else{
-                price_temp = item_code.price_list_rate;
+                rate_temp = item_code.price_list_rate;
             }
             if(item_code.item_code.includes("Pipe-MS",0)){                
                 if (item_code.um == "Kg"){
@@ -120,10 +119,10 @@ frappe.ui.form.on("Purchase Order Item",{
                     else{
                         rate_temp   = rate/item_code.length_um;
                     }
-                frappe.model.set_value(cdt, cdn, "rate_um", rate_um_temp);
+                frappe.model.set_value(cdt, cdn, "rate_um", rate_temp);
             }
             else{
-                frappe.model.set_value(cdt, cdn, "rate_um", price_temp);
+                frappe.model.set_value(cdt, cdn, "rate_um", rate_temp);
             }
         }
         
