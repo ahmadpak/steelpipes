@@ -171,6 +171,10 @@ frappe.ui.form.on("Purchase Receipt Item", {
                 frappe.model.set_value(cdt, cdn, "rate_um_per_qty",rate_um_per_qty_temp);
                 frappe.model.set_value(cdt, cdn, "amount_um", amount_um_temp);
             }
+            else{
+                var amount_temp = item_code.rate_um*item_code.qty;
+                frappe.model.set_value(cdt, cdn, "amount_um", amount_temp);
+            }
         }
     },
 

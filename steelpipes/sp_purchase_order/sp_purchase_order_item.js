@@ -77,15 +77,24 @@ frappe.ui.form.on("Purchase Order Item",{
             if(item_code.item_code.includes("Pipe-MS",0)){
                 if(item_code.um == "Kg"){
                     var rate_temp = item_code.rate_um*item_code.weight_um;
+                    var amount_temp = rate_temp*item_code.qty;
                     frappe.model.set_value(cdt, cdn, "rate", rate_temp);
+                    frappe.model.set_value(cdt, cdn, "rate_um_per_qty", rate_temp);
+                    frappe.model.set_value(cdt, cdn, "amount_um", amount_temp);    
                 }
                 else{
                     var rate_temp = item_code.rate_um*item_code.length_um;
-                    frappe.model.set_value(cdt, cdn, "rate", rate_temp);           
+                    var amount_temp = rate_temp*item_code.qty;
+                    frappe.model.set_value(cdt, cdn, "rate", rate_temp);
+                    frappe.model.set_value(cdt, cdn, "rate_um_per_qty", rate_temp);  
+                    frappe.model.set_value(cdt, cdn, "amount_um", amount_temp);             
                 }
             }
             else{
-                frappe.model.set_value(cdt, cdn, "rate", item_code.rate_um);
+                var amount_temp = item_code.rate_um*item_code.qty;
+                frappe.model.set_value(cdt, cdn, "rate", item_code.rate_um)
+                frappe.model.set_value(cdt, cdn, "rate_um_per_qty", item_code.rate_um);
+                frappe.model.set_value(cdt, cdn, "amount_um", amount_temp);
             }
         }
     },
@@ -94,10 +103,16 @@ frappe.ui.form.on("Purchase Order Item",{
         var item_code = frappe.model.get_doc(cdt,cdn);
         if (item_code.item_code){
             if(item_code.item_code.includes("Pipe-MS",0)){
+                var amount_temp = item_code.rate_um*item_code.qty;
                 var total_weight_um_temp    = item_code.qty*item_code.weight_um;
                 var total_length_um_temp    = item_code.qty*item_code.length_um;
                 frappe.model.set_value(cdt, cdn, "total_weight_um", total_weight_um_temp);
                 frappe.model.set_value(cdt, cdn, "total_length_um", total_length_um_temp);
+                frappe.model.set_value(cdt, cdn, "amount_um", amount_temp);
+            }
+            else{
+                var amount_temp = item_code.rate_um*item_code.qty;
+                frappe.model.set_value(cdt, cdn, "amount_um", amount_temp);
             }
         }
     },
