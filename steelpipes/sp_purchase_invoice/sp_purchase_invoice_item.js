@@ -23,17 +23,15 @@ frappe.ui.form.on("Purchase Invoice Item", {
     },
     rate: function (frm,cdt,cdn){
         var item_code   = frappe.model.get_doc(cdt, cdn);
-        var rate_temp = 0;
-        
-        if (item_code.um == "Kg"){
-            rate_temp   = item_code.rate_um*item_code.weight_um; 
-        }
-        else{
-            rate_temp   = item_code.rate_um*item_code.length_um;
-        }
-
         if (item_code.item_code){
             if(item_code.item_code.includes("Pipe-MS",0)){
+                var rate_temp = 0;
+                if (item_code.um == "Kg"){
+                    rate_temp   = item_code.rate_um*item_code.weight_um; 
+                }
+                else{
+                    rate_temp   = item_code.rate_um*item_code.length_um;
+                }
                 item_code.rate = rate_temp;
                 refresh_field("rate");
             }
