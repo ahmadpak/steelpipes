@@ -51,8 +51,8 @@ frappe.ui.form.on("Sales Invoice Item", {
             }
             else{
                 var amount_temp = item_code.rate*item_code.qty;
-                frappe.model.set_value(cdt, cdn, "rate_um", item_code.rate_um)
-                frappe.model.set_value(cdt, cdn, "rate_um_per_qty", item_code.rate_um);
+                frappe.model.set_value(cdt, cdn, "rate_um", item_code.rate)
+                frappe.model.set_value(cdt, cdn, "rate_um_per_qty", item_code.rate);
                 frappe.model.set_value(cdt, cdn, "amount_um", amount_temp);
             }
         }
