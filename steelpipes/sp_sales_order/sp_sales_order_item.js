@@ -35,8 +35,11 @@ frappe.ui.form.on("Sales Order Item",{
         if(item_code.um == "Kg"){
             if (item_code.item_code){
                 if(item_code.item_code.includes("Pipe-MS",0)){
-                    var rate_temp          = item_code.rate_um*item_code.weight_um;
+                    var rate_temp = item_code.rate_um*item_code.weight_um;
+                    var amount_temp = rate_temp*item_code.qty
                     frappe.model.set_value(cdt, cdn, "rate", rate_temp);
+                    frappe.model.set_value(cdt, cdn, "rate_um_per_qty", rate_temp);
+                    frappe.model.set_value(cdt, cdn, "amount_um", amount_temp);
                     frm.call({
                         method: "steelpipes.sp_delivery_note.sp_delivery_note_item.calculate_pipe_weight_um",
                         args: {itemcode: item_code.item_code, um: item_code.um},
@@ -62,7 +65,10 @@ frappe.ui.form.on("Sales Order Item",{
                             frappe.model.set_value(cdt, cdn, "length_um", length_um_temp);
                             frappe.model.set_value(cdt, cdn, "total_length_um", total_length_um_temp);
                             var rate_temp          = item_code.rate_um*item_code.length_um;
+                            var amount_temp = rate_temp*item_code.qty
                             frappe.model.set_value(cdt, cdn, "rate", rate_temp);
+                            frappe.model.set_value(cdt, cdn, "rate_um_per_qty", rate_temp);
+                            frappe.model.set_value(cdt, cdn, "amount_um", amount_temp);
 
                         }
                     })
@@ -105,7 +111,7 @@ frappe.ui.form.on("Sales Order Item",{
         var item_code = frappe.model.get_doc(cdt,cdn);
         if (item_code.item_code){
             if(item_code.item_code.includes("Pipe-MS",0)){
-                var amount_temp = item_code.rate_um*item_code.qty;
+                var amount_temp = item_code.rate_um_per_qty*item_code.qty;
                 var total_weight_um_temp    = item_code.qty*item_code.weight_um;
                 var total_length_um_temp    = item_code.qty*item_code.length_um;
                 frappe.model.set_value(cdt, cdn, "total_weight_um", total_weight_um_temp);

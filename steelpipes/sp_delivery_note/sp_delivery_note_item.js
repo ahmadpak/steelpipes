@@ -151,10 +151,8 @@ frappe.ui.form.on("Delivery Note Item", {
                 var total_scale_weight_um_temp = qty_temp*item_code.scale_weight_um;
                 frappe.model.set_value(cdt, cdn, "total_scale_weight_um", total_scale_weight_um_temp);
                 if(item_code.um == "Kg"){
-                    var rate_temp          = item_code.rate_um*item_code.weight_um;
                     var rate_um_per_qty_temp= item_code.rate_um*item_code.scale_weight_um;
                     var amount_um_temp      = item_code.rate_um*item_code.scale_weight_um*item_code.qty;
-                    frappe.model.set_value(cdt, cdn, "rate", rate_temp);
                     frappe.model.set_value(cdt, cdn, "rate_um_per_qty", rate_um_per_qty_temp);
                     frappe.model.set_value(cdt, cdn, "amount_um", amount_um_temp);
                 }         
@@ -180,12 +178,10 @@ frappe.ui.form.on("Delivery Note Item", {
                 var total_scale_weight_um_temp  = qty_temp*item_code.scale_weight_um;
                 var total_weight_um_temp        = qty_temp*item_code.weight_um;
                 var total_length_um_temp        = qty_temp*item_code.length_um;
-                var amount_um_temp              = item_code.rate_um*item_code.scale_weight_um*item_code.qty;
-                var rate_um_per_qty_temp        = item_code.rate_um*item_code.scale_weight_um;
+                var amount_um_temp              = item_code.rate_um_per_qty*item_code.qty;
                 frappe.model.set_value(cdt, cdn, "total_scale_weight_um", total_scale_weight_um_temp);
                 frappe.model.set_value(cdt, cdn, "total_weight_um", total_weight_um_temp);
                 frappe.model.set_value(cdt, cdn, "total_length_um", total_length_um_temp);
-                frappe.model.set_value(cdt, cdn, "rate_um_per_qty",rate_um_per_qty_temp);
                 frappe.model.set_value(cdt, cdn, "amount_um", amount_um_temp);
             }
             else{
