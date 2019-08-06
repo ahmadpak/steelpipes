@@ -94,8 +94,6 @@ def validate_weight_threshold(self, cdt):
     weight_difference_um_temp = 0
     weight_difference_percentage_um_temp = 0
     has_pipe = 0
-    comment_string = [] 
-    loop_num = 0
     if self.has_weight == 1:
         for d in self.items:
             if 'Pipe-MS' in str(d.item_code):
@@ -106,26 +104,20 @@ def validate_weight_threshold(self, cdt):
                     show_exception = 1
 
                     if d.scale_weight_um == 0:
-                        comment_string[loop_num] = "Scale Weight for {0} is missing".format(d.item_name) 
-                        frappe.msgprint(comment_string[loop_num])
+                        frappe.msgprint("Scale Weight for {0} is missing".format(d.item_name))
                         show_instructions_1 = 1
-                        loop_num +=1
 
                     elif weight_difference_percentage_um_temp > 0:
-                        comment_string[loop_num] = "{0} weight exceeds by {1}%".format(d.item_name,
-                        weight_difference_percentage_um_temp) + " and {0}Kg".format(weight_difference_um_temp)
-                        frappe.msgprint(comment_string[loop_num])
+                        frappe.msgprint("{0} weight exceeds by {1}%".format(d.item_name,
+                        weight_difference_percentage_um_temp) + " and {0}Kg".format(weight_difference_um_temp))
                         show_instructions_2 = 1
-                        loop_num +=1
 
                     elif weight_difference_percentage_um_temp < 0:
                         weight_difference_percentage_um_temp    = weight_difference_percentage_um_temp * -1
-                        weight_difference_um_temp               = weight_difference_um_temp * -1
-                        comment_string[loop_num] = "{0} weight is less by {1}%".format(d.item_name,
-                        weight_difference_percentage_um_temp) + " and {0}Kg".format(weight_difference_um_temp)
-                        frappe.msgprint(comment_string[loop_num])
+                        weight_difference_um_temp               = weight_difference_um_temp * -1 
+                        frappe.msgprint("{0} weight is less by {1}%".format(d.item_name,
+                        weight_difference_percentage_um_temp) + " and {0}Kg".format(weight_difference_um_temp))
                         show_instructions_2 = 1
-                        loop_num +=1
 
         self_weight_difference_um_temp              = self.weight_difference_um
         self_weight_difference_percentage_um_temp   = round(self.weight_difference_percentage_um, 2)
@@ -139,20 +131,16 @@ def validate_weight_threshold(self, cdt):
                     show_instructions_1 = 1
 
                 elif self.weight_difference_percentage_um > 0:
-                    comment_string[loop_num] = "Net Weight exceeds by {0}%".format(self_weight_difference_percentage_um_temp) 
-                    + "and {0}Kg ".format(self_weight_difference_um_temp) 
-                    frappe.msgprint(comment_string[loop_num])
+                    frappe.msgprint("Net Weight exceeds by {0}%".format(self_weight_difference_percentage_um_temp) 
+                    + "and {0}Kg ".format(self_weight_difference_um_temp))
                     show_instructions_2 = 1
-                    loop_num +=1
 
                 elif self.weight_difference_percentage_um < 0:
                     self_weight_difference_um_temp = self_weight_difference_um_temp * -1
                     self_weight_difference_percentage_um_temp = self_weight_difference_percentage_um_temp * -1
-                    comment_string[loop_num] = "Net Weight is less by {0}%".format(self_weight_difference_percentage_um_temp) 
-                    + " and {0}Kg ".format(self_weight_difference_um_temp)
-                    frappe.msgprint(comment_string[loop_num])
+                    frappe.msgprint("Net Weight is less by {0}%".format(self_weight_difference_percentage_um_temp) 
+                    + " and {0}Kg ".format(self_weight_difference_um_temp))
                     show_instructions_2 = 1
-                    loop_num +=1
 
     else:
         show_exception = 0
