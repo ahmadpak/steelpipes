@@ -71,11 +71,12 @@ frappe.ui.form.on("Purchase Order Item",{
                         frappe.model.set_value(cdt, cdn, "total_weight_um", total_weight_um_temp);
                         frappe.model.set_value(cdt, cdn, "length_um", length_um_temp);
                         frappe.model.set_value(cdt, cdn, "total_length_um", total_length_um_temp);
-                        if (cur_frm.doc.estimate_weight_um == undefined){
-                            cur_frm.doc.estimate_weight_um = 0;
+                        cur_frm.doc.estimate_weight_um = 0;
+                        for (var i in cur_frm.doc.items){
+                            if(cur_frm.doc.items[i].item_code){
+                                pipe_weight(frm,i,cur_frm.doc.items[i].item_code,cur_frm.doc.items[i].um,cur_frm.doc.items[i].qty );
+                            }
                         }
-                        cur_frm.doc.estimate_weight_um += total_weight_um_temp;
-                        cur_frm.refresh_field("estimate_weight_um");
                     }
                 })
             }
