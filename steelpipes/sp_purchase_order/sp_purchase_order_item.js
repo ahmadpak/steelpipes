@@ -15,7 +15,7 @@ function pipe_weight(frm,i,itemcode,um,qty){
                     var total_length_um_temp   = length_um_temp * qty;
                 }
                 cur_frm.doc.items[i].weight_um = weight_um_temp;
-                cur_frm.doc.items[i].total_weight_um = total_length_um_temp;
+                cur_frm.doc.items[i].total_weight_um = total_weight_um_temp;
                 cur_frm.doc.items[i].length_um = total_length_um_temp;
                 cur_frm.doc.items[i].total_length_um = total_length_um_temp;
                 cur_frm.refresh_field("items");
