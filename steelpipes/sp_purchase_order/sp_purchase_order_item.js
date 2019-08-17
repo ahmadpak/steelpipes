@@ -1,4 +1,54 @@
+function pipe_weight(frm,i,itemcode,um,qty){
+    if (itemcode.includes("Pipe-MS",0)){
+        frm.call({
+            method: "steelpipes.sp_delivery_note.sp_delivery_note_item.calculate_pipe_weight_um",
+            args: {itemcode: itemcode, um: um},
+            callback:function(r){
+                var weight_um_temp         = r.message.item_weight_um;
+                var length_um_temp         = r.message.item_length_um;
+                if (qty == undefined || qty == 0 ){
+                    var total_weight_um_temp   = weight_um_temp * 1;
+                    var total_length_um_temp   = length_um_temp * 1;
+                }
+                else{
+                    var total_weight_um_temp   = weight_um_temp * qty;
+                    var total_length_um_temp   = length_um_temp * qty;
+                }
+                cur_frm.doc.items[i].weight_um = weight_um_temp;
+                cur_frm.doc.items[i].total_weight_um = total_length_um_temp;
+                cur_frm.doc.items[i].length_um = total_length_um_temp;
+                cur_frm.doc.items[i].total_length_um = total_length_um_temp;
+                cur_frm.refresh_field("items");
+                cur_frm.doc.estimate_weight_um += total_weight_um_temp;
+                cur_frm.refresh_field("estimate_weight_um");
+            }
+        })
+    }
+}
+
+frappe.ui.form.on("Purchase Order",{
+    refresh: function(frm){
+        cur_frm.doc.estimate_weight_um = 0;
+        for (var i in cur_frm.doc.items){
+            if(cur_frm.doc.items[i].item_code){
+                pipe_weight(frm,i,cur_frm.doc.items[i].item_code,cur_frm.doc.items[i].um,cur_frm.doc.items[i].qty );
+            }
+        }
+    }
+})
+
 frappe.ui.form.on("Purchase Order Item",{
+    items_remove: function (frm,cdt,cdn){
+        var estimate_weight_tmp = 0;
+        for (var i in cur_frm.doc.items){
+            if (cur_frm.doc.items[i].item_code.includes("Pipe-MS",0)){
+                estimate_weight_tmp += cur_frm.doc.items[i].total_weight_um;
+            }    
+        }
+        cur_frm.doc.estimate_weight_um = estimate_weight_tmp;
+        cur_frm.refresh_field("estimate_weight_um");
+    },
+
     item_code: function(frm,cdt,cdn){
         var item_code = frappe.model.get_doc(cdt, cdn);
         if (item_code.item_code){
@@ -21,6 +71,11 @@ frappe.ui.form.on("Purchase Order Item",{
                         frappe.model.set_value(cdt, cdn, "total_weight_um", total_weight_um_temp);
                         frappe.model.set_value(cdt, cdn, "length_um", length_um_temp);
                         frappe.model.set_value(cdt, cdn, "total_length_um", total_length_um_temp);
+                        if (cur_frm.doc.estimate_weight_um == undefined){
+                            cur_frm.doc.estimate_weight_um = 0;
+                        }
+                        cur_frm.doc.estimate_weight_um += total_weight_um_temp;
+                        cur_frm.refresh_field("estimate_weight_um");
                     }
                 })
             }
@@ -117,6 +172,12 @@ frappe.ui.form.on("Purchase Order Item",{
                 frappe.model.set_value(cdt, cdn, "total_weight_um", total_weight_um_temp);
                 frappe.model.set_value(cdt, cdn, "total_length_um", total_length_um_temp);
                 frappe.model.set_value(cdt, cdn, "amount_um", amount_temp);
+                var estimate_weight_tmp = 0;
+                for (var i in cur_frm.doc.items){
+                    estimate_weight_tmp += cur_frm.doc.items[i]. total_weight_um;
+                }
+                cur_frm.doc.estimate_weight_um = estimate_weight_tmp;
+                cur_frm.refresh_field("esitimate_weight_um");
             }
             else{
                 var amount_temp = item_code.rate_um*item_code.qty;

@@ -98,7 +98,7 @@ def validate_weight_threshold(self, cdt):
         for d in self.items:
             if 'Pipe-MS' in str(d.item_code):
                 has_pipe = 1
-                weight_difference_um_temp               = d.scale_weight_um - d.weight_um
+                weight_difference_um_temp               = round((d.scale_weight_um - d.weight_um),2)
                 weight_difference_percentage_um_temp    = round((weight_difference_um_temp / d.weight_um) * 100, 2)
                 if weight_difference_percentage_um_temp < -3 or weight_difference_percentage_um_temp > 3 or d.scale_weight_um == 0:
                     show_exception = 1

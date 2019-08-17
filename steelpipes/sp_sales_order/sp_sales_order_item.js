@@ -1,4 +1,15 @@
 frappe.ui.form.on("Sales Order Item",{
+    items_remove: function (frm,cdt,cdn){
+        var estimate_weight_tmp = 0;
+        for (var i in cur_frm.doc.items){
+            if (cur_frm.doc.items[i].item_code.includes("Pipe-MS",0)){
+                estimate_weight_tmp += cur_frm.doc.items[i].total_weight_um;
+            }    
+        }
+        cur_frm.doc.estimate_weight_um = estimate_weight_tmp;
+        cur_frm.refresh_field("estimate_weight_um");
+    },
+
     item_code: function(frm,cdt,cdn){
         var item_code = frappe.model.get_doc(cdt, cdn);
         if (item_code.item_code){
@@ -21,6 +32,11 @@ frappe.ui.form.on("Sales Order Item",{
                         frappe.model.set_value(cdt, cdn, "total_weight_um", total_weight_um_temp);
                         frappe.model.set_value(cdt, cdn, "length_um", length_um_temp);
                         frappe.model.set_value(cdt, cdn, "total_length_um", total_length_um_temp);
+                        if (cur_frm.doc.estimate_weight_um == undefined){
+                            cur_frm.doc.estimate_weight_um = 0;
+                        }
+                        cur_frm.doc.estimate_weight_um += total_weight_um_temp;
+                        cur_frm.refresh_field("estimate_weight_um");
                     } 
                 })
             }
@@ -117,6 +133,12 @@ frappe.ui.form.on("Sales Order Item",{
                 frappe.model.set_value(cdt, cdn, "total_weight_um", total_weight_um_temp);
                 frappe.model.set_value(cdt, cdn, "total_length_um", total_length_um_temp);
                 frappe.model.set_value(cdt, cdn, "amount_um", amount_temp);
+                var estimate_weight_tmp = 0;
+                for (var i in cur_frm.doc.items){
+                    estimate_weight_tmp += cur_frm.doc.items[i]. total_weight_um;
+                }
+                cur_frm.doc.estimate_weight_um = estimate_weight_tmp;
+                cur_frm.refresh_field("esitimate_weight_um");
             }
             else{
                 var amount_temp = item_code.rate_um*item_code.qty;

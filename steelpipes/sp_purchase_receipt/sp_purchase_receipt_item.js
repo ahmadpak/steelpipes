@@ -1,4 +1,29 @@
-frappe.ui.form.on("Purchase Receipt Item", { 
+function pipe_weight(frm,i,itemcode){
+    if (itemcode.includes("Pipe-MS",0)){
+        cur_frm.doc.estimate_weight_um += cur_frm.doc.items[i].total_weight_um;
+        cur_frm.doc.total_scale_weight_um += cur_frm.doc.items[i].total_scale_weight_um;
+        cur_frm.doc.total_um += cur_frm.doc.items[i].amount_um;
+        cur_frm.refresh_field("estimate_weight_um");
+        cur_frm.refresh_field("total_scale_weight_um");
+        cur_frm.refresh_field("total_um");
+    }
+}
+
+frappe.ui.form.on("Purchase Receipt Item", {    
+    items_remove: function(frm){
+        cur_frm.doc.estimate_weight_um = 0;
+        cur_frm.doc.total_scale_weight_um = 0;
+        cur_frm.doc.total_um = 0;
+        for (var i in cur_frm.doc.items){
+            if(cur_frm.doc.items[i].item_code){
+                pipe_weight(frm,i,cur_frm.doc.items[i].item_code);
+            }
+        }
+        cur_frm.doc.weight_difference_um = cur_frm.doc.total_weight_um - cur_frm.doc.estimate_weight_um;
+        cur_frm.doc.weight_difference_percentage_um = (cur_frm.doc.weight_difference_um/cur_frm.doc.estimate_weight_um)*100;
+        cur_frm.refresh_field("weight_difference_um");
+        cur_frm.refresh_field("weight_difference_percentage_um");
+    },
     /*
     item_code: function(frm,cdt,cdn){
         var item_code = frappe.model.get_doc(cdt, cdn);
@@ -138,7 +163,20 @@ frappe.ui.form.on("Purchase Receipt Item", {
                     var amount_um_temp      = item_code.rate_um*item_code.scale_weight_um*item_code.qty;
                     frappe.model.set_value(cdt, cdn, "rate_um_per_qty", rate_um_per_qty_temp);
                     frappe.model.set_value(cdt, cdn, "amount_um", amount_um_temp);
-                }         
+                }
+                cur_frm.doc.estimate_weight_um = 0;
+                cur_frm.doc.total_scale_weight_um = 0;
+                cur_frm.doc.total_um = 0;
+                for (var i in cur_frm.doc.items){
+                    if(cur_frm.doc.items[i].item_code){
+                        pipe_weight(frm,i,cur_frm.doc.items[i].item_code);
+                    }
+                }
+                cur_frm.doc.weight_difference_um = cur_frm.doc.total_weight_um - cur_frm.doc.estimate_weight_um;
+                cur_frm.doc.weight_difference_percentage_um = (cur_frm.doc.weight_difference_um/cur_frm.doc.estimate_weight_um)*100;
+                cur_frm.refresh_field("weight_difference_um");
+                cur_frm.refresh_field("weight_difference_percentage_um");
+                //frm.trigger("rate");         
             }
             else{
                 item_code.scale_weight_um = 0;
@@ -166,6 +204,18 @@ frappe.ui.form.on("Purchase Receipt Item", {
                 frappe.model.set_value(cdt, cdn, "total_weight_um", total_weight_um_temp);
                 frappe.model.set_value(cdt, cdn, "total_length_um", total_length_um_temp);
                 frappe.model.set_value(cdt, cdn, "amount_um", amount_um_temp);
+                cur_frm.doc.estimate_weight_um = 0;
+                cur_frm.doc.total_scale_weight_um = 0;
+                cur_frm.doc.total_um = 0;
+                for (var i in cur_frm.doc.items){
+                    if(cur_frm.doc.items[i].item_code){
+                        pipe_weight(frm,i,cur_frm.doc.items[i].item_code);
+                    }
+                }
+                cur_frm.doc.weight_difference_um = cur_frm.doc.total_weight_um - cur_frm.doc.estimate_weight_um;
+                cur_frm.doc.weight_difference_percentage_um = (cur_frm.doc.weight_difference_um/cur_frm.doc.estimate_weight_um)*100;
+                cur_frm.refresh_field("weight_difference_um");
+                cur_frm.refresh_field("weight_difference_percentage_um");
             }
             else{
                 var amount_temp = item_code.rate_um*item_code.qty;
