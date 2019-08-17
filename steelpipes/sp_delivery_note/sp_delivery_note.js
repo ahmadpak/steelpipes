@@ -25,6 +25,15 @@ function calculate_weight_um(frm){
 }
 
 frappe.ui.form.on("Delivery Note", {
+    refresh: function(frm){
+        if (cur_frm.doc.__islocal && (cur_frm.doc.set_posting_time == undefined || cur_frm.doc.set_posting_time == 0)){
+            var todays_date = frappe.datetime.get_today();
+            var newdate     = frappe.datetime.add_days(todays_date,-1);
+            cur_frm.doc.posting_date = newdate;
+            cur_frm.refresh_field("posting_date");
+        }
+    },
+
     empty_vehicle_weight_um: function(frm){
         calculate_weight_um(frm); 
     },

@@ -176,7 +176,8 @@ doctype_js = {
     #"Sales Order"   :   [   "sp_delivery_note/sp_delivery_note_item.js"
      #                   ],
     "Sales Order"   :   [   
-                            "sp_sales_order/sp_sales_order_item.js"
+                            "sp_sales_order/sp_sales_order_item.js",
+                            "sp_sales_order/sp_sales_order.js"
                         ],
     "Delivery Note" :   [   
                             "sp_delivery_note/sp_delivery_note.js",

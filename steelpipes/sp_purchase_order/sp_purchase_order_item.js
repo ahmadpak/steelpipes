@@ -34,6 +34,14 @@ frappe.ui.form.on("Purchase Order",{
                 pipe_weight(frm,i,cur_frm.doc.items[i].item_code,cur_frm.doc.items[i].um,cur_frm.doc.items[i].qty );
             }
         }
+        if (cur_frm.doc.__islocal){
+            var todays_date = frappe.datetime.get_today();
+            var newdate     = frappe.datetime.add_days(todays_date,-1);
+            cur_frm.doc.transaction_date = newdate;
+            cur_frm.doc.schedule_date = newdate;
+            cur_frm.refresh_field("transaction_date");
+            cur_frm.refresh_field("schedule_date");
+        }
     }
 })
 

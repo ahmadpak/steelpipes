@@ -9,6 +9,17 @@ function pipe_weight(i,itemcode){
     }
 }
 
+frappe.ui.form.on("Purchase Invoice", {
+    refresh: function(frm){
+        if (cur_frm.doc.__islocal && (cur_frm.doc.set_posting_time == undefined || cur_frm.doc.set_posting_time == 0)){
+            var todays_date = frappe.datetime.get_today();
+            var newdate     = frappe.datetime.add_days(todays_date,-1);
+            cur_frm.doc.posting_date = newdate;
+            cur_frm.refresh_field("posting_date");
+        }
+    }
+})
+
 frappe.ui.form.on("Purchase Invoice Item", {
     items_remove: function(frm){
         cur_frm.doc.estimate_weight_um = 0;
@@ -24,7 +35,7 @@ frappe.ui.form.on("Purchase Invoice Item", {
         cur_frm.refresh_field("weight_difference_um");
         cur_frm.refresh_field("weight_difference_percentage_um");
     },
-    
+
     qty: function (frm,cdt,cdn){
         var item_code = frappe.model.get_doc(cdt,cdn);
         if (item_code.item_code){

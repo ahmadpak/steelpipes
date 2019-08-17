@@ -9,6 +9,18 @@ function pipe_weight(i,itemcode){
     }
 }
 
+frappe.ui.form.on("Sales Invoice", {
+    refresh: function(frm){
+        if (cur_frm.doc.__islocal  && (cur_frm.doc.set_posting_time == undefined || cur_frm.doc.set_posting_time == 0)){
+            var todays_date = frappe.datetime.get_today();
+            var newdate     = frappe.datetime.add_days(todays_date,-1);
+            cur_frm.doc.posting_date = newdate;
+            cur_frm.refresh_field("posting_date");
+        }
+    }
+})
+
+
 frappe.ui.form.on("Sales Invoice Item", {
     items_remove: function(frm){
         cur_frm.doc.estimate_weight_um = 0;
