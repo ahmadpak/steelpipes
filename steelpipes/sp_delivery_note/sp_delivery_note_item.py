@@ -1,5 +1,5 @@
 import frappe
-from frappe.utils import flt
+from frappe.utils import flt, get_datetime, getdate, add_days, date_diff, nowdate, today
 from frappe.model.document import Document
 
 
@@ -84,7 +84,9 @@ def update_pipe_weight_um(self, cdt):
         self.empty_vehicle_weight_um            = 0
         self.loaded_vehicle_weight_um           = 0
         self.total_weight_um                    = 0
-    self.calculate_taxes_and_totals()    
+    self.calculate_taxes_and_totals()
+    if (self.set_posting_time == None or self.set_posting_time == 0):
+        self.posting_date = add_days(today(),-1)
         
 
 def validate_weight_threshold(self, cdt):

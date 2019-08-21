@@ -26,7 +26,6 @@ function calculate_weight_um(frm){
 
 frappe.ui.form.on("Purchase Receipt", {
     refresh: function(frm){
-        console.log(cur_frm.doc.set_posting_time);
         if (cur_frm.doc.__islocal && (cur_frm.doc.set_posting_time == undefined || cur_frm.doc.set_posting_time == 0)){
             var todays_date = frappe.datetime.get_today();
             var newdate     = frappe.datetime.add_days(todays_date,-1);
