@@ -164,7 +164,7 @@ frappe.ui.form.on("Sales Order Item",{
                 frappe.model.set_value(cdt, cdn, "amount_um", amount_temp);
                 var estimate_weight_tmp = 0;
                 for (var i in cur_frm.doc.items){
-                    estimate_weight_tmp += cur_frm.doc.items[i]. total_weight_um;
+                    estimate_weight_tmp += cur_frm.doc.items[i].total_weight_um;
                 }
                 cur_frm.doc.estimate_weight_um = estimate_weight_tmp;
                 cur_frm.refresh_field("esitimate_weight_um");
