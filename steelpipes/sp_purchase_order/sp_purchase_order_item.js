@@ -16,7 +16,7 @@ function pipe_weight(frm,i,itemcode,um,qty){
                 }
                 cur_frm.doc.items[i].weight_um = weight_um_temp;
                 cur_frm.doc.items[i].total_weight_um = total_weight_um_temp;
-                cur_frm.doc.items[i].length_um = total_length_um_temp;
+                cur_frm.doc.items[i].length_um = length_um_temp;
                 cur_frm.doc.items[i].total_length_um = total_length_um_temp;
                 cur_frm.refresh_field("items");
                 cur_frm.doc.estimate_weight_um += total_weight_um_temp;
@@ -28,13 +28,14 @@ function pipe_weight(frm,i,itemcode,um,qty){
 
 frappe.ui.form.on("Purchase Order",{
     refresh: function(frm){
-        cur_frm.doc.estimate_weight_um = 0;
-        for (var i in cur_frm.doc.items){
-            if(cur_frm.doc.items[i].item_code){
-                pipe_weight(frm,i,cur_frm.doc.items[i].item_code,cur_frm.doc.items[i].um,cur_frm.doc.items[i].qty );
-            }
-        }
         if (cur_frm.doc.__islocal){
+            cur_frm.doc.estimate_weight_um = 0;
+            for (var i in cur_frm.doc.items){
+                if(cur_frm.doc.items[i].item_code){
+                    pipe_weight(frm,i,cur_frm.doc.items[i].item_code,cur_frm.doc.items[i].um,cur_frm.doc.items[i].qty );
+                }
+            }
+        
             var todays_date = frappe.datetime.get_today();
             var newdate     = frappe.datetime.add_days(todays_date,-1);
             cur_frm.doc.transaction_date = newdate;
