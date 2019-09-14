@@ -119,23 +119,60 @@ frappe.ui.form.on('Sales Taxes and Charges', {
                 steel_pipes_charges_settings: 'Steel Pipes Charges Settings'
             },
             callback: function(r){
-                console.log(r.message);
-                console.log(charges.account_head);
-                if (charges.account_head == r.message.loading){
-                    doc.loading = charges.tax_amount;
-                    console.log(charges.tax_amount)
-                    console.log(doc.loading);
+                if (charges.account_head == r.message.loading_head){
+                    var pipe_charges_amount = charges.tax_amount;
+                    doc.loading = pipe_charges_amount;
                     cur_frm.refresh_field('loading');
                 }
-                else if (charges.account_head == r.message.cutting_labor){
-                    doc.cutting_labor = charges.tax_amount;
+                else if (charges.account_head == r.message.cutting_labor_head){
+                    var pipe_charges_amount = charges.tax_amount;
+                    doc.cutting_labor = pipe_charges_amount;
                     cur_frm.refresh_field('cutting_labor');
                 }
-                else if (charges.account_head == r.message.transport){
-                    doc.transport = charges.tax_amount;
+                else if (charges.account_head == r.message.transport_head){
+                    var pipe_charges_amount = charges.tax_amount;
+                    doc.transport = pipe_charges_amount;
                     cur_frm.refresh_field('transport');
                 }
             }
         })
-	}
+    },
+    taxes_remove: function(frm){
+        var doc = cur_frm.doc;
+        frm.call({
+            method:'steelpipes.utils.get_charges_account',
+            args: {
+                steel_pipes_charges_settings: 'Steel Pipes Charges Settings'
+            },
+            callback: function(r){
+                var has_loading = 0;
+                var has_cutting_labor = 0;
+                var has_transport = 0;
+                for (var i in doc.taxes){
+                    console.log(doc.taxes[i].account_head)
+                    if (doc.taxes[i].account_head == r.message.loading_head){
+                        has_loading =1;
+                    }
+                    else if (doc.taxes[i].account_head == r.message.cutting_labor_head){
+                        has_cutting_labor = 1;  
+                    }
+                    else if (doc.taxes[i].account_head == r.message.transport_head){
+                        has_transport =1;
+                    }
+                }
+                if ( has_loading == 0){
+                    doc.loading = 0;
+                    cur_frm.refresh_field('loading');
+                }
+                if (has_cutting_labor == 0){
+                    doc.cutting_labor = 0;
+                    cur_frm.refresh_field('cutting_labor');
+                }
+                if (has_transport == 0){
+                    doc.transport = 0;
+                    cur_frm.refresh_field('transport');
+                }
+            }
+        })
+    }
 })
