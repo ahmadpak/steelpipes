@@ -108,3 +108,34 @@ frappe.ui.form.on("Sales Invoice Item", {
         }
     }
 })
+
+frappe.ui.form.on('Sales Taxes and Charges', {
+	tax_amount(frm,cdt,cdn) {
+        var doc = cur_frm.doc;
+	    var charges = frappe.model.get_doc(cdt, cdn);
+        frm.call({
+            method:'steelpipes.utils.get_charges_account',
+            args: {
+                steel_pipes_charges_settings: 'Steel Pipes Charges Settings'
+            },
+            callback: function(r){
+                console.log(r.message);
+                console.log(charges.account_head);
+                if (charges.account_head == r.message.loading){
+                    doc.loading = charges.tax_amount;
+                    console.log(charges.tax_amount)
+                    console.log(doc.loading);
+                    cur_frm.refresh_field('loading');
+                }
+                else if (charges.account_head == r.message.cutting_labor){
+                    doc.cutting_labor = charges.tax_amount;
+                    cur_frm.refresh_field('cutting_labor');
+                }
+                else if (charges.account_head == r.message.transport){
+                    doc.transport = charges.tax_amount;
+                    cur_frm.refresh_field('transport');
+                }
+            }
+        })
+	}
+})
