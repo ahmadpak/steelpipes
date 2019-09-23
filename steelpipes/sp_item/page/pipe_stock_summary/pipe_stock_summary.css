@@ -1,68 +1,11 @@
-.ssb_div_header {
-    background-color: black !important;
-    color: white !important;
-    text-align: center !important;;
-    margin-top: 10px;
-    -webkit-print-color-adjust: exact;
+/* Class selector */
+.noWareHouseHTML {
+  font-style: italic;
 }
 
-.ssb_div_col_head {
-    border: 1px solid;
-    background-color: lightgrey !important;
-    text-align: center !important;;
-    -webkit-print-color-adjust: exact;
+.pipeStockSummary{
 }
 
-.ssb_div_data {
-    border: 1px solid;
-    text-align: center !important;;
-}
-
-.ssb_div_header_parent {
-
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
-.ssb_inner_container {
-    padding: 0px;
-}
-
-.ssb_main_container {
-    padding-bottom: 20px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: medium;
-}
-
-#no_data {
-    padding-left: 15px;
-}
-
-.cur_date {
-    font-size: large;
-    text-align: center;
-    display: none;
-}
-
-@media print {
-
-    .ssb_main_container {
-        /*padding-bottom: 20px;*/
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: medium;
-    }
-
-    .ssb_div_header {
-        background-color: black !important;
-        color: white !important;
-        text-align: center;
-        margin-top: 10px;
-        -webkit-print-color-adjust: exact;
-    }
-
-    .cur_date {
-        font-size: large;
-        text-align: center;
-        display: block;
-    }
+.hiddenClass {
+  visibility: hidden;
 }

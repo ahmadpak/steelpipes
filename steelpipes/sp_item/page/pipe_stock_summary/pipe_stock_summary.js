@@ -13,23 +13,42 @@ frappe.pages['pipe-stock-summary'].on_page_load = function (wrapper) {
 		fieldtype: 'Link',
 		fieldname: 'warehouse',
 		options: 'Warehouse',
-		change() {
+		change(){
 			if (field1.get_value()== ''){
-				no_data = '1';
-				console.log(field1.get_value());
-				console.log(no_data);
-				$(frappe.render_template("pipe_stock_summary", {"no_data": "1"} )).append(page.main);
+				// no_data = '1';
+				// console.log(field1.get_value());
+				// console.log(no_data);
+				// $(frappe.render_template("pipe_stock_summary", {"no_data": "1"} )).append(page.main);
+        // $("h5").css('color','black');
+        page.remove_inner_button('Download')
+        $('.pipeStockSummary').fadeOut(400,function(){
+          $('.noWareHouseHTML').fadeIn();
+        });
 			}
 			else{
-				no_data = '0';  
-				console.log(field1.get_value());
-				console.log(no_data);
-				$(frappe.render_template("pipe_stock_summary", {"no_data": "0"} )).appendTo(page.main);
-			}
+        // $("h5").css('color','blue');
+        page.add_inner_button('Download', () => download_stock())
+        $('.noWareHouseHTML').fadeOut(400,function(){
+          $('.pipeStockSummary').fadeIn();
+          frappe.call({
+            method:'steelpipes.utils.get_pipe_stock',
+            args: {
+              warehouse: field1.get_value(),
+            },
+            callback: function(r){
+              $('#3_4inch').css('background',"none")
+              $('#3_4inch').html(r.message);
+            }
+          });
+        });
+
+      }
 		}
 	});
-
-    $(frappe.render_template("pipe_stock_summary", {"no_data": "1"} )).appendTo(page.main);
-    //wrapper.pos = new erpnext.stock.SteelStockBalance(wrapper);
-
+    $(frappe.render_template("pipe_stock_summary")).appendTo(page.main);
+    $('.pipeStockSummary').css('display','none');
 };
+
+function download_stock(){
+  console.log('Download stock')
+}
