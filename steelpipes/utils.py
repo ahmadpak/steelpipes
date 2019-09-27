@@ -16,10 +16,11 @@ def get_charges_account(steel_pipes_charges_settings):
 @ frappe.whitelist()
 def get_pipe_stock(warehouse):
     # Connecting to database
+    report_settings = frappe.get_doc('Pipe Stock Summary Setting')
     mydb = mysql.connector.connect(
-        host="192.168.10.18",
-        user="ahmad",
-        passwd="LHR736!7331Gr"
+        host=report_settings.host,
+        user=report_settings.user,
+        passwd=report_settings.password
     )
     workbook = xlsxwriter.Workbook('/tmp/pipstocksheet.xlsx')                                   # Creating file
     worksheet = workbook.add_worksheet(name=warehouse)                                          # Creating Worksheet
