@@ -99,7 +99,7 @@ def validate_weight_threshold(self, cdt):
     if self.has_weight == 1:
         for d in self.items:
             if 'Pipe-MS' in str(d.item_code):
-                frappe.msgprint("{0}".format(self.doctype))
+                # frappe.msgprint("{0}".format(self.doctype))
                 if self.doctype == 'Purchase Receipt':
                     item = frappe.get_doc('Item',d.item_code)
                     item.db_set('last_weight_received',d.scale_weight_um)
@@ -108,7 +108,7 @@ def validate_weight_threshold(self, cdt):
                     item = frappe.get_doc('Item',d.item_code)
                     item.db_set('last_weight_delivered',d.scale_weight_um)
                     item.db_set('last_quantity_delivered',d.qty)
-                    
+
                 has_pipe = 1
                 weight_difference_um_temp               = round((d.scale_weight_um - d.weight_um),2)
                 weight_difference_percentage_um_temp    = round((weight_difference_um_temp / d.weight_um) * 100, 2)
