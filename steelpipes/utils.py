@@ -13,6 +13,8 @@ def get_charges_account(steel_pipes_charges_settings):
     charges_doc = frappe.get_doc(steel_pipes_charges_settings)
     return {'loading_head': charges_doc.loading_account_head, 'cutting_labor_head': charges_doc.cutting_labor_account_head, 'transport_head': charges_doc.transport_account_head}
 
+
+# Pipe Stock Summary Sheet
 @ frappe.whitelist()
 def get_pipe_stock(warehouse):
     # Connecting to database
@@ -57,7 +59,7 @@ def get_pipe_stock(warehouse):
         i = 0 
         
         mycursor = mydb.cursor()
-        mycursor.execute('''SELECT item_code,warehouse,actual_qty FROM _4e363c9bf0b93422.tabBin WHERE item_code LIKE 'Pipe-MS-{0}%' AND actual_qty>0 AND warehouse LIKE "{1}"'''.format(pipe_size,warehouse))
+        mycursor.execute('''SELECT item_code,warehouse,actual_qty FROM {0}.tabBin WHERE item_code LIKE 'Pipe-MS-{1}%' AND actual_qty>0 AND warehouse LIKE "{2}"'''.format(report_settings.database,pipe_size,warehouse))
         myresult = mycursor.fetchall()
         if (myresult):
             tempTitle = ascii_uppercase[cellTitle] +str(cellTitlerow)
@@ -71,28 +73,24 @@ def get_pipe_stock(warehouse):
             
             callbackreturn[size_id[id_num]] = {}
             for x in myresult:
-                # sqlstr = """SELECT attribute_value FROM _4e363c9bf0b93422.`tabItem Variant Attribute` 
-                #             WHERE parent LIKE '{0}' 
-                #             AND attribute LIKE 'Size (inches)'""".format(x[0])
-                # mycursor.execute(sqlstr)
-                # size = mycursor.fetchone()
 
-                sqlstr = """SELECT attribute_value FROM _4e363c9bf0b93422.`tabItem Variant Attribute` 
-                            WHERE parent LIKE '{0}' 
-                            AND attribute LIKE 'Thickness (mm)'""".format(x[0])
+                sqlstr = """SELECT attribute_value FROM {0}.`tabItem Variant Attribute` 
+                            WHERE parent LIKE '{1}' 
+                            AND attribute LIKE 'Thickness (mm)'""".format(report_settings.database,x[0])
                 mycursor.execute(sqlstr)
                 thickness = mycursor.fetchone()
 
-                sqlstr = """SELECT attribute_value FROM _4e363c9bf0b93422.`tabItem Variant Attribute` 
-                            WHERE parent LIKE '{0}' 
-                            AND attribute LIKE 'Length (feet)'""".format(x[0])
+                sqlstr = """SELECT attribute_value FROM {0}.`tabItem Variant Attribute` 
+                            WHERE parent LIKE '{1}' 
+                            AND attribute LIKE 'Length (feet)'""".format(report_settings.database,x[0])
                 mycursor.execute(sqlstr)
                 length = mycursor.fetchone()
-                callbackreturn[size_id[id_num]][i] = {'thickness': str(thickness[0]), 'length': str(length[0]), 'qty': str(round(x[2],2)), 'weight': '---'}
+                item = frappe.get_doc('Item',x[0])
+                callbackreturn[size_id[id_num]][i] = {'thickness': str(thickness[0]), 'length': str(length[0]), 'qty': str(round(x[2],2)), 'weight': str(item.last_weight_received)}
                 worksheet.write(ascii_uppercase[cellTitle]+str(cellTitlerow+2 + i), str(thickness[0]),border)
                 worksheet.write(ascii_uppercase[cellTitle+1]+str(cellTitlerow+2 + i), str(length[0]),border)
                 worksheet.write(ascii_uppercase[cellTitle+2]+str(cellTitlerow+2 + i), str(round(x[2],2)),border)
-                worksheet.write(ascii_uppercase[cellTitle+3]+str(cellTitlerow+2 + i), '---',border)
+                worksheet.write(ascii_uppercase[cellTitle+3]+str(cellTitlerow+2 + i), str(item.last_weight_received),border)
                 i += 1
             cellTitle +=4
             if cellTitle == 24:
@@ -100,33 +98,31 @@ def get_pipe_stock(warehouse):
                 cellTitlerow +=30
         id_num +=1
     callbackreturn = json.dumps(callbackreturn)
-    # row 4 till 31
-    # row
-    # row 34 till 60
-    # column 0 till 24 (1,25)
-    # border = workbook.add_format()
-    # border.set_border()
-    # for row in range(4,32,1):
-    #     for column in range(0,24,1):
-    #         worksheet.write(row,column,None,border)
-    # for row in range(34,61,1):
-    #     for column in range(0,24,1):
-    #         worksheet.write(row,column,None,border)
 
     workbook.close()
     return callbackreturn
 
 @frappe.whitelist()
 def generate_xlsx_item_stock():
-    # get_site_name,get_site_info,get_site_base_path,get_site_path,get_files_path,get_bench_path,get_site_url
-    # frappe.local.response.filename = "pipstocksheet.xlsx"
-    # frappe.local.response.filecontent = read_file_content('/tmp/pipstocksheet.xlsx') # custom function
-    # frappe.local.response.type = "download"
     file = io.open('/tmp/pipstocksheet.xlsx', "rb", buffering = 0)
     data = file.read()
     if not data:
-        frappe.msgprint(_('No Data'))
+        frappe.msgprint(('No Data'))
         return
     frappe.local.response.filecontent = data
     frappe.local.response.type = "download"
     frappe.local.response.filename = "pipestocksheet.xlsx"
+
+def update_delivered_item_weight_statistics(self,cdt):
+    for d in self.items:
+        if 'Pipe-MS' in str(d.item_code):
+            item = frappe.get_doc('Item',d.item_code)
+            item.db_set('last_weight_delivered',d.scale_weight_um)
+            item.db_set('last_quantity_delivered',d.qty)
+
+def update_received_item_weight_statistics(self,cdt):
+    for d in self.items:
+        if 'Pipe-MS' in str(d.item_code):
+            item = frappe.get_doc('Item',d.item_code)
+            item.db_set('last_weight_received',d.scale_weight_um)
+            item.db_set('last_quantity_received',d.qty)

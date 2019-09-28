@@ -5,6 +5,7 @@
  "engine": "InnoDB",
  "field_order": [
   "host",
+  "database",
   "user",
   "password"
  ],
@@ -29,10 +30,16 @@
    "in_list_view": 1,
    "label": "Password",
    "reqd": 1
+  },
+  {
+   "fieldname": "database",
+   "fieldtype": "Data",
+   "label": "Database",
+   "reqd": 1
   }
  ],
  "issingle": 1,
- "modified": "2019-09-27 18:00:58.553781",
+ "modified": "2019-09-28 08:52:35.239066",
  "modified_by": "Administrator",
  "module": "sp_item",
  "name": "Pipe Stock Summary Setting",
