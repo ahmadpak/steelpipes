@@ -169,7 +169,14 @@ fixtures = [{
                 "Purchase Invoice Item-total_weight_um",
                 "Purchase Invoice Item-total_length_um",
                 "Purchase Invoice Item-rate_um_per_qty",
-                "Purchase Invoice Item-amount_um"
+                "Purchase Invoice Item-amount_um",
+                "Item-section_break_44",
+                "Item-last_quantity_received",
+                "Item-last_weight_received",
+                "Item-column_break_41",
+                "Item-last_quantity_delivered",
+                "Item-last_weight_delivered",
+                "Item-weight_statistics"
             ]
         ]
     ]
