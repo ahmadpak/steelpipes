@@ -14,7 +14,7 @@ def pipe_custom_name(self,cdt):
                 for character in item_size_um:
                     if character != '/' and character!=' ':
                         temp_size += character
-                item_code_temp += '-{0} INCH'.format(temp_size)
+                item_code_temp += '-{0} INCH'.format(item_size_um)
                 barcode += temp_size
             elif 'Thickness' in attribute_name:
                 item_thickness_um = str(d.attribute_value)
