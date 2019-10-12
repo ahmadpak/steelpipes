@@ -22,7 +22,7 @@ function pipe_weight(frm,i,itemcode,um,qty){
                 cur_frm.doc.estimate_weight_um += total_weight_um_temp;
                 cur_frm.refresh_field("estimate_weight_um");
             }
-        })
+        });
     }
 }
 
@@ -42,5 +42,17 @@ frappe.ui.form.on("Sales Order",{
             cur_frm.refresh_field("transaction_date");
             cur_frm.refresh_field("delivery_date");
         }
+    },
+    scan_barcode: function(frm){
+        var doc = cur_frm.doc;
+        var is_empty = 0;
+        for (var i in doc.items){
+            if(doc.items[i].item_code==undefined){
+                is_empty = 1;
+            }
+        }
+        if (is_empty ==0){
+            frm.add_child('items');
+        }
     }
-})
+});
