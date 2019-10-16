@@ -15,7 +15,9 @@ frappe.ui.form.on("Purchase Invoice", {
             var todays_date = frappe.datetime.get_today();
             var newdate     = frappe.datetime.add_days(todays_date,-1);
             cur_frm.doc.posting_date = newdate;
+            cur_frm.doc.bill_date = newdate;
             cur_frm.refresh_field("posting_date");
+            cur_frm.refresh_field('bill_date');
         }
     }
 })
