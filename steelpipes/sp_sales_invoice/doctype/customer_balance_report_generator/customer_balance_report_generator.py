@@ -137,6 +137,8 @@ def generate_customer_balance(company=None,customer_group=None,territory=None,sa
 						worksheet.write(current_row,6, i.last_payment_amount, cell_format_arial)
 					worksheet.write(current_row,7, i.outstanding_balance, cell_format_arial)
 					cell_col = 0
+				if cell_col == 0:
+					current_row +=1
 		else:
 			if cell_col == 0:
 				# name,last_payment_date,last_payment_amount,outstanding_balance
@@ -164,8 +166,8 @@ def generate_customer_balance(company=None,customer_group=None,territory=None,sa
 					worksheet.write(current_row,6, i.last_payment_amount, cell_format_arial)
 				worksheet.write(current_row,7, i.outstanding_balance, cell_format_arial)
 				cell_col = 0
-		if cell_col == 0:
-			current_row +=1
+			if cell_col == 0:
+				current_row +=1
 	
 	workbook.close()
 
@@ -182,9 +184,9 @@ def get_file_name(sales_person,balance_less_than,get_advances,all_balances):
 	elif all_balances == 0 and get_advances == 1:
 		filestr = '/tmp/{0}customer_advances_{1}.xlsx'.format(sp_str,balance_less_than)
 	elif all_balances == 1 and get_advances == 0:
-		filestr = '/tmp/customer_balance.xlsx'
+		filestr = '/tmp/{0}customer_balance.xlsx'.format(sp_str)
 	elif all_balances == 1 and get_advances == 1:
-		filestr = '/tmp/customer_advances.xlsx'
+		filestr = '/tmp/{0}customer_advances.xlsx'.format(sp_str)
 	return filestr
 
 
@@ -208,13 +210,13 @@ def get_filters(company=None,customer_group=None,territory=None,sales_person=Non
 	if territory:
 		sql_query_str += ' territory="{0}" AND'.format(territory)
 	if all_balances==0 and get_advances==0:
-		sql_query_str += ' outstanding_balance BETWEEN 1 AND {0}  ORDER BY outstanding_balance ASC;'.format(balance_less_than)
+		sql_query_str += ' outstanding_balance BETWEEN 1 AND {0}  ORDER BY outstanding_balance ASC LIMIT 1000000000;'.format(balance_less_than)
 	elif all_balances==0 and get_advances==1:
-		sql_query_str += ' outstanding_balance BETWEEN {0} AND -1  ORDER BY outstanding_balance DESC;'.format(balance_less_than)
+		sql_query_str += ' outstanding_balance BETWEEN {0} AND -1  ORDER BY outstanding_balance DESC LIMIT 1000000000;'.format(balance_less_than)
 	elif all_balances==1 and get_advances==0:
-		sql_query_str += ' outstanding_balance>0  ORDER BY outstanding_balance DESC;'
+		sql_query_str += ' outstanding_balance BETWEEN 1 AND 1000000000000  ORDER BY outstanding_balance DESC LIMIT 1000000000;'
 	elif all_balances==1 and get_advances==1:
-		sql_query_str += ' outstanding_balance<0  ORDER BY outstanding_balance ASC;'
+		sql_query_str += ' outstanding_balance BETWEEN -1000000000000 AND -1  ORDER BY outstanding_balance ASC LIMIT 1000000000;'
 	return sql_query_str
 
 @frappe.whitelist()
@@ -243,7 +245,7 @@ def get_download_file_name(sales_person,balance_less_than,get_advances,all_balan
 	elif all_balances == 0 and get_advances == 1:
 		filestr = '{0}customer_advances_{1}.xlsx'.format(sp_str,balance_less_than)
 	elif all_balances == 1 and get_advances == 0:
-		filestr = 'customer_balance.xlsx'
+		filestr = '{0}customer_balance.xlsx'.format(sp_str)
 	elif all_balances == 1 and get_advances == 1:
-		filestr = 'customer_advances.xlsx'
+		filestr = '{0}customer_advances.xlsx'.format(sp_str)
 	return filestr
