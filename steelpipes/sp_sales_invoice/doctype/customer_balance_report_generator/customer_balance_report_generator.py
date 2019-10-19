@@ -118,7 +118,7 @@ def generate_customer_balance(company=None,customer_group=None,territory=None,sa
 						worksheet.write(current_row,1, '-', cell_format_arial_date)
 					else:
 						worksheet.write(current_row,1, i.last_payment_date, cell_format_arial_date)
-					if i.last_payment_amount==None:
+					if i.last_payment_amount==None or i.last_payment_amount==0:
 						worksheet.write(current_row,2, '-', cell_format_arial)
 					else:
 						worksheet.write(current_row,2, i.last_payment_amount, cell_format_arial)
@@ -131,7 +131,7 @@ def generate_customer_balance(company=None,customer_group=None,territory=None,sa
 						worksheet.write(current_row,5, '-', cell_format_arial_date)
 					else:
 						worksheet.write(current_row,5, i.last_payment_date, cell_format_arial_date)
-					if i.last_payment_amount==None:
+					if i.last_payment_amount==None or i.last_payment_amount==0:
 						worksheet.write(current_row,6, '-', cell_format_arial)
 					else:
 						worksheet.write(current_row,6, i.last_payment_amount, cell_format_arial)
@@ -145,7 +145,7 @@ def generate_customer_balance(company=None,customer_group=None,territory=None,sa
 					worksheet.write(current_row,1, '-', cell_format_arial_date)
 				else:
 					worksheet.write(current_row,1, i.last_payment_date, cell_format_arial_date)
-				if i.last_payment_amount==None:
+				if i.last_payment_amount==None or i.last_payment_amount==0:
 					worksheet.write(current_row,2, '-', cell_format_arial)
 				else:
 					worksheet.write(current_row,2, i.last_payment_amount, cell_format_arial)
@@ -158,7 +158,7 @@ def generate_customer_balance(company=None,customer_group=None,territory=None,sa
 					worksheet.write(current_row,5, '-', cell_format_arial_date)
 				else:
 					worksheet.write(current_row,5, i.last_payment_date, cell_format_arial_date)
-				if i.last_payment_amount==None:
+				if i.last_payment_amount==None or i.last_payment_amount==0:
 					worksheet.write(current_row,6, '-', cell_format_arial)
 				else:
 					worksheet.write(current_row,6, i.last_payment_amount, cell_format_arial)
