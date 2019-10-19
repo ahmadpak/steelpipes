@@ -25,13 +25,15 @@ def generate_customer_balance(company=None,customer_group=None,territory=None,sa
 	workbook = xlsxwriter.Workbook('{0}'.format(file_name))			# Creating a xlsx file
 	worksheet = workbook.add_worksheet(name='customer-balance')		# Adding new worksheet
 	# Setting column widths
-	worksheet.set_column(0,0,37.67)
+	worksheet.set_column(0,0,30.5)
+	worksheet.set_column(1,1,15.3)
 	worksheet.set_row(0,20.25)
 	worksheet.set_row(1,20.25)
 	worksheet.set_row(2,20.25)
-	worksheet.set_column(4,4,37.67)
-	worksheet.set_column(1,3,12.67)
-	worksheet.set_column(5,7,12.67)
+	worksheet.set_column(4,4,30.5)
+	worksheet.set_column(5,5,15.3)
+	worksheet.set_column(2,3,12.67)
+	worksheet.set_column(6,7,12.67)
 	# Creating Border formats
 	cell_format_font_14 = workbook.add_format({'bold': True, 'font': 'Comic Sans MS', 'font_size':14})
 	cell_format_font_14.set_border()
@@ -112,30 +114,54 @@ def generate_customer_balance(company=None,customer_group=None,territory=None,sa
 				if cell_col == 0:
 					# name,last_payment_date,last_payment_amount,outstanding_balance
 					worksheet.write(current_row,0, i.name, cell_format_comic_sans_ms)
-					worksheet.write(current_row,1, i.last_payment_date, cell_format_arial_date)
-					worksheet.write(current_row,2, i.last_payment_amount, cell_format_arial)
+					if not i.last_payment_date:
+						worksheet.write(current_row,1, '-', cell_format_arial_date)
+					else:
+						worksheet.write(current_row,1, i.last_payment_date, cell_format_arial_date)
+					if not i.last_payment_amount:
+						worksheet.write(current_row,2, '-', cell_format_arial)
+					else:
+						worksheet.write(current_row,2, i.last_payment_amount, cell_format_arial)
 					worksheet.write(current_row,3, i.outstanding_balance, cell_format_arial)
 					cell_col = 1
 				else:
 					# name,last_payment_date,last_payment_amount,outstanding_balance
 					worksheet.write(current_row,4, i.name, cell_format_comic_sans_ms)
-					worksheet.write(current_row,5, i.last_payment_date, cell_format_arial_date)
-					worksheet.write(current_row,6, i.last_payment_amount, cell_format_arial)
+					if not i.last_payment_date:
+						worksheet.write(current_row,5, '-', cell_format_arial_date)
+					else:
+						worksheet.write(current_row,5, i.last_payment_date, cell_format_arial_date)
+					if not i.last_payment_amount:
+						worksheet.write(current_row,6, '-', cell_format_arial)
+					else:
+						worksheet.write(current_row,6, i.last_payment_amount, cell_format_arial)
 					worksheet.write(current_row,7, i.outstanding_balance, cell_format_arial)
 					cell_col = 0
 		else:
 			if cell_col == 0:
 				# name,last_payment_date,last_payment_amount,outstanding_balance
-				worksheet.write(current_row,0, i.name, cell_format_comic_sans_ms)
-				worksheet.write(current_row,1, i.last_payment_date, cell_format_arial_date)
-				worksheet.write(current_row,2, i.last_payment_amount, cell_format_arial)
+					worksheet.write(current_row,0, i.name, cell_format_comic_sans_ms)
+				if not i.last_payment_date:
+					worksheet.write(current_row,1, '-', cell_format_arial_date)
+				else:
+					worksheet.write(current_row,1, i.last_payment_date, cell_format_arial_date)
+				if not i.last_payment_amount:
+					worksheet.write(current_row,2, '-', cell_format_arial)
+				else:
+					worksheet.write(current_row,2, i.last_payment_amount, cell_format_arial)
 				worksheet.write(current_row,3, i.outstanding_balance, cell_format_arial)
 				cell_col = 1
 			else:
 				# name,last_payment_date,last_payment_amount,outstanding_balance
 				worksheet.write(current_row,4, i.name, cell_format_comic_sans_ms)
-				worksheet.write(current_row,5, i.last_payment_date, cell_format_arial_date)
-				worksheet.write(current_row,6, i.last_payment_amount, cell_format_arial)
+				if not i.last_payment_date:
+					worksheet.write(current_row,5, '-', cell_format_arial_date)
+				else:
+					worksheet.write(current_row,5, i.last_payment_date, cell_format_arial_date)
+				if not i.last_payment_amount:
+					worksheet.write(current_row,6, '-', cell_format_arial)
+				else:
+					worksheet.write(current_row,6, i.last_payment_amount, cell_format_arial)
 				worksheet.write(current_row,7, i.outstanding_balance, cell_format_arial)
 				cell_col = 0
 		if cell_col == 0:
