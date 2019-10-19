@@ -114,11 +114,11 @@ def generate_customer_balance(company=None,customer_group=None,territory=None,sa
 				if cell_col == 0:
 					# name,last_payment_date,last_payment_amount,outstanding_balance
 					worksheet.write(current_row,0, i.name, cell_format_comic_sans_ms)
-					if not i.last_payment_date:
+					if i.last_payment_date==None:
 						worksheet.write(current_row,1, '-', cell_format_arial_date)
 					else:
 						worksheet.write(current_row,1, i.last_payment_date, cell_format_arial_date)
-					if not i.last_payment_amount:
+					if i.last_payment_amount==None:
 						worksheet.write(current_row,2, '-', cell_format_arial)
 					else:
 						worksheet.write(current_row,2, i.last_payment_amount, cell_format_arial)
@@ -127,11 +127,11 @@ def generate_customer_balance(company=None,customer_group=None,territory=None,sa
 				else:
 					# name,last_payment_date,last_payment_amount,outstanding_balance
 					worksheet.write(current_row,4, i.name, cell_format_comic_sans_ms)
-					if not i.last_payment_date:
+					if i.last_payment_date==None:
 						worksheet.write(current_row,5, '-', cell_format_arial_date)
 					else:
 						worksheet.write(current_row,5, i.last_payment_date, cell_format_arial_date)
-					if not i.last_payment_amount:
+					if i.last_payment_amount==None:
 						worksheet.write(current_row,6, '-', cell_format_arial)
 					else:
 						worksheet.write(current_row,6, i.last_payment_amount, cell_format_arial)
@@ -140,12 +140,12 @@ def generate_customer_balance(company=None,customer_group=None,territory=None,sa
 		else:
 			if cell_col == 0:
 				# name,last_payment_date,last_payment_amount,outstanding_balance
-					worksheet.write(current_row,0, i.name, cell_format_comic_sans_ms)
-				if not i.last_payment_date:
+				worksheet.write(current_row,0, i.name, cell_format_comic_sans_ms)
+				if i.last_payment_date==None:
 					worksheet.write(current_row,1, '-', cell_format_arial_date)
 				else:
 					worksheet.write(current_row,1, i.last_payment_date, cell_format_arial_date)
-				if not i.last_payment_amount:
+				if i.last_payment_amount==None:
 					worksheet.write(current_row,2, '-', cell_format_arial)
 				else:
 					worksheet.write(current_row,2, i.last_payment_amount, cell_format_arial)
@@ -154,11 +154,11 @@ def generate_customer_balance(company=None,customer_group=None,territory=None,sa
 			else:
 				# name,last_payment_date,last_payment_amount,outstanding_balance
 				worksheet.write(current_row,4, i.name, cell_format_comic_sans_ms)
-				if not i.last_payment_date:
+				if i.last_payment_date==None:
 					worksheet.write(current_row,5, '-', cell_format_arial_date)
 				else:
 					worksheet.write(current_row,5, i.last_payment_date, cell_format_arial_date)
-				if not i.last_payment_amount:
+				if i.last_payment_amount==None:
 					worksheet.write(current_row,6, '-', cell_format_arial)
 				else:
 					worksheet.write(current_row,6, i.last_payment_amount, cell_format_arial)
