@@ -176,7 +176,8 @@ fixtures = [{
                 "Item-column_break_41",
                 "Item-last_quantity_delivered",
                 "Item-last_weight_delivered",
-                "Item-weight_statistics"
+                "Item-weight_statistics",
+                "Customer-outstanding_balance"
             ]
         ]
     ]
