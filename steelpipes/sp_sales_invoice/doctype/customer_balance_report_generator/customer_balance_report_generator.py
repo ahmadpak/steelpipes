@@ -214,9 +214,9 @@ def get_filters(company=None,customer_group=None,territory=None,sales_person=Non
 	elif all_balances==0 and get_advances==1:
 		sql_query_str += ' outstanding_balance BETWEEN {0} AND -1  ORDER BY outstanding_balance DESC LIMIT 1000000000;'.format(balance_less_than)
 	elif all_balances==1 and get_advances==0:
-		sql_query_str += ' outstanding_balance BETWEEN 1 AND 1000000000000  ORDER BY outstanding_balance DESC LIMIT 1000000000;'
+		sql_query_str += ' outstanding_balance BETWEEN 1 AND 1000000000000  ORDER BY outstanding_balance ASC LIMIT 1000000000;'
 	elif all_balances==1 and get_advances==1:
-		sql_query_str += ' outstanding_balance BETWEEN -1000000000000 AND -1  ORDER BY outstanding_balance ASC LIMIT 1000000000;'
+		sql_query_str += ' outstanding_balance BETWEEN -1000000000000 AND -1  ORDER BY outstanding_balance DESC LIMIT 1000000000;'
 	return sql_query_str
 
 @frappe.whitelist()
