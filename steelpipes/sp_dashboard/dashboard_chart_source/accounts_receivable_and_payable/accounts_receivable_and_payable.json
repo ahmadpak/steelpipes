@@ -1,0 +1,13 @@
+{
+ "creation": "2019-10-22 16:56:13.056939",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart Source",
+ "idx": 0,
+ "modified": "2019-10-22 17:18:35.095649",
+ "modified_by": "Administrator",
+ "module": "SP Dashboard",
+ "name": "Accounts receivable and payable",
+ "owner": "Administrator",
+ "source_name": "Accounts receivable and payable",
+ "timeseries": 1
+}

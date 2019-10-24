@@ -6,3 +6,4 @@ SP Purchase Receipt
 SP Sales Invoice
 SP Purchase Invoice
 sp_item
+SP Dashboard
