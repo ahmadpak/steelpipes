@@ -21,6 +21,9 @@ def get(chart_name = None, chart = None, no_cache = None, from_date = None, to_d
     timegrain = chart.time_interval
     filters = frappe.parse_json(chart.filters_json)
 
+    account = filters.get("account")
+    company = filters.get("company")
+
     if not to_date:
         to_date = nowdate()
     if not from_date:
@@ -30,60 +33,36 @@ def get(chart_name = None, chart = None, no_cache = None, from_date = None, to_d
     # fetch dates to plot
     dates = get_dates_from_timegrain(from_date, to_date, timegrain)
 
-    # get all the entries for this account and its descendants
-    gl_entries = get_gl_entries(account, get_period_ending(to_date, timegrain))
-
-    # compile balance values
-    result = build_result(account, dates, gl_entries)
+    # Get balances on for set dates
+    receivable = []
+    for date in dates:
+        sql_query_str = '''SELECT sum(debit)-sum(credit) FROM `tabGL Entry` WHERE company="{0}" AND party_type="Customer" AND posting_date<="{1}"'''.format(company,date)
+        sql_query = frappe.db.sql(sql_query_str)
+        if sql_query[0][0]==None:
+            receivable.append(0)
+        else:
+            receivable.append(sql_query[0][0])
+    payable = []
+    for date in dates:
+        sql_query_str = '''SELECT (sum(debit)-sum(credit))*-1 FROM `tabGL Entry` WHERE company="{0}" AND party_type="Supplier" AND posting_date<="{1}"'''.format(company,date)
+        sql_query = frappe.db.sql(sql_query_str)
+        if sql_query[0][0]==None:
+            payable.append(0)
+        else:
+            payable.append(sql_query[0][0])
 
     return {
-        "labels": [formatdate(r[0].strftime('%Y-%m-%d')) for r in result],
+        "labels": [date for date in dates],
         "datasets": [{
-            "name": account,
-            "values": [r[1] for r in result]
+            "name": 'Receivable',
+            "values": receivable
+        },
+        {
+            "name": 'Payable',
+            "values": payable
         }]
     }
 
-def build_result(account, dates, gl_entries):
-    result = [[getdate(date), 0.0] for date in dates]
-    root_type = frappe.db.get_value('Account', account, 'root_type')
-
-    # start with the first date
-    date_index = 0
-
-    # get balances in debit
-    for entry in gl_entries:
-
-        # entry date is after the current pointer, so move the pointer forward
-        while getdate(entry.posting_date) > result[date_index][0]:
-            date_index += 1
-
-        result[date_index][1] += entry.debit - entry.credit
-
-    # if account type is credit, switch balances
-    if root_type not in ('Asset', 'Expense'):
-        for r in result:
-            r[1] = -1 * r[1]
-
-    # for balance sheet accounts, the totals are cumulative
-    if root_type in ('Asset', 'Liability', 'Equity'):
-        for i, r in enumerate(result):
-            if i > 0:
-                r[1] = r[1] + result[i-1][1]
-
-    return result
-
-def get_gl_entries(account, to_date):
-    child_accounts = get_descendants_of('Account', account, ignore_permissions=True)
-    child_accounts.append(account)
-
-    return frappe.db.get_all('GL Entry',
-        fields = ['posting_date', 'debit', 'credit'],
-        filters = [
-            dict(posting_date = ('<', to_date)),
-            dict(account = ('in', child_accounts))
-        ],
-        order_by = 'posting_date asc')
 
 def get_dates_from_timegrain(from_date, to_date, timegrain):
     days = months = years = 0

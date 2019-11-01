@@ -11,12 +11,5 @@ frappe.dashboards.chart_sources["Accounts receivable and payable"] = {
 			default: frappe.defaults.get_user_default("Company"),
 			reqd: 1
 		},
-		{
-			fieldname: "account",
-			label: __("Account"),
-			fieldtype: "Link",
-			options: "Account",
-			reqd: 1
-		},
 	]
 };
