@@ -177,7 +177,17 @@ fixtures = [{
                 "Item-last_quantity_delivered",
                 "Item-last_weight_delivered",
                 "Item-weight_statistics",
-                "Customer-outstanding_balance"
+                "Customer-outstanding_balance",
+                "Stock Entry-weight_difference_percentage_um",
+                "Stock Entry-weight_difference_um",
+                "Stock Entry-total_weight_um",
+                "Stock Entry-estimate_weight_um",
+                "Stock Entry-column_break_44",
+                "Stock Entry-has_weight",
+                "Stock Entry-total_scale_weight_um",
+                "Stock Entry-loaded_vehicle_weight_um",
+                "Stock Entry-empty_vehicle_weight_um",
+                "Stock Entry-weight_calculations"
             ]
         ]
     ]
@@ -206,7 +216,11 @@ doctype_js = {
                         ],
     "Purchase Invoice": [
                             "sp_purchase_invoice/sp_purchase_invoice_item.js"
-                        ]                                                            
+                        ],
+    "Stock Entry":      [
+                            "sp_stock_entry/sp_stock_entry.js",
+                            "sp_stock_entry/sp_stock_entry_item.js"
+    ]                                                            
 }
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
@@ -291,6 +305,9 @@ doc_events = {
     },
     "Item":{
         "validate"  :   "steelpipes.sp_item.item.pipe_custom_name"
+    },
+    "Stock Entry":{
+        "on_submit" :   "steelpipes.sp_delivery_note.sp_delivery_note_item.validate_weight_threshold"
     }
 }
 

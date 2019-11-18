@@ -6,7 +6,8 @@ frappe.pages['pipe-stock-summary'].on_page_load = function (wrapper) {
 	});
   var todays_date = frappe.datetime.get_today();
 	var page_subtitle = 'Stock as of ' + todays_date;
-	page.set_title_sub(page_subtitle);
+  page.set_title_sub(page_subtitle);
+  frappe.breadcrumbs.add("Stock");
 	var field1 = page.add_field({
 		label: 'Warehouse',
 		fieldtype: 'Link',

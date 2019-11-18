@@ -99,8 +99,7 @@ def validate_weight_threshold(self, cdt):
     if self.has_weight == 1:
         for d in self.items:
             if 'Pipe-MS' in str(d.item_code):
-                # frappe.msgprint("{0}".format(self.doctype))
-                if self.doctype == 'Purchase Receipt':
+                if self.doctype == 'Purchase Receipt' or (self.doctype == 'Stock Entry' and (self.stock_entry_type == 'Send to Warehouse' or self.stock_entry_type == 'Receive at Warehouse')):
                     item = frappe.get_doc('Item',d.item_code)
                     item.db_set('last_weight_received',d.scale_weight_um)
                     item.db_set('last_quantity_received',d.qty)
