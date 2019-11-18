@@ -187,7 +187,16 @@ fixtures = [{
                 "Stock Entry-total_scale_weight_um",
                 "Stock Entry-loaded_vehicle_weight_um",
                 "Stock Entry-empty_vehicle_weight_um",
-                "Stock Entry-weight_calculations"
+                "Stock Entry-weight_calculations",
+                "Stock Entry Detail-total_length_um",
+                "Stock Entry Detail-total_weight_um",
+                "Stock Entry Detail-total_scale_weight_um",
+                "Stock Entry Detail-column_break_15",
+                "Stock Entry Detail-um",
+                "Stock Entry Detail-length_um",
+                "Stock Entry Detail-weight_um",
+                "Stock Entry Detail-scale_weight_um",
+                "Stock Entry Detail-weight_section"
             ]
         ]
     ]
