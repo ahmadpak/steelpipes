@@ -1,0 +1,71 @@
+{
+ "autoname": "hash",
+ "creation": "2019-11-19 10:49:48.976155",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "delivery_warehouse",
+  "qty",
+  "scale_weight",
+  "estimate_weight",
+  "date",
+  "delivery_note"
+ ],
+ "fields": [
+  {
+   "fieldname": "delivery_warehouse",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Warehouse",
+   "options": "Warehouse",
+   "read_only": 1
+  },
+  {
+   "fieldname": "qty",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Qty",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "scale_weight",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Scale Weight",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "delivery_note",
+   "fieldtype": "Data",
+   "label": "Delivery Note",
+   "read_only": 1
+  },
+  {
+   "fieldname": "estimate_weight",
+   "fieldtype": "Float",
+   "label": "Estimate Weight",
+   "precision": "2",
+   "read_only": 1
+  }
+ ],
+ "istable": 1,
+ "modified": "2019-11-19 14:43:51.809026",
+ "modified_by": "Administrator",
+ "module": "sp_item",
+ "name": "Pipe Item Delivery Detail",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

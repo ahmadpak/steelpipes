@@ -25,7 +25,6 @@ frappe.ui.form.on("Stock Entry Detail", {
         cur_frm.refresh_field("weight_difference_percentage_um");
     },
     item_code: function(frm,cdt,cdn){
-        console.log('item code called')
         var item_code = frappe.model.get_doc(cdt, cdn);
         if (item_code.item_code){
             if(item_code.item_code.includes("Pipe-MS",0)){                

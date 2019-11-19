@@ -196,7 +196,14 @@ fixtures = [{
                 "Stock Entry Detail-length_um",
                 "Stock Entry Detail-weight_um",
                 "Stock Entry Detail-scale_weight_um",
-                "Stock Entry Detail-weight_section"
+                "Stock Entry Detail-weight_section",
+                "Item-receiving_details",
+                "Item-delivery_details",
+                "Stock Entry-vehicle_details",
+                "Stock Entry-transport_agency",
+                "Stock Entry-driver_name",
+                "Stock Entry-column_break_52",
+                "Stock Entry-vehicle_number"
             ]
         ]
     ]
@@ -297,7 +304,9 @@ doc_events = {
     },
     "Delivery Note":{
         "validate"  :   "steelpipes.sp_delivery_note.sp_delivery_note_item.update_pipe_weight_um",
-        "on_submit" :   "steelpipes.sp_delivery_note.sp_delivery_note_item.validate_weight_threshold"
+        "on_submit" :   [   "steelpipes.sp_delivery_note.sp_delivery_note_item.validate_weight_threshold",
+                            "steelpipes.sp_item.item.pipe_item_weight_detail"
+                        ]
     },
     "Sales Invoice":{
         "validate"  :   "steelpipes.sp_delivery_note.sp_delivery_note_item.update_pipe_weight_um"
@@ -307,7 +316,9 @@ doc_events = {
     },
     "Purchase Receipt":{
         "validate"  :   "steelpipes.sp_delivery_note.sp_delivery_note_item.update_pipe_weight_um",
-        "on_submit" :   "steelpipes.sp_delivery_note.sp_delivery_note_item.validate_weight_threshold"
+        "on_submit" :   [   "steelpipes.sp_delivery_note.sp_delivery_note_item.validate_weight_threshold",
+                            "steelpipes.sp_item.item.pipe_item_weight_detail"
+                        ]
     },
     "Purchase Invoice":{
         "validate"  :   "steelpipes.sp_delivery_note.sp_delivery_note_item.update_pipe_weight_um"
@@ -316,7 +327,9 @@ doc_events = {
         "validate"  :   "steelpipes.sp_item.item.pipe_custom_name"
     },
     "Stock Entry":{
-        "on_submit" :   "steelpipes.sp_delivery_note.sp_delivery_note_item.validate_weight_threshold"
+        "on_submit" :   [   "steelpipes.sp_delivery_note.sp_delivery_note_item.validate_weight_threshold",
+                            "steelpipes.sp_item.item.pipe_item_weight_detail"
+                        ]
     }
 }
 

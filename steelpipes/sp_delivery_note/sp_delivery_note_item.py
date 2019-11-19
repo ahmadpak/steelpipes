@@ -132,7 +132,6 @@ def validate_weight_threshold(self, cdt):
 
         self_weight_difference_um_temp              = self.weight_difference_um
         self_weight_difference_percentage_um_temp   = round(self.weight_difference_percentage_um, 2)
-        
         if has_pipe == 1:
             if self.weight_difference_percentage_um < -3 or self.weight_difference_percentage_um > 3 or self.loaded_vehicle_weight_um == 0:
                 show_exception = 1
@@ -152,7 +151,7 @@ def validate_weight_threshold(self, cdt):
                     frappe.msgprint("Net Weight is less by {0}%".format(self_weight_difference_percentage_um_temp) 
                     + " and {0}Kg ".format(self_weight_difference_um_temp))
                     show_instructions_2 = 1
-
+    
     else:
         show_exception = 0
 
@@ -165,3 +164,4 @@ def validate_weight_threshold(self, cdt):
             frappe.throw("Please verify weight and enter the missing values!")
     elif self.has_weight == 0 or show_exception == 0 :
         pass
+    

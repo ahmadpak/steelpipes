@@ -24,10 +24,13 @@ def get_pipe_stock(warehouse):
         user=report_settings.user,
         passwd=report_settings.password
     )
-    workbook = xlsxwriter.Workbook('/tmp/pipstocksheet.xlsx')                                   # Creating file
+    xlsx_name = '/tmp/pipstocksheet-{0}.xlsx'.format(warehouse)
+    workbook = xlsxwriter.Workbook(xlsx_name)                                   # Creating file
     worksheet = workbook.add_worksheet(name=warehouse)                                          # Creating Worksheet
     worksheet.set_column(1, 24, 6)                                                              # Setting column width
     border = workbook.add_format()
+    border.set_align('center')
+    border.set_align('vcenter')
     border.set_border()
     for row in range(0,61,1):
         for column in range(0,24,1):
@@ -86,11 +89,15 @@ def get_pipe_stock(warehouse):
                 mycursor.execute(sqlstr)
                 length = mycursor.fetchone()
                 item = frappe.get_doc('Item',x[0])
-                callbackreturn[size_id[id_num]][i] = {'thickness': str(thickness[0]), 'length': str(length[0]), 'qty': str(round(x[2],2)), 'weight': str(item.last_weight_received)}
-                worksheet.write(ascii_uppercase[cellTitle]+str(cellTitlerow+2 + i), str(thickness[0]),border)
-                worksheet.write(ascii_uppercase[cellTitle+1]+str(cellTitlerow+2 + i), str(length[0]),border)
-                worksheet.write(ascii_uppercase[cellTitle+2]+str(cellTitlerow+2 + i), str(round(x[2],2)),border)
-                worksheet.write(ascii_uppercase[cellTitle+3]+str(cellTitlerow+2 + i), str(item.last_weight_received),border)
+                pipe_weight = '-'
+                for w in item.receiving_details:
+                    if w.receiving_warehouse == warehouse:
+                        pipe_weight = w.scale_weight
+                callbackreturn[size_id[id_num]][i] = {'thickness': str(thickness[0]), 'length': str(length[0]), 'qty': str(round(x[2],2)), 'weight': pipe_weight}
+                worksheet.write(ascii_uppercase[cellTitle]+str(cellTitlerow+2 + i), (float(thickness[0])),border)
+                worksheet.write(ascii_uppercase[cellTitle+1]+str(cellTitlerow+2 + i), (float(length[0])),border)
+                worksheet.write(ascii_uppercase[cellTitle+2]+str(cellTitlerow+2 + i), (round(x[2],2)),border)
+                worksheet.write(ascii_uppercase[cellTitle+3]+str(cellTitlerow+2 + i), pipe_weight,border)
                 i += 1
             cellTitle +=4
             if cellTitle == 24:
@@ -103,15 +110,15 @@ def get_pipe_stock(warehouse):
     return callbackreturn
 
 @frappe.whitelist()
-def generate_xlsx_item_stock():
-    file = io.open('/tmp/pipstocksheet.xlsx', "rb", buffering = 0)
+def generate_xlsx_item_stock(warehouse):
+    file = io.open('/tmp/pipstocksheet-{0}.xlsx'.format(warehouse), "rb", buffering = 0)
     data = file.read()
     if not data:
         frappe.msgprint(('No Data'))
         return
     frappe.local.response.filecontent = data
     frappe.local.response.type = "download"
-    frappe.local.response.filename = "pipestocksheet.xlsx"
+    frappe.local.response.filename = "pipestocksheet-{0}.xlsx".format(warehouse)
 
 def update_delivered_item_weight_statistics(self,cdt):
     for d in self.items:

@@ -441,11 +441,9 @@ function download_stock(warehouse){
   //     console.log(r.message);
   //   }
   // })
-
+  var api_request = "/api/method/steelpipes.utils.generate_xlsx_item_stock?warehouse=" + warehouse
   var w = window.open(
-    frappe.urllib.get_full_url(
-      "/api/method/steelpipes.utils.generate_xlsx_item_stock?"
-      ));
+    frappe.urllib.get_full_url(api_request));
   if(!w) {
     frappe.msgprint(__("Please enable pop-ups")); return;
   }
