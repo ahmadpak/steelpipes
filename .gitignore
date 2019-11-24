@@ -4,3 +4,4 @@
 *.swp
 tags
 steelpipes/docs/current
+node_modules

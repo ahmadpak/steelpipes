@@ -266,6 +266,7 @@ doctype_js = {
 # ------------
 
 # before_install = "steelpipes.install.before_install"
+before_install = "steelpipes.utils.create_pipe_ms_items"
 # after_install = "steelpipes.install.after_install"
 
 # Desk Notifications

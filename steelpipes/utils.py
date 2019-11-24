@@ -133,3 +133,130 @@ def update_received_item_weight_statistics(self,cdt):
             item = frappe.get_doc('Item',d.item_code)
             item.db_set('last_weight_received',d.scale_weight_um)
             item.db_set('last_quantity_received',d.qty)
+
+def create_strip_width(attribute,thickness,step,width):
+    while (thickness< 8.05):
+                attribute.append('item_attribute_values', {
+                    'attribute_value': str(width),
+                    'abbr': str(width) + ' MM' 
+                })
+                thickness += 0.05
+                step +=1
+                if step == 10:
+                    step = 1
+                    width -=1
+
+def create_pipe_ms_items():
+    item_group = frappe.new_doc('Item Group')
+    item_group.item_group_name = 'Pipes'
+    item_group.show_in_website = 1
+    item_group.save()
+    # Creating required attributes
+    # Size (inches)
+    attribute = frappe.new_doc('Item Attribute')
+    attribute.attribute_name = 'Size (inches)'
+    sizes = ['1/2','3/4','1','1 1/4','1 1/2','2','2 1/2','3','4','5','6','7','8','10','12']
+    for size in sizes:
+        attribute.append('item_attribute_values', {
+            'attribute_value': size,
+            'abbr': size + ' INCH'
+        })
+    attribute.save()
+
+    # Material Type
+    attribute = frappe.new_doc('Item Attribute')
+    attribute.attribute_name = 'Material Type'
+    attribute.append('item_attribute_values', {
+        'attribute_value': 'MILD STEEL',
+        'abbr': 'MS'
+    })
+    attribute.save()
+
+    # Thickness (mm)
+    attribute = frappe.new_doc('Item Attribute')
+    attribute.attribute_name = 'Thickness (mm)'
+    thickness = 1
+    while thickness<8.05:
+        attribute.append('item_attribute_values', {
+            'attribute_value': str(thickness),
+            'abbr': str(thickness) + ' MM'
+        })
+        thickness += 0.05
+    attribute.save()
+
+    # Length
+    attribute = frappe.new_doc('Item Attribute')
+    attribute.attribute_name = 'Length (feet)'
+    attribute.append('item_attribute_values', {
+            'attribute_value': '20',
+            'abbr': '20 FT'
+        })
+    attribute.append('item_attribute_values', {
+            'attribute_value': '10',
+            'abbr': '10 FT'
+        })
+    attribute.save()
+
+    # Outer Diameter
+    attribute = frappe.new_doc('Item Attribute')
+    attribute.attribute_name = 'Outer Diameter'
+    ODs = ['26.7','33.5','42','48','60.3','76','88','113','140','165','190','216','266.5','324']
+    for OD in ODs:
+        attribute.append('item_attribute_values', {
+            'attribute_value': OD,
+            'abbr': 'OD ' + OD 
+        })
+    attribute.save()
+
+    # Width (mm)
+    attribute = frappe.new_doc('Item Attribute')
+    attribute.attribute_name = 'Width (mm)'
+    for OD in ODs:
+        thickness = 1
+        step = 1
+        if OD == '26.7':
+            width = 81
+            create_strip_width(attribute,thickness,step,width)
+        elif OD == '33.5':
+            width = 102
+            create_strip_width(attribute,thickness,step,width)
+        elif OD == '42':
+            width = 129
+            create_strip_width(attribute,thickness,step,width)
+        elif OD == '48':
+            width = 148
+            create_strip_width(attribute,thickness,step,width)
+        elif OD == '60.3':
+            width = 186
+            create_strip_width(attribute,thickness,step,width)
+        elif OD == '76':
+            width = 236
+            create_strip_width(attribute,thickness,step,width)
+        elif OD == '88':
+            width = 273
+            create_strip_width(attribute,thickness,step,width)
+        elif OD == '113':
+            width = 352
+            create_strip_width(attribute,thickness,step,width)
+        elif OD == '140':
+            width = 437
+            create_strip_width(attribute,thickness,step,width)
+        elif OD == '165':
+            width = 515
+            create_strip_width(attribute,thickness,step,width)
+        elif OD == '190':
+            width = 594
+            create_strip_width(attribute,thickness,step,width)
+        elif OD == '216':
+            width = 676
+            create_strip_width(attribute,thickness,step,width)
+        elif OD == '266.5':
+            width = 834
+            create_strip_width(attribute,thickness,step,width)
+        elif OD == '324':
+            width = 1015
+            create_strip_width(attribute,thickness,step,width)
+    attribute.save()
+
+    # Making Pipe Products
+    
