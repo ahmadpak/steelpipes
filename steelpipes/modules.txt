@@ -1,4 +1,3 @@
-Steel Pipes
 SP Delivery Note
 SP Sales Order
 SP Purchase Order
