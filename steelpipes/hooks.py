@@ -47,8 +47,8 @@ fixtures = [{
     'dt': 'Custom Field', 'filters':[
         [
             'name', 'in', [
-                "Sales Order-estimate_weight_um"
                 "Sales Order Item-weight_section",
+                "Sales Order-estimate_weight_um",
                 "Sales Order Item-um",
                 "Sales Order Item-rate_um",
                 "Sales Order Item-column_break_8",
@@ -266,7 +266,7 @@ doctype_js = {
 # ------------
 
 # before_install = "steelpipes.install.before_install"
-before_install = "steelpipes.utils.create_pipe_ms_items"
+before_install = "steelpipes.before_install.create_pipe_ms_items"
 # after_install = "steelpipes.install.after_install"
 
 # Desk Notifications
