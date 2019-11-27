@@ -8,6 +8,11 @@ from frappe import _
 def execute(filters=None):
 	columns, data = [], []
 	columns = get_columns(filters)
+	data = [{"item_code":"item 1"},
+	{"item_code":"item 22"},
+	{"item_code":"item 41"},
+	{"item_code":"item 123"},
+	{"item_code":"10"}]
 	return columns, data
 
 
