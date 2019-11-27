@@ -6,7 +6,6 @@ import frappe
 from frappe import _
 
 def execute(filters=None):
-	frappe.msgprint('starting the report')
 	columns = get_columns(filters)
 	items = get_items(filters)
 	sl_entries = get_stock_ledger_entries(filters, items) 
