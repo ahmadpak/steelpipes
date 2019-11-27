@@ -36,7 +36,7 @@ def execute(filters=None):
 					scale_weight_um as scale_weight, 
 					total_scale_weight_um as total_scale_weight
 			FROM `tab{0}`
-			WHERE parent='{1}' AND item_code='{2}' AND warehouse= '{3}'
+			WHERE parent='{1}' AND item_code='{2}' AND warehouse='{3}'
 			'''.format(voucher_type,voucher_no,item_code,warehouse)
 			query_result = frappe.db.sql(sql_query,as_dict=1)
 			sle['estimate_weight'] = query_result[0]['estimate_weight']
