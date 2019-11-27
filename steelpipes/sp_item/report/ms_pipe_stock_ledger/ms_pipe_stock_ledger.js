@@ -2,7 +2,7 @@
 // For license information, please see license.txt
 /* eslint-disable */
 
-frappe.query_reports["Pipe Stock Ledger"] = {
+frappe.query_reports["MS Pipe Stock Ledger"] = {
 	"filters": [
 		{
 			"fieldname":"company",
