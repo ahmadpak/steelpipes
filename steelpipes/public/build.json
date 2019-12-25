@@ -1,0 +1,6 @@
+{
+    "js/steelpipes.min.js": [
+        "public/js/export_tool/export_tool.js",
+        "public/js/steelpipes.js"
+    ]
+}
