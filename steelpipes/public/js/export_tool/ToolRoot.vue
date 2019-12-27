@@ -1,12 +1,11 @@
 <template>
   <div>
-    <DemoChart/>
+    <FrappeChart/>
   </div>
 </template>
 
 <script>
-import ButtonCounter from "./components/ButtonCounter.vue";
-import DemoChart from "./components/DemoChart.vue"
+import FrappeChart from "./components/FrappeChart.vue"
 export default {
   name: "ToolRoot",
   data: function() {
@@ -15,8 +14,7 @@ export default {
     };
   },
   components: {
-    ButtonCounter,
-    DemoChart
+    FrappeChart
   }
 };
 </script>
