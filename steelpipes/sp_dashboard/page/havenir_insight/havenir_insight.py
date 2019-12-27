@@ -6,8 +6,6 @@ week = ['Monday', 'Tuesday', 'Wednesday',
         'Thursday', 'Friday', 'Saturday', 'Sunday']
 today = datetime.today()
 
-labels = []
-
 
 def days_between(from_date=datetime(today.year, today.month, 1), to_date=today):
     return abs((from_date - to_date).days)
@@ -28,39 +26,43 @@ def get_first_day_of_month(date=datetime.today()):
     return date.strftime("%A")
 
 
-def generate_labels(from_date=datetime(today.year, today.month, 1), to_date=today, duration='Monthly'):
+@frappe.whitelist()
+def generate_labels_and_data_sets(from_date=datetime(datetime.today().year, datetime.today().month, 1), to_date=today, duration='Monthly'):
+    data = {}
+    labels = []
+    datasets = []
     days = days_between(from_date, to_date)
     week_no = 0
+    temp_dict = {}
+    temp_dict['name'] = "Pipe Sold in Tons"
+    temp_array = []
+
     for day in range(days):
         date = from_date + timedelta(day)
-        if days <= 31 and duration in ['Monthly','Weekly']:
+        if days <= 31 and duration in ['Monthly', 'Weekly']:
             if date.strftime("%A") == 'Monday':
                 week_no += 1
                 labels.append("Week {}".format(week_no))
-                print(week_no)
             else:
                 labels.append(str(day+1))
-        if days >31 and duration in ['Quarterly', 'Yearly']:
+        if days > 31 and duration in ['Quarterly', 'Yearly']:
             pass
+        pipe_sold = frappe.db.get_list('Sales Invoice',
+                                       filters={
+                                           'posting_date': date,
+                                           'docstatus': 1
+                                       },
+                                       fields=['total_weight_um'],)
+        total_pipe_sold = 0
+        for weight in pipe_sold:
+            total_pipe_sold += weight.total_weight_um/1000
+        temp_array.append(total_pipe_sold)
+        # print('Pipe in weight sold on date {0} is {1}'.format(
+        #     date, total_pipe_sold))
 
-
-
-generate_labels()
-print(labels)
-
-# @frappe.whitelist
-# def get_total_production(from_date=add_to_date(today(), months=-1), to_date=today(), duration='Monthly'):
-#     total_days = date_diff(to_date, from_date)
-#     if duration == 'Monthly':
-#         if total_days < 30:
-#             frappe.throw(
-#                 'Please select date range of more than 30 DAYS', title='Data Selector')
-
-#         labels = []
-#         values = []
-#     for i in range(total_days):
-#         pass
-
-#     result = frappe.db.get_list('Sales Invoice', filter={
-#         'Document Status': 'Submitted',
-#         'date': ['between', '{0} to {1}'.format(from_date, to_date)]}, page_length=20, as_list=True, group_by='status')
+    temp_dict['values'] = temp_array
+    datasets.append(temp_dict)
+    data['labels'] = labels
+    data['datasets'] = datasets
+    print(data)
+    return data
