@@ -9,9 +9,9 @@
           aria-expanded="true"
         >
           <span class="hidden-xs">
-            <span class="menu-btn-group-label" data-label="Select Period"
-              ><span class="alt-underline">S</span>elect Period</span
-            >
+            <span class="menu-btn-group-label" data-label="Select Period">
+              <span class="alt-underline">S</span>elect Period
+            </span>
             <span class="caret"></span>
           </span>
           <span class="visible-xs">
@@ -19,51 +19,44 @@
           </span>
         </button>
         <ul class="dropdown-menu" role="Select Period">
-          <li
-            class="user-action"
-            v-for="duration in durations"
-            :key="duration.id"
-          >
-            <a
-              class="grey-link dropdown-item"
-              href="#"
-              onclick="return false;"
-              v-on:click="gchart"
-            >
-              <span class="menu-item-label" data-label="Stock Entry"
-                ><span class="alt-underline"></span>{{ duration }}</span
-              ></a
-            >
+          <li class="user-action" v-for="duration in durations" :key="duration.id">
+            <a class="grey-link dropdown-item" href="#" onclick="return false;" v-on:click="gchart">
+              <span class="menu-item-label" data-label="Stock Entry">
+                <span class="alt-underline"></span>
+                {{ duration }}
+              </span>
+            </a>
           </li>
         </ul>
         <span
           v-on:click="changeResolution"
           class="btn btn-primary float-right"
           type="button"
-        >
-          Add Data Points
-        </span>
+        >Add Data Points</span>
         <span
           v-on:click="changeResolution"
           class="btn btn-primary float-right"
           type="button"
-        >
-          Remove Data Points
-        </span>
+        >Remove Data Points</span>
       </form>
     </nav>
     <div>
-      Period: <strong>{{ period }}</strong>
+      Period:
+      <strong>{{ period }}</strong>
     </div>
     <div id="totalPipeSold"></div>
     <div id="individualPipeSold"></div>
+    <loading :active.sync="isLoading" :can-cancel="true" :is-full-page="true"></loading>
   </div>
 </template>
 
 <script>
+import Loading from "vue-loading-overlay";
 export default {
   data: function() {
     return {
+      isLoading: false,
+      fullPage: true,
       time: 0,
       durations: [
         "This Month",
@@ -81,9 +74,13 @@ export default {
       individual_pipe_sold_data: null
     };
   },
+  components: {
+    Loading
+  },
   computed: {},
   methods: {
     gchart: function(event) {
+      this.isLoading = true;
       this.period = event.toElement.innerText;
       // Calling method to fetch data
       frappe
@@ -97,7 +94,6 @@ export default {
         })
         .then(r => {
           this.total_pipe_sold_data = r.message[0];
-          console.log(r.message[1])
         })
         .then(() => {
           this.total_pipe_sold_chart = new frappe.Chart("#totalPipeSold", {
@@ -138,6 +134,9 @@ export default {
               //changing data set:
             }
           );
+        })
+        .then(r => {
+          this.isLoading = false;
         });
 
       // Individual Pipe Sold Chart
@@ -162,10 +161,9 @@ export default {
       // );
     },
     changeResolution: function(event) {
-      console.log(event)
       if (
-        this.resolution > 0 &&
-        this.resolution < 4 &&
+        this.resolution >= 1 &&
+        this.resolution <= 2 &&
         this.period != "Not Selected"
       ) {
         if (event.toElement.innerText == "Add Data Points") {
@@ -173,11 +171,13 @@ export default {
             return;
           }
           this.resolution += 1;
+          this.isLoading = true;
         } else {
           if (this.resolution == 1) {
             return;
           }
           this.resolution -= 1;
+          this.isLoading = true;
         }
         frappe
           .call({
@@ -193,6 +193,9 @@ export default {
           })
           .then(r => {
             this.total_pipe_sold_chart.update(this.total_pipe_sold_data);
+          })
+          .then(r => {
+            this.isLoading = false;
           });
       }
     }

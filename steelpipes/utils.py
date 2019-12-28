@@ -24,6 +24,8 @@ def get_pipe_stock(warehouse):
         user=report_settings.user,
         passwd=report_settings.password
     )
+    database = report_settings.database
+    database = "`{0}`".format(database)
     xlsx_name = '/tmp/pipstocksheet-{0}.xlsx'.format(warehouse)
     workbook = xlsxwriter.Workbook(xlsx_name)                                   # Creating file
     worksheet = workbook.add_worksheet(name=warehouse)                                          # Creating Worksheet
@@ -62,7 +64,7 @@ def get_pipe_stock(warehouse):
         i = 0 
         
         mycursor = mydb.cursor()
-        mycursor.execute('''SELECT item_code,warehouse,actual_qty FROM {0}.tabBin WHERE item_code LIKE 'Pipe-MS-{1}%' AND actual_qty>0 AND warehouse LIKE "{2}"'''.format(report_settings.database,pipe_size,warehouse))
+        mycursor.execute('''SELECT item_code,warehouse,actual_qty FROM {0}.tabBin WHERE item_code LIKE 'Pipe-MS-{1}%' AND actual_qty>0 AND warehouse LIKE "{2}"'''.format(database,pipe_size,warehouse))
         myresult = mycursor.fetchall()
         if (myresult):
             tempTitle = ascii_uppercase[cellTitle] +str(cellTitlerow)
@@ -79,13 +81,13 @@ def get_pipe_stock(warehouse):
 
                 sqlstr = """SELECT attribute_value FROM {0}.`tabItem Variant Attribute` 
                             WHERE parent LIKE '{1}' 
-                            AND attribute LIKE 'Thickness (mm)'""".format(report_settings.database,x[0])
+                            AND attribute LIKE 'Thickness (mm)'""".format(database,x[0])
                 mycursor.execute(sqlstr)
                 thickness = mycursor.fetchone()
 
                 sqlstr = """SELECT attribute_value FROM {0}.`tabItem Variant Attribute` 
                             WHERE parent LIKE '{1}' 
-                            AND attribute LIKE 'Length (feet)'""".format(report_settings.database,x[0])
+                            AND attribute LIKE 'Length (feet)'""".format(database,x[0])
                 mycursor.execute(sqlstr)
                 length = mycursor.fetchone()
                 item = frappe.get_doc('Item',x[0])

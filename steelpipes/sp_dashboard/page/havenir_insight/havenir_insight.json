@@ -1,0 +1,22 @@
+{
+ "content": null,
+ "creation": "2019-12-28 12:38:01.819709",
+ "docstatus": 0,
+ "doctype": "Page",
+ "idx": 0,
+ "modified": "2019-12-28 12:38:01.819709",
+ "modified_by": "Administrator",
+ "module": "SP Dashboard",
+ "name": "havenir-insight",
+ "owner": "Administrator",
+ "page_name": "Havenir Insight",
+ "roles": [
+  {
+   "role": "Sales Master Manager"
+  }
+ ],
+ "script": null,
+ "standard": "Yes",
+ "style": null,
+ "system_page": 0
+}
