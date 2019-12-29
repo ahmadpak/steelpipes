@@ -112,7 +112,8 @@ def generate_total_pipe_labels_and_data_sets(period='This Month', resolution='1'
                                            'posting_date': date,
                                            'docstatus': 1
                                        },
-                                       fields=['total_weight_um', 'name'],)
+                                       fields=['total_weight_um', 'name'],
+                                       page_length=2000000000)
         for weight in pipe_sold:
             total_pipe_sold += weight.total_weight_um/1000
             sales_invoice = frappe.db.get_list('Sales Invoice Item',
@@ -120,7 +121,8 @@ def generate_total_pipe_labels_and_data_sets(period='This Month', resolution='1'
                                                    'docstatus': 1,
                                                    'parent': weight.name
                                                },
-                                               fields=['item_code', 'total_scale_weight_um', 'warehouse'],)
+                                               fields=['item_code', 'total_scale_weight_um', 'warehouse'],
+                                               page_length=2000000000)
             for items in sales_invoice:
                 # Finding Pipe Size
                 i = 0
