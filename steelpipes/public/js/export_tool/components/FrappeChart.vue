@@ -94,6 +94,7 @@ export default {
         })
         .then(r => {
           this.total_pipe_sold_data = r.message[0];
+          this.individual_pipe_sold_data = r.message[1];
         })
         .then(() => {
           this.total_pipe_sold_chart = new frappe.Chart("#totalPipeSold", {
@@ -134,31 +135,20 @@ export default {
               //changing data set:
             }
           );
+          this.individual_pipe_sold_chart = new frappe.Chart("#individualPipeSold",{
+            data: this.individual_pipe_sold_data,
+            title: "Individual Pipes Sold in MT",
+            type: 'bar',
+            tooltipOptions: {
+              formatTooltipY: d => d + " MT"
+            },
+            colors: ["blue"],
+            isNavigable: true
+          })
         })
         .then(r => {
           this.isLoading = false;
         });
-
-      // Individual Pipe Sold Chart
-      // this.individual_pipe_sold_chart = new frappe.Chart(
-      //   "#individualPipeSold",
-      //   this.individual_pipe_sold
-      // );
-      // this.individual_pipe_sold_chart.parent.addEventListener(
-      //   "data-select",
-      //   e => {
-      //     console.log(
-      //       "Index: " +
-      //         e.index +
-      //         " | Label: " +
-      //         e.label +
-      //         " | Value: " +
-      //         e.values[0] +
-      //         " | time: " +
-      //         this.time
-      //     );
-      //   }
-      // );
     },
     changeResolution: function(event) {
       if (
@@ -192,7 +182,30 @@ export default {
             this.total_pipe_sold_data = r.message[0];
           })
           .then(r => {
-            this.total_pipe_sold_chart.update(this.total_pipe_sold_data);
+            this.total_pipe_sold_chart = new frappe.Chart("#totalPipeSold", {
+              data: this.total_pipe_sold_data,
+              title: "Total Pipes Sold in MT",
+              type: "line",
+              // height: 350,
+              lineOptions: {
+                dotSize: 6, // default: 4
+                regionFill: 1, // default: 0
+                xIsSeries: true,
+                heatline: 1 // default: 0
+              },
+              tooltipOptions: {
+                formatTooltipX: d => {
+                  if (d.includes("Week")) {
+                    return d;
+                  } else {
+                    return "Day " + d;
+                  }
+                },
+                formatTooltipY: d => d + " MT"
+              },
+              colors: ["green"],
+              isNavigable: true
+            });
           })
           .then(r => {
             this.isLoading = false;
