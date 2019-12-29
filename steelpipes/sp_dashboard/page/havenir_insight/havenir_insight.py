@@ -220,18 +220,15 @@ def generate_total_pipe_labels_and_data_sets(period='This Month', resolution='1'
     temp_total_pipe_sold_data_dict['values'] = temp_total_pipe_sold_data_array
     total_pipe_sold_datasets.append(temp_total_pipe_sold_data_dict)
     total_pipe_sold_data['datasets'] = total_pipe_sold_datasets
-    print(total_pipe_sold_data)
     # Finalizing Individual Pipe Sold Data
     individual_pipe_sold_data['labels'] = individual_pipe_sold_labels
     temp_individual_pipe_sold_data_dict['values'] = temp_individual_pipe_sold_data_array
     individual_pipe_sold_datasets.append(temp_individual_pipe_sold_data_dict)
     individual_pipe_sold_data['datasets'] = individual_pipe_sold_datasets
-    print(individual_pipe_sold_data)
     # Finalizing Individual Pipe Sold Data
     thickness_pipe_sold_data['labels'] = thickness_pipe_sold_labels
     temp_thickness_pipe_sold_data_dict['values'] = temp_thickness_pipe_sold_data_array
     thickness_pipe_sold_datasets.append(temp_thickness_pipe_sold_data_dict)
     thickness_pipe_sold_data['datasets'] = thickness_pipe_sold_datasets
-    print(thickness_pipe_sold_data)
     dummy = 'This is dummy data'
     return [total_pipe_sold_data, individual_pipe_sold_data, thickness_pipe_sold_data]
