@@ -38,7 +38,6 @@ def generate_total_pipe_labels_and_data_sets(period='This Month', resolution='1'
                       '4.00 MM', '4.50 MM', '5.00 MM', '5.50 MM', '6.00 MM', '6.50 MM', '7.00 MM', '7.50 MM', '8.00 MM']
     today = datetime.today()
     week_no = 0
-    month_no = 0
 
     # Defining data dictionaries
     total_pipe_sold_data = {}           # Total Pipe Sold
@@ -62,14 +61,14 @@ def generate_total_pipe_labels_and_data_sets(period='This Month', resolution='1'
     total_pipe_sold = 0
     # Defining temporary dict and array for Individual Pipe Sold
     temp_individual_pipe_sold_data_dict = {}
-    temp_individual_pipe_sold_data_dict['name'] = "Individual Pipes Sold"
-    temp_individual_pipe_sold_data_array = [0,0,0,0,0,0,0,0,0,0,0,0,0]
-    individual_pipe_sold = 0
+    temp_individual_pipe_sold_data_dict['name'] = "Pipes Sold"
+    temp_individual_pipe_sold_data_array = [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     # Defining temporary dict and array for Individual Pipe Sold
     temp_thickness_pipe_sold_data_dict = {}
-    temp_thickness_pipe_sold_data_dict['name'] = "Individual Pipes Sold"
-    temp_thickness_pipe_sold_data_array = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-    thickness_pipe_sold = 0
+    temp_thickness_pipe_sold_data_dict['name'] = "Pipes Sold"
+    temp_thickness_pipe_sold_data_array = [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
     # From date, to date and days between for period 'This Month'
     if period == 'This Month':
@@ -123,17 +122,17 @@ def generate_total_pipe_labels_and_data_sets(period='This Month', resolution='1'
                                                },
                                                fields=['item_code', 'total_scale_weight_um', 'warehouse'],)
             for items in sales_invoice:
-                print(items.item_code)
                 # Finding Pipe Size
-                i=0
+                i = 0
                 for size in pipe_sizes:
                     if size in items.item_code:
-                        print('Pipe Size: {}'.format(size))
                         temp_individual_pipe_sold_data_array[i] += items.total_scale_weight_um/1000
                     i += 1
+                i = 0
                 for thickness in pipe_thickness:
                     if thickness in items.item_code:
-                        print('Pipe Thickness: {}'.format(thickness))
+                        temp_thickness_pipe_sold_data_array[i] += items.total_scale_weight_um/1000
+                    i += 1
 
         if resolution == '2':
             if period in ['This Month', 'Last Month']:
@@ -156,7 +155,11 @@ def generate_total_pipe_labels_and_data_sets(period='This Month', resolution='1'
                     temp_total_pipe_sold_data_array.append(total_pipe_sold)
                     total_pipe_sold = 0
             elif period in ['This Year', 'Last Year']:
-                if date.day == 30:
+                if date.day == 30 and (date + timedelta(1)).day != 31:
+                    total_pipe_sold_labels.append(month[date.month - 1])
+                    temp_total_pipe_sold_data_array.append(total_pipe_sold)
+                    total_pipe_sold = 0
+                elif date.day == 31:
                     total_pipe_sold_labels.append(month[date.month - 1])
                     temp_total_pipe_sold_data_array.append(total_pipe_sold)
                     total_pipe_sold = 0
@@ -178,7 +181,11 @@ def generate_total_pipe_labels_and_data_sets(period='This Month', resolution='1'
                     temp_total_pipe_sold_data_array.append(total_pipe_sold)
                     total_pipe_sold = 0
             elif period in ['This Quarter', 'Last Quarter']:
-                if date.day == 30:
+                if date.day == 30 and (date + timedelta(1)).day != 31:
+                    total_pipe_sold_labels.append(month[date.month - 1])
+                    temp_total_pipe_sold_data_array.append(total_pipe_sold)
+                    total_pipe_sold = 0
+                elif date.day == 31:
                     total_pipe_sold_labels.append(month[date.month - 1])
                     temp_total_pipe_sold_data_array.append(total_pipe_sold)
                     total_pipe_sold = 0
@@ -187,9 +194,13 @@ def generate_total_pipe_labels_and_data_sets(period='This Month', resolution='1'
                     temp_total_pipe_sold_data_array.append(total_pipe_sold)
                     total_pipe_sold = 0
             elif period in ['This Year', 'Last Year']:
-                if date.month % 3 == 0 and date.day == 30:
-                    print("date.month%3 = {0} and month: {1}".format(
-                        date.month % 3, date.month))
+                if date.month % 3 == 0 and date.day == 30 and (date + timedelta(1)).day != 31:
+                    temp_month = "{0} {1}".format(
+                        month[date.month - 1], date.year)
+                    total_pipe_sold_labels.append(temp_month)
+                    temp_total_pipe_sold_data_array.append(total_pipe_sold)
+                    total_pipe_sold = 0
+                elif date.month % 3 == 0 and date.day == 31:
                     temp_month = "{0} {1}".format(
                         month[date.month - 1], date.year)
                     total_pipe_sold_labels.append(temp_month)
@@ -207,6 +218,7 @@ def generate_total_pipe_labels_and_data_sets(period='This Month', resolution='1'
     temp_total_pipe_sold_data_dict['values'] = temp_total_pipe_sold_data_array
     total_pipe_sold_datasets.append(temp_total_pipe_sold_data_dict)
     total_pipe_sold_data['datasets'] = total_pipe_sold_datasets
+    print(total_pipe_sold_data)
     # Finalizing Individual Pipe Sold Data
     individual_pipe_sold_data['labels'] = individual_pipe_sold_labels
     temp_individual_pipe_sold_data_dict['values'] = temp_individual_pipe_sold_data_array
@@ -218,6 +230,6 @@ def generate_total_pipe_labels_and_data_sets(period='This Month', resolution='1'
     temp_thickness_pipe_sold_data_dict['values'] = temp_thickness_pipe_sold_data_array
     thickness_pipe_sold_datasets.append(temp_thickness_pipe_sold_data_dict)
     thickness_pipe_sold_data['datasets'] = thickness_pipe_sold_datasets
-
+    print(thickness_pipe_sold_data)
     dummy = 'This is dummy data'
-    return [total_pipe_sold_data, individual_pipe_sold_data]
+    return [total_pipe_sold_data, individual_pipe_sold_data, thickness_pipe_sold_data]

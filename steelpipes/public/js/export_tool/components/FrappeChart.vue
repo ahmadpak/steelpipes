@@ -46,6 +46,7 @@
     </div>
     <div id="totalPipeSold"></div>
     <div id="individualPipeSold"></div>
+    <div id="thicknessPipeSold"></div>
     <loading :active.sync="isLoading" :can-cancel="true" :is-full-page="true"></loading>
   </div>
 </template>
@@ -71,7 +72,9 @@ export default {
       total_pipe_sold_chart: null,
       total_pipe_sold_data: null,
       individual_pipe_sold_chart: null,
-      individual_pipe_sold_data: null
+      individual_pipe_sold_data: null,
+      thickness_pipe_sold_chart: null,
+      thickness_pipe_sold_data: null
     };
   },
   components: {
@@ -95,6 +98,7 @@ export default {
         .then(r => {
           this.total_pipe_sold_data = r.message[0];
           this.individual_pipe_sold_data = r.message[1];
+          this.thickness_pipe_sold_data = r.message[2];
         })
         .then(() => {
           this.total_pipe_sold_chart = new frappe.Chart("#totalPipeSold", {
@@ -110,16 +114,20 @@ export default {
             },
             tooltipOptions: {
               formatTooltipX: d => {
-                if (d.includes("Week")) {
-                  return d;
-                } else {
+                if (
+                  this.resolution == 2 &&
+                  this.period.includes("Month") &&
+                  !d.includes("Week")
+                ) {
                   return "Day " + d;
+                } else {
+                  return d;
                 }
               },
               formatTooltipY: d => d + " MT"
             },
-            colors: ["green"],
-            isNavigable: true
+            colors: ["green"]
+            // isNavigable: true
           });
           this.total_pipe_sold_chart.parent.addEventListener(
             "data-select",
@@ -135,16 +143,27 @@ export default {
               //changing data set:
             }
           );
-          this.individual_pipe_sold_chart = new frappe.Chart("#individualPipeSold",{
-            data: this.individual_pipe_sold_data,
-            title: "Individual Pipes Sold in MT",
-            type: 'bar',
-            tooltipOptions: {
-              formatTooltipY: d => d + " MT"
-            },
-            colors: ["blue"],
-            isNavigable: true
-          })
+          this.individual_pipe_sold_chart = new frappe.Chart(
+            "#individualPipeSold",
+            {
+              data: this.individual_pipe_sold_data,
+              title: "Individual Pipes Sold in MT",
+              type: "bar",
+              tooltipOptions: {
+                formatTooltipY: d => d + " MT"
+              },
+              colors: ["blue"]
+            }
+          );
+          this.thickness_pipe_sold_chart = new frappe.Chart(
+            "#thicknessPipeSold",
+            {
+              data: this.thickness_pipe_sold_data,
+              title: "Thickness Sold in MT",
+              type: "bar",
+              colors: ["orange"]
+            }
+          );
         })
         .then(r => {
           this.isLoading = false;
@@ -195,16 +214,20 @@ export default {
               },
               tooltipOptions: {
                 formatTooltipX: d => {
-                  if (d.includes("Week")) {
-                    return d;
-                  } else {
+                  if (
+                    this.resolution == 2 &&
+                    this.period.includes("Month") &&
+                    !d.includes("Week")
+                  ) {
                     return "Day " + d;
+                  } else {
+                    return d;
                   }
                 },
                 formatTooltipY: d => d + " MT"
               },
-              colors: ["green"],
-              isNavigable: true
+              colors: ["green"]
+              // isNavigable: true
             });
           })
           .then(r => {
