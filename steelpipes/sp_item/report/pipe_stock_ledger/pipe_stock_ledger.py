@@ -25,28 +25,41 @@ def execute(filters=None):
         voucher_no = sle['voucher_no']
         item_code = sle['item_code']
         warehouse = sle['warehouse']
-
+        s_warehouse = 's_warehouse'
         if voucher_type in ['Purchase Receipt', 'Stock Entry', 'Delivery Note']:
             if voucher_type in ['Stock Entry']:
                 voucher_type += ' Detail'
             else:
                 voucher_type += ' Item'
+                s_warehouse = 'warehouse'
       #       sql_query = '''
-                # SELECT 	qty,
-                # 		weight_um as estimate_weight,
-                # 		scale_weight_um as scale_weight,
-                # 		total_scale_weight_um as total_scale_weight
+                # SELECT   qty,
+                #     weight_um as estimate_weight,
+                #     scale_weight_um as scale_weight,
+                #     total_scale_weight_um as total_scale_weight
                 # FROM `tab{0}`
                 # WHERE parent='{1}' AND item_code='{2}' AND warehouse='{3}'
                 # '''.format(voucher_type, voucher_no, item_code, warehouse)
             # query_result = frappe.db.sql(sql_query,as_dict=1)
+            query_result = None
             query_result = frappe.db.get_list(voucher_type,
                                               filters={
                                                   'parent': voucher_no,
                                                   'item_code': item_code,
-                                                  'warehouse': warehouse
+                                                  s_warehouse: warehouse
                                               },
                                               fields=['weight_um', 'scale_weight_um', 'total_scale_weight_um'])
+            if query_result:
+              pass
+            else :
+              query_result = frappe.db.get_list(voucher_type,
+                                              filters={
+                                                  'parent': voucher_no,
+                                                  'item_code': item_code,
+                                                  't_warehouse': warehouse
+                                              },
+                                              fields=['weight_um', 'scale_weight_um', 'total_scale_weight_um'])
+
             for x in query_result:
                     sle['estimate_weight'] = x.weight_um
                     sle['scale_weight'] = x.scale_weight_um
@@ -133,7 +146,7 @@ def get_item_group_condition(item_group):
         "Item Group", item_group, ["lft", "rgt"], as_dict=1)
     if item_group_details:
         return "item.item_group in (select ig.name from `tabItem Group` ig \
-			where ig.lft >= %s and ig.rgt <= %s and item.item_group = ig.name)" % (item_group_details.lft,
+      where ig.lft >= %s and ig.rgt <= %s and item.item_group = ig.name)" % (item_group_details.lft,
                                                                           item_group_details.rgt)
 
     return ''
@@ -146,13 +159,13 @@ def get_stock_ledger_entries(filters, items):
             .format(', '.join([frappe.db.escape(i) for i in items]))
 
     return frappe.db.sql("""select concat_ws(" ", posting_date, posting_time) as date,
-			item_code, warehouse, actual_qty, qty_after_transaction, voucher_type, voucher_no
-		from `tabStock Ledger Entry` sle
-		where company = %(company)s and
-			posting_date between %(from_date)s and %(to_date)s
-			{sle_conditions}
-			{item_conditions_sql}
-			order by posting_date asc, posting_time asc, creation asc"""
+      item_code, warehouse, actual_qty, qty_after_transaction, voucher_type, voucher_no
+    from `tabStock Ledger Entry` sle
+    where company = %(company)s and
+      posting_date between %(from_date)s and %(to_date)s
+      {sle_conditions}
+      {item_conditions_sql}
+      order by posting_date asc, posting_time asc, creation asc"""
                          .format(
                              sle_conditions=get_sle_conditions(filters),
                              item_conditions_sql=item_conditions_sql
@@ -176,7 +189,7 @@ def get_warehouse_condition(warehouse):
         "Warehouse", warehouse, ["lft", "rgt"], as_dict=1)
     if warehouse_details:
         return " exists (select name from `tabWarehouse` wh \
-			where wh.lft >= %s and wh.rgt <= %s and warehouse = wh.name)" % (warehouse_details.lft,
+      where wh.lft >= %s and wh.rgt <= %s and warehouse = wh.name)" % (warehouse_details.lft,
                                                                     warehouse_details.rgt)
 
     return ''
@@ -197,14 +210,14 @@ def get_item_details(items, sl_entries, include_uom=None):
             % (include_uom)
 
     res = frappe.db.sql("""
-		select
-			item.name, item.item_name, item.description, item.item_group, item.brand, item.stock_uom {cf_field}
-		from
-			`tabItem` item
-			{cf_join}
-		where
-			item.name in ({item_codes})
-	""".format(cf_field=cf_field, cf_join=cf_join, item_codes=','.join(['%s'] * len(items))), items, as_dict=1)
+    select
+      item.name, item.item_name, item.description, item.item_group, item.brand, item.stock_uom {cf_field}
+    from
+      `tabItem` item
+      {cf_join}
+    where
+      item.name in ({item_codes})
+  """.format(cf_field=cf_field, cf_join=cf_join, item_codes=','.join(['%s'] * len(items))), items, as_dict=1)
 
     for item in res:
         item_details.setdefault(item.name, item)
