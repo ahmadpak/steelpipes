@@ -222,7 +222,8 @@ def generate_customer_balance(company=None, customer_group=None, territory=None,
                             current_row, 3, i.outstanding_balance, danger_format_arial)
                     else:
                         worksheet.write(
-                            current_row, 3, i.outstanding_balance, cell_format_arial)                cell_col = 1
+                            current_row, 3, i.outstanding_balance, cell_format_arial)                
+                cell_col = 1
             else:
                 # name,last_payment_date,last_payment_amount,outstanding_balance
                 worksheet.write(current_row, 4, i.name,
