@@ -1,5 +1,5 @@
 import frappe
-import mysql.connector
+# import mysql.connector
 import json
 import xlsxwriter
 import time
@@ -63,7 +63,8 @@ def get_pipe_stock(warehouse):
                                       },
                                       fields=['item_code',
                                               'warehouse', 'actual_qty'],
-                                      page_length=2000000000)
+                                      page_length=2000000000,
+                                      order_by='item_code asc')
         
 
         if (myresult):
