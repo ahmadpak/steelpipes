@@ -10,7 +10,7 @@ def get_data():
 			"color": "blue",
 			"icon": "octicon octicon-graph",
 			"type": "module",
-			# "onboard_present": 1
+			# "onboard_present": 1,
 			"description": "Pipe stock summary, Pipe stock Ledger, Havenir Insight"
 		}
 	]

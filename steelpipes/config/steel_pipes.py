@@ -4,24 +4,30 @@ from frappe import _
 
 
 def get_data():
-    return[
+    config = [
         {
             "label": _("Pipe Reports"),
             "items": [
                 {
-                    "type": "page",
-                    "link": "pipe-stock-summary",
-                    "label": _("Pipe Stock Summary"),
-                    "name": "Pipe Stock Summary",
-                    "description": _("Show pipe qty length and weight as a summary."),
-                },
-
-                {
                     "type": "report",
                     "name": "Pipe Stock Ledger",
-                    "doctype": "Stock Entry",
-                    "is_query_report": True
+                    "is_query_report": True,
+                    "onboard": 1,
+                },
+            ],
+        },
+        {
+            "label": _("Dashboards"),
+            "items": [
+                {
+                    "type": "Page",
+                    "name": "Pipe Stock Summary",
+                    "link": "pipe-stock-summary",
+                    "description": _("Show pipe qty length and weight as a summary."),
+                    "onboard": 1,
                 },
             ]
         }
     ]
+
+    return config
