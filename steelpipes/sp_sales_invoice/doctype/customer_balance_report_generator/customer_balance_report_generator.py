@@ -62,7 +62,6 @@ def generate_customer_balance(company=None, customer_group=None, territory=None,
 
     # Header Section of the sheet
     now = datetime.now()
-    today = datetime.today()
     worksheet.write(0, 0,  now.strftime("%B %d, %Y %H:%M:%S"), format6)
     partystr = ''
     if customer_group:
@@ -118,7 +117,7 @@ def generate_customer_balance(company=None, customer_group=None, territory=None,
         {'align': 'center', 'bold': True, 'font': 'Arial', 'font_size': 10, 'num_format': '#,##,###'})
     danger_format_arial.set_align('vcenter')
     danger_format_arial.set_border()
-    danger_format_arial.set_bg_color('#c72c41')
+    danger_format_arial.set_bg_color('#ffafb0')
 
     # format for outstanding balance
     cell_format_arial = workbook.add_format(
@@ -166,7 +165,7 @@ def generate_customer_balance(company=None, customer_group=None, territory=None,
                     else:
                         worksheet.write(
                             current_row, 2, i.last_payment_amount, cell_format_arial)
-                        if date_diff(today(),i.last_payment_date)>30:
+                        if date_diff(frappe.utils.today(),i.last_payment_date)>30:
                             worksheet.write(
                                 current_row, 3, i.outstanding_balance, danger_format_arial)
                         else:
@@ -190,7 +189,7 @@ def generate_customer_balance(company=None, customer_group=None, territory=None,
                     else:
                         worksheet.write(
                             current_row, 6, i.last_payment_amount, cell_format_arial)
-                        if date_diff(today(),i.last_payment_date)>30:
+                        if date_diff(frappe.utils.today(),i.last_payment_date)>30:
                             worksheet.write(
                                 current_row, 7, i.outstanding_balance, danger_format_arial)
                         else:
@@ -218,7 +217,7 @@ def generate_customer_balance(company=None, customer_group=None, territory=None,
                 else:
                     worksheet.write(
                         current_row, 2, i.last_payment_amount, cell_format_arial)
-                    if date_diff(today(),i.last_payment_date)>30:
+                    if date_diff(frappe.utils.today(),i.last_payment_date)>30:
                         worksheet.write(
                             current_row, 3, i.outstanding_balance, danger_format_arial)
                     else:
@@ -242,7 +241,7 @@ def generate_customer_balance(company=None, customer_group=None, territory=None,
                 else:
                     worksheet.write(
                         current_row, 6, i.last_payment_amount, cell_format_arial)
-                    if date_diff(today(),i.last_payment_date)>30:
+                    if date_diff(frappe.utils.today(),i.last_payment_date)>30:
                         worksheet.write(
                             current_row, 7, i.outstanding_balance, danger_format_arial)
                     else:
