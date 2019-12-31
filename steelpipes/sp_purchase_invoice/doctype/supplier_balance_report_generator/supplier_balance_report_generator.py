@@ -29,12 +29,12 @@ def generate_supplier_balance(data=None):
         name='supplier-balance')		# Adding new worksheet
     # Setting column widths
     worksheet.set_column(0, 0, 30.5)
-    worksheet.set_column(1, 1, 15.3)
+    worksheet.set_column(1, 1, 17.78)
     worksheet.set_row(0, 20.25)
     worksheet.set_row(1, 20.25)
     worksheet.set_row(2, 20.25)
     worksheet.set_column(4, 4, 30.5)
-    worksheet.set_column(5, 5, 15.3)
+    worksheet.set_column(5, 5, 17.78)
     worksheet.set_column(2, 3, 12.67)
     worksheet.set_column(6, 7, 12.67)
     # Creating Border formats
@@ -120,16 +120,21 @@ def generate_supplier_balance(data=None):
 
     # Adding up balances
     supplier_list = frappe.db.get_list('Supplier', filters={'disabled': 'No'}, fields=[
-                                       'name'], page_length=2000000000)
+                                       'name'], page_length=2000000000, order_by='name')
     balances = get_balances(data, supplier_list)
 
     # Arranging list
     for i in range(len(balances)):
-        if i+1 < len(balances):
-            if balances[i]['balance'] > balances[i+1]['balance']:
-                a = balances[i]
-                balances[i] = balances[i+1]
-                balances[i+1] = a
+        j = 0
+        while i+j < len(balances):
+            if balances[i]['balance'] > balances[i+j]['balance']:
+                a = balances[i]['name']
+                balances[i]['name'] = balances[i+j]['name']
+                balances[i+j]['name'] = a
+                a = balances[i]['balance']
+                balances[i]['balance'] = balances[i+j]['balance']
+                balances[i+j]['balance'] = a
+            j +=1
 
     # Inserting data into Sheet
     for balance in balances:
@@ -159,8 +164,17 @@ def generate_supplier_balance(data=None):
                 else:
                     worksheet.write(
                         current_row, 2, sup[0].last_payment_amount, cell_format_arial)
-                worksheet.write(
-                    current_row, 3, balance['balance'], cell_format_arial)
+                if sup[0].balance_matched == 'Matched':
+                    matched_format_arial = workbook.add_format(
+                        {'align': 'center', 'bold': True, 'font': 'Arial', 'font_size': 10, 'num_format': '#,##,###'})
+                    matched_format_arial.set_align('vcenter')
+                    matched_format_arial.set_border()
+                    matched_format_arial.set_bg_color('#a3f7bf')
+                    worksheet.write(
+                        current_row, 3, balance['balance'], matched_format_arial)
+                else:
+                    worksheet.write(
+                        current_row, 3, balance['balance'], cell_format_arial)
                 cell_col = 1
             else:
                     # name,last_payment_date,last_payment_amount,balance
@@ -177,8 +191,17 @@ def generate_supplier_balance(data=None):
                 else:
                     worksheet.write(
                         current_row, 6, sup[0].last_payment_amount, cell_format_arial)
-                worksheet.write(
-                    current_row, 7, balance['balance'], cell_format_arial)
+                if sup[0].balance_matched == 'Matched':
+                    matched_format_arial = workbook.add_format(
+                        {'align': 'center', 'bold': True, 'font': 'Arial', 'font_size': 10, 'num_format': '#,##,###'})
+                    matched_format_arial.set_align('vcenter')
+                    matched_format_arial.set_border()
+                    matched_format_arial.set_bg_color('#a3f7bf')
+                    worksheet.write(
+                        current_row, 7, balance['balance'], matched_format_arial)
+                else:
+                    worksheet.write(
+                        current_row, 7, balance['balance'], cell_format_arial)
                 cell_col = 0
             if cell_col == 0:
                 current_row += 1
