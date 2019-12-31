@@ -209,11 +209,18 @@ def get_balances(data, supplier_list):
         temp_dict['balance'] = -get_balance_on(date=date.today(
         ), party_type='Supplier', party=supplier.name, company=data['company'])
 
-        if data['balance_less_than'] and data['all_balances'] == 0 and data['get_advances'] == 0:
-            if temp_dict['balance'] < data['balance_less_than']:
+        if data['all_balances'] == 0 and data['get_advances'] == 0:
+            if data['balance_less_than']>=temp_dict['balance']>0:
                 balances.append(temp_dict)
-        else:
-            balances.append(temp_dict)
+        if data['all_balances'] == 0 and data['get_advances'] == 1:
+            if data['balance_less_than']<=temp_dict['balance']<0:
+                balances.append(temp_dict)
+        if data['all_balances'] == 1 and data['get_advances'] == 0:
+            if temp_dict['balance']>0:
+                balances.append(temp_dict)
+        if data['all_balances'] == 1 and data['get_advances'] == 1:
+            if temp_dict['balance']<0:
+                balances.append(temp_dict)
         temp_dict = {}
 
     return balances

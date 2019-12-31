@@ -73,7 +73,7 @@
  ],
  "issingle": 1,
  "links": [],
- "modified": "2019-12-31 14:17:10.165369",
+ "modified": "2019-12-31 17:44:23.309590",
  "modified_by": "Administrator",
  "module": "SP Purchase Invoice",
  "name": "Supplier Balance Report Generator",
@@ -81,11 +81,28 @@
  "permissions": [
   {
    "create": 1,
-   "delete": 1,
    "email": 1,
    "print": 1,
    "read": 1,
    "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "Purchase User",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "Purchase Manager",
    "share": 1,
    "write": 1
   }
