@@ -10,6 +10,7 @@ import xlsxwriter
 from datetime import date, datetime, timedelta
 import io
 from string import ascii_uppercase
+from frappe.utils import today,date_diff
 
 
 # Defaults
@@ -165,7 +166,7 @@ def generate_customer_balance(company=None, customer_group=None, territory=None,
                     else:
                         worksheet.write(
                             current_row, 2, i.last_payment_amount, cell_format_arial)
-                        if days_between(i.last_payment_date,today)>30:
+                        if date_diff(today(),i.last_payment_date)>30:
                             worksheet.write(
                                 current_row, 3, i.outstanding_balance, danger_format_arial)
                         else:
@@ -189,7 +190,7 @@ def generate_customer_balance(company=None, customer_group=None, territory=None,
                     else:
                         worksheet.write(
                             current_row, 6, i.last_payment_amount, cell_format_arial)
-                        if days_between(i.last_payment_date,today)>30:
+                        if date_diff(today(),i.last_payment_date)>30:
                             worksheet.write(
                                 current_row, 7, i.outstanding_balance, danger_format_arial)
                         else:
@@ -217,7 +218,7 @@ def generate_customer_balance(company=None, customer_group=None, territory=None,
                 else:
                     worksheet.write(
                         current_row, 2, i.last_payment_amount, cell_format_arial)
-                    if days_between(i.last_payment_date,today)>30:
+                    if date_diff(today(),i.last_payment_date)>30:
                         worksheet.write(
                             current_row, 3, i.outstanding_balance, danger_format_arial)
                     else:
@@ -241,7 +242,7 @@ def generate_customer_balance(company=None, customer_group=None, territory=None,
                 else:
                     worksheet.write(
                         current_row, 6, i.last_payment_amount, cell_format_arial)
-                    if days_between(i.last_payment_date,today)>30:
+                    if date_diff(today(),i.last_payment_date)>30:
                         worksheet.write(
                             current_row, 7, i.outstanding_balance, danger_format_arial)
                     else:
