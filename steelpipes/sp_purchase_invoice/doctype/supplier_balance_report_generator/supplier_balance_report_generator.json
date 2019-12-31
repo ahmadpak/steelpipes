@@ -1,0 +1,96 @@
+{
+ "actions": [],
+ "creation": "2019-12-31 14:00:52.140159",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_1",
+  "company",
+  "supplier_group",
+  "supplier_type",
+  "column_break_4",
+  "balance_less_than",
+  "get_advances",
+  "all_balances",
+  "section_break_7",
+  "download_report"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_1",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
+  },
+  {
+   "fieldname": "supplier_group",
+   "fieldtype": "Link",
+   "label": "Supplier Group",
+   "options": "Supplier Group"
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.all_balances==0",
+   "fieldname": "balance_less_than",
+   "fieldtype": "Int",
+   "label": "Balance Less Than"
+  },
+  {
+   "default": "0",
+   "fieldname": "get_advances",
+   "fieldtype": "Check",
+   "label": "Get Advances"
+  },
+  {
+   "default": "0",
+   "fieldname": "all_balances",
+   "fieldtype": "Check",
+   "label": "All Balances"
+  },
+  {
+   "fieldname": "section_break_7",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "download_report",
+   "fieldtype": "Button",
+   "label": "Download Report"
+  },
+  {
+   "fieldname": "supplier_type",
+   "fieldtype": "Select",
+   "label": "Supplier Type",
+   "options": "\nCompany\nIndividual"
+  }
+ ],
+ "issingle": 1,
+ "links": [],
+ "modified": "2019-12-31 14:17:10.165369",
+ "modified_by": "Administrator",
+ "module": "SP Purchase Invoice",
+ "name": "Supplier Balance Report Generator",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

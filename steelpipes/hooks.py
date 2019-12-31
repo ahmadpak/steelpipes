@@ -204,7 +204,11 @@ fixtures = [{
                 "Stock Entry-transport_agency",
                 "Stock Entry-driver_name",
                 "Stock Entry-column_break_52",
-                "Stock Entry-vehicle_number"
+                "Stock Entry-vehicle_number",
+                "Supplier-last_balance_comparison_date",
+                "Supplier-balance_matched",
+                "Supplier-last_payment_date",
+                "Supplier-last_payment_amount"
             ]
         ]
     ]
