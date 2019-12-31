@@ -7,11 +7,13 @@ import frappe
 from frappe.model.document import Document
 from erpnext.accounts.utils import get_balance_on
 import xlsxwriter
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 import io
-from datetime import date, datetime
 from string import ascii_uppercase
 
+
+# Defaults
+today = datetime.today()
 
 class CustomerBalanceReportGenerator(Document):
     pass
@@ -22,7 +24,6 @@ def generate_customer_balance(company=None, customer_group=None, territory=None,
     get_advances = int(get_advances)
     all_balances = int(all_balances)
     balance_less_than = int(balance_less_than)
-    now = datetime.now()
     file_name = get_file_name(
         sales_person, balance_less_than, get_advances, all_balances)
 
@@ -58,7 +59,9 @@ def generate_customer_balance(company=None, customer_group=None, territory=None,
     merge_center.set_border()
     merge_center.set_align('vcenter')
 
-    # datestr = 'Date: ' + str(now)
+    # Header Section of the sheet
+    now = datetime.now()
+    today = datetime.today()
     worksheet.write(0, 0,  now.strftime("%B %d, %Y %H:%M:%S"), format6)
     partystr = ''
     if customer_group:
@@ -82,6 +85,7 @@ def generate_customer_balance(company=None, customer_group=None, territory=None,
         balancestr = 'Advances less than ' + str(balance_less_than)
     worksheet.merge_range('A2:H2', balancestr, merge_center)
 
+    # Balance headings
     cell_format = workbook.add_format(
         {'align': 'center', 'bold': True, 'font': 'Calibri', 'font_size': 11})
     cell_format.set_border()
@@ -107,20 +111,36 @@ def generate_customer_balance(company=None, customer_group=None, territory=None,
     customer_list = get_customer_balance_list(
         company, customer_group, territory, sales_person, balance_less_than, get_advances, all_balances)
     cell_col = 0
+
+    # Format for Danger Balances
+    danger_format_arial = workbook.add_format(
+        {'align': 'center', 'bold': True, 'font': 'Arial', 'font_size': 10, 'num_format': '#,##,###'})
+    danger_format_arial.set_align('vcenter')
+    danger_format_arial.set_border()
+    danger_format_arial.set_bg_color('#c72c41')
+
+    # format for outstanding balance
     cell_format_arial = workbook.add_format(
         {'align': 'center', 'bold': True, 'font': 'Arial', 'font_size': 10, 'num_format': '#,##,###'})
     cell_format_arial.set_align('vcenter')
     cell_format_arial.set_border()
+
+    # format for last payment date and last paid amount
     cell_format_arial_date = workbook.add_format(
         {'align': 'center', 'bold': True, 'font': 'Arial', 'font_size': 10})
     cell_format_arial_date.set_align('vcenter')
     cell_format_arial_date.set_border()
     cell_format_arial_date.set_num_format('d mmmm yyyy')
+
+    #  format for name
     cell_format_comic_sans_ms = workbook.add_format(
         {'align': 'left', 'bold': True, 'font': 'Calibri', 'font_size': 10})
     cell_format_comic_sans_ms.set_align('vcenter')
     cell_format_comic_sans_ms.set_border()
     current_row = 3
+
+    # Writing in the sheets
+
     for i in customer_list:
         worksheet.set_row(current_row, 19.5)
         if sales_person:
@@ -140,11 +160,17 @@ def generate_customer_balance(company=None, customer_group=None, territory=None,
                             current_row, 1, i.last_payment_date, cell_format_arial_date)
                     if i.last_payment_amount == None or i.last_payment_amount == 0:
                         worksheet.write(current_row, 2, '-', cell_format_arial)
+                        worksheet.write(
+                        current_row, 3, i.outstanding_balance, danger_format_arial)
                     else:
                         worksheet.write(
                             current_row, 2, i.last_payment_amount, cell_format_arial)
-                    worksheet.write(
-                        current_row, 3, i.outstanding_balance, cell_format_arial)
+                        if days_between(i.last_payment_date,today)>30:
+                            worksheet.write(
+                                current_row, 3, i.outstanding_balance, danger_format_arial)
+                        else:
+                            worksheet.write(
+                                current_row, 3, i.outstanding_balance, cell_format_arial)
                     cell_col = 1
                 else:
                     # name,last_payment_date,last_payment_amount,outstanding_balance
@@ -158,11 +184,18 @@ def generate_customer_balance(company=None, customer_group=None, territory=None,
                             current_row, 5, i.last_payment_date, cell_format_arial_date)
                     if i.last_payment_amount == None or i.last_payment_amount == 0:
                         worksheet.write(current_row, 6, '-', cell_format_arial)
+                        worksheet.write(
+                        current_row, 7, i.outstanding_balance, danger_format_arial)
                     else:
                         worksheet.write(
                             current_row, 6, i.last_payment_amount, cell_format_arial)
-                    worksheet.write(
-                        current_row, 7, i.outstanding_balance, cell_format_arial)
+                        if days_between(i.last_payment_date,today)>30:
+                            worksheet.write(
+                                current_row, 7, i.outstanding_balance, danger_format_arial)
+                        else:
+                            worksheet.write(
+                                current_row, 7, i.outstanding_balance, cell_format_arial)
+
                     cell_col = 0
                 if cell_col == 0:
                     current_row += 1
@@ -179,12 +212,17 @@ def generate_customer_balance(company=None, customer_group=None, territory=None,
                         current_row, 1, i.last_payment_date, cell_format_arial_date)
                 if i.last_payment_amount == None or i.last_payment_amount == 0:
                     worksheet.write(current_row, 2, '-', cell_format_arial)
+                    worksheet.write(
+                    current_row, 3, i.outstanding_balance, danger_format_arial)
                 else:
                     worksheet.write(
                         current_row, 2, i.last_payment_amount, cell_format_arial)
-                worksheet.write(
-                    current_row, 3, i.outstanding_balance, cell_format_arial)
-                cell_col = 1
+                    if days_between(i.last_payment_date,today)>30:
+                        worksheet.write(
+                            current_row, 3, i.outstanding_balance, danger_format_arial)
+                    else:
+                        worksheet.write(
+                            current_row, 3, i.outstanding_balance, cell_format_arial)                cell_col = 1
             else:
                 # name,last_payment_date,last_payment_amount,outstanding_balance
                 worksheet.write(current_row, 4, i.name,
@@ -197,11 +235,17 @@ def generate_customer_balance(company=None, customer_group=None, territory=None,
                         current_row, 5, i.last_payment_date, cell_format_arial_date)
                 if i.last_payment_amount == None or i.last_payment_amount == 0:
                     worksheet.write(current_row, 6, '-', cell_format_arial)
+                    worksheet.write(
+                        current_row, 7, i.outstanding_balance, danger_format_arial)
                 else:
                     worksheet.write(
                         current_row, 6, i.last_payment_amount, cell_format_arial)
-                worksheet.write(
-                    current_row, 7, i.outstanding_balance, cell_format_arial)
+                    if days_between(i.last_payment_date,today)>30:
+                        worksheet.write(
+                            current_row, 7, i.outstanding_balance, danger_format_arial)
+                    else:
+                        worksheet.write(
+                            current_row, 7, i.outstanding_balance, cell_format_arial)
                 cell_col = 0
             if cell_col == 0:
                 current_row += 1
@@ -228,6 +272,9 @@ def get_file_name(sales_person, balance_less_than, get_advances, all_balances):
         filestr = '/tmp/{0}customer_advances.xlsx'.format(sp_str)
     return filestr
 
+
+def days_between(from_date=datetime(today.year, today.month, 1), to_date=today):
+    return abs((from_date - to_date).days)
 
 def get_customer_balance_list(company=None, customer_group=None, territory=None, sales_person=None, balance_less_than=None, get_advances=0, all_balances=0):
     customer_list = None
@@ -300,3 +347,4 @@ def get_download_file_name(sales_person, balance_less_than, get_advances, all_ba
     elif all_balances == 1 and get_advances == 1:
         filestr = '{0}customer_advances.xlsx'.format(sp_str)
     return filestr
+
