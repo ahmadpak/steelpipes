@@ -208,7 +208,8 @@ fixtures = [{
                 "Supplier-last_balance_comparison_date",
                 "Supplier-balance_matched",
                 "Supplier-last_payment_date",
-                "Supplier-last_payment_amount"
+                "Supplier-last_payment_amount",
+                "Customer-will_pay_with_next_purchase"
             ]
         ]
     ]
@@ -315,7 +316,8 @@ doc_events = {
                         ]
     },
     "Sales Invoice":{
-        "validate"  :   "steelpipes.sp_delivery_note.sp_delivery_note_item.update_pipe_weight_um"
+        "validate"  :   "steelpipes.sp_delivery_note.sp_delivery_note_item.update_pipe_weight_um",
+        "on_submit" :   "steelpipes.utils.update_wpip"
     },
     "Purchase Order":{
         "validate"  :   "steelpipes.sp_sales_order.sp_sales_order.update_estimate_weight"

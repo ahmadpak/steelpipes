@@ -158,3 +158,8 @@ def update_received_item_weight_statistics(self, cdt):
             item = frappe.get_doc('Item', d.item_code)
             item.db_set('last_weight_received', d.scale_weight_um)
             item.db_set('last_quantity_received', d.qty)
+
+# Update Will pay with next purchase
+def update_wpip(self,cdt):
+    customer = frappe.get_doc('Customer',self.customer)
+    customer.db_set('will_pay_with_next_purchase',0)
