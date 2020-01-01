@@ -32,8 +32,10 @@ def get_first_day_of_month(date=datetime.today()):
 @frappe.whitelist()
 def generate_total_pipe_labels_and_data_sets(period='This Month', resolution='1'):
     # Defaults
-    pipe_sizes = ["3/4 INCH", "1 INCH", "1 1/2 INCH", "2 INCH", "2 1/2 INCH",
-                  "3 INCH", "4 INCH", "5 INCH", "6 INCH", "7 INCH", "8 INCH", "10 INCH", "12 INCH"]
+    pipe_sizes_label = ["3/4 INCH", "1 INCH", "1 1/2 INCH", "2 INCH", "2 1/2 INCH",
+                        "3 INCH", "4 INCH", "5 INCH", "6 INCH", "7 INCH", "8 INCH", "10 INCH", "12 INCH"]
+    pipe_sizes = ["Pipe-MS-3/4 INCH", "Pipe-MS-1 INCH", "Pipe-MS-1 1/2 INCH", "Pipe-MS-2 INCH", "Pipe-MS-2 1/2 INCH",
+                  "Pipe-MS-3 INCH", "Pipe-MS-4 INCH", "Pipe-MS-5 INCH", "Pipe-MS-6 INCH", "Pipe-MS-7 INCH", "Pipe-MS-8 INCH", "Pipe-MS-10 INCH", "Pipe-MS-12 INCH"]
     pipe_thickness = ['1.00 MM', '1.50 MM', '2.00 MM', '2.50 MM', '3.00 MM', '3.50 MM',
                       '4.00 MM', '4.50 MM', '5.00 MM', '5.50 MM', '6.00 MM', '6.50 MM', '7.00 MM', '7.50 MM', '8.00 MM']
     today = datetime.today()
@@ -46,7 +48,7 @@ def generate_total_pipe_labels_and_data_sets(period='This Month', resolution='1'
 
     # Defining labels
     total_pipe_sold_labels = []                     # Total Pipe Sold Labels
-    individual_pipe_sold_labels = pipe_sizes        # Individual Pipe Sold Labels
+    individual_pipe_sold_labels = pipe_sizes_label        # Individual Pipe Sold Labels
     thickness_pipe_sold_labels = pipe_thickness     # Thickness Pipe Sold Labels
 
     # Defining Data sets
@@ -77,8 +79,10 @@ def generate_total_pipe_labels_and_data_sets(period='This Month', resolution='1'
         days = days_between(from_date, to_date)
     # From date, to date and days between for period 'This Quarter'
     elif period == 'This Quarter':
-        temp_date = datetime(today.year, today.month, 1) - timedelta(90)
-        from_date = datetime(temp_date.year, temp_date.month, 1)
+        if today.month - 3 <= 0:
+            from_date = datetime(today.year - 1, 12 - 3 + today.month, 1)
+        else:
+            from_date = datetime(today.year, today.month - 3, 1)
         to_date = today
         days = days_between(from_date, to_date)
     # From date, to date and days between for period 'This Year
@@ -88,16 +92,22 @@ def generate_total_pipe_labels_and_data_sets(period='This Month', resolution='1'
         days = days_between(from_date, to_date)
     # From date, to date and days between for period 'Last Month'
     elif period == 'Last Month':
-        from_date = datetime(today.year, today.month - 1, 1)
+        if today.month == 1:
+            from_date = datetime(today.year - 1, 12, 1)
+        else:
+            from_date = datetime(today.year, today.month - 1, 1)
         temp_date = datetime(today.year, today.month, 1)
         to_date = today - timedelta(days_between(temp_date, today))
         days = days_between(from_date, to_date)
     # From date, to date and days between for period 'Last Quarter'
     elif period == 'Last Quarter':
-        temp_date = datetime(today.year, today.month, 1) - timedelta(210)
-        from_date = datetime(temp_date.year, temp_date.month, 1)
-        temp_date = datetime(today.year, today.month, 1) - timedelta(90)
-        to_date = datetime(temp_date.year, temp_date.month, 1)
+        if today.month - 3 <= 0:
+            from_date = datetime(today.year - 1, 12 - 6 + today.month, 1)
+            to_date = datetime(
+                today.year - 1, today.month - 3 + today.month, 1)
+        else:
+            from_date = datetime(today.year, today.month - 6, 1)
+            to_date = datetime(today.year, today.month - 3, 1)
         days = days_between(from_date, to_date)
     # From date, to date and days between for period 'Last Year'
     elif period == 'Last Year':
@@ -121,7 +131,8 @@ def generate_total_pipe_labels_and_data_sets(period='This Month', resolution='1'
                                                    'docstatus': 1,
                                                    'parent': weight.name
                                                },
-                                               fields=['item_code', 'total_scale_weight_um', 'warehouse'],
+                                               fields=[
+                                                   'item_code', 'total_scale_weight_um', 'warehouse'],
                                                page_length=2000000000)
             for items in sales_invoice:
                 # Finding Pipe Size
@@ -138,7 +149,7 @@ def generate_total_pipe_labels_and_data_sets(period='This Month', resolution='1'
 
         if resolution == '2':
             if period in ['This Month', 'Last Month']:
-                if date.strftime("%A") == 'Sunday':
+                if date.strftime("%A") == 'Monday':
                     week_no += 1
                     total_pipe_sold_labels.append("Week {}".format(week_no))
                 else:
@@ -146,7 +157,7 @@ def generate_total_pipe_labels_and_data_sets(period='This Month', resolution='1'
                 temp_total_pipe_sold_data_array.append(total_pipe_sold)
                 total_pipe_sold = 0
             elif period in ['This Quarter', 'Last Quarter']:
-                if date.strftime("%A") == 'Sunday':
+                if date.strftime("%A") == 'Monday':
                     week_no += 1
                     total_pipe_sold_labels.append("Week {}".format(week_no))
                     temp_total_pipe_sold_data_array.append(total_pipe_sold)
@@ -172,7 +183,7 @@ def generate_total_pipe_labels_and_data_sets(period='This Month', resolution='1'
 
         elif resolution == '1':
             if period in ['This Month', 'Last Month']:
-                if date.strftime("%A") == 'Sunday':
+                if date.strftime("%A") == 'Monday':
                     week_no += 1
                     total_pipe_sold_labels.append("Week {}".format(week_no))
                     temp_total_pipe_sold_data_array.append(total_pipe_sold)

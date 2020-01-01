@@ -38,6 +38,11 @@
           class="btn btn-primary float-right"
           type="button"
         >Remove Data Points</span>
+        <span
+          v-on:click="exportChart"
+          class="btn btn-warning float-right"
+          type="button"
+        >Export Charts</span>
       </form>
     </nav>
     <div>
@@ -233,6 +238,13 @@ export default {
           .then(r => {
             this.isLoading = false;
           });
+      }
+    },
+    exportChart: function() {
+      if (this.period != "Not Selected") {
+        this.total_pipe_sold_chart.export();
+        this.individual_pipe_sold_chart.export();
+        this.thickness_pipe_sold_chart.export();
       }
     }
   },
