@@ -119,10 +119,8 @@ def generate_total_pipe_labels_and_data_sets(period='This Month', resolution='1'
         from_date = datetime(today.year - 1, 1, 1)
         to_date = datetime(today.year - 1, 12, 31)
         days = days_between(from_date, to_date)
-    print(days)
     for day in range(days):
         date = from_date + timedelta(day)
-        print(date)
         pipe_sold = frappe.db.get_list('Sales Invoice',
                                        filters={
                                            'posting_date': date,
