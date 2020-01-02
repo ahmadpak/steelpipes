@@ -32,9 +32,9 @@ def get_first_day_of_month(date=datetime.today()):
 @frappe.whitelist()
 def generate_total_pipe_labels_and_data_sets(period='This Month', resolution='1'):
     # Defaults
-    pipe_sizes_label = ["3/4 INCH", "1 INCH", "1 1/2 INCH", "2 INCH", "2 1/2 INCH",
+    pipe_sizes_label = ["1/2 INCH","3/4 INCH", "1 INCH", "1 1/2 INCH", "2 INCH", "2 1/2 INCH",
                         "3 INCH", "4 INCH", "5 INCH", "6 INCH", "7 INCH", "8 INCH", "10 INCH", "12 INCH"]
-    pipe_sizes = ["Pipe-MS-3/4 INCH", "Pipe-MS-1 INCH", "Pipe-MS-1 1/2 INCH", "Pipe-MS-2 INCH", "Pipe-MS-2 1/2 INCH",
+    pipe_sizes = ["Pipe-MS-1/2 INCH","Pipe-MS-3/4 INCH", "Pipe-MS-1 INCH", "Pipe-MS-1 1/2 INCH", "Pipe-MS-2 INCH", "Pipe-MS-2 1/2 INCH",
                   "Pipe-MS-3 INCH", "Pipe-MS-4 INCH", "Pipe-MS-5 INCH", "Pipe-MS-6 INCH", "Pipe-MS-7 INCH", "Pipe-MS-8 INCH", "Pipe-MS-10 INCH", "Pipe-MS-12 INCH"]
     pipe_thickness_label = ['1.00 MM', '1.50 MM', '2.00 MM', '2.50 MM', '3.00 MM', '3.50 MM',
                       '4.00 MM', '4.50 MM', '5.00 MM', '5.50 MM', '6.00 MM', '6.50 MM', '7.00 MM', '7.50 MM', '8.00 MM']
