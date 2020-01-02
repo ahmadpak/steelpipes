@@ -36,8 +36,8 @@ def generate_total_pipe_labels_and_data_sets(period='This Month', resolution='1'
                         "3 INCH", "4 INCH", "5 INCH", "6 INCH", "7 INCH", "8 INCH", "10 INCH", "12 INCH"]
     pipe_sizes = ["Pipe-MS-3/4 INCH", "Pipe-MS-1 INCH", "Pipe-MS-1 1/2 INCH", "Pipe-MS-2 INCH", "Pipe-MS-2 1/2 INCH",
                   "Pipe-MS-3 INCH", "Pipe-MS-4 INCH", "Pipe-MS-5 INCH", "Pipe-MS-6 INCH", "Pipe-MS-7 INCH", "Pipe-MS-8 INCH", "Pipe-MS-10 INCH", "Pipe-MS-12 INCH"]
-    pipe_thickness = ['1.00 MM', '1.50 MM', '2.00 MM', '2.50 MM', '3.00 MM', '3.50 MM',
-                      '4.00 MM', '4.50 MM', '5.00 MM', '5.50 MM', '6.00 MM', '6.50 MM', '7.00 MM', '7.50 MM', '8.00 MM']
+    pipe_thickness = ['INCH-1.0', 'INCH-1.5', 'INCH-2.0', 'INCH-2.5', 'INCH-3.0', 'INCH-3.5',
+                      'INCH-4.0', 'INCH-4.5', 'INCH-5.0', 'INCH-5.5', 'INCH-6.0', 'INCH-6.5', 'INCH-7.0', 'INCH-7.5', 'INCH-8.0']
     today = datetime.today()
     week_no = 0
 

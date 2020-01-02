@@ -6,7 +6,7 @@ from frappe import _
 def get_data():
     config = [
         {
-            "label": _("Pipe Reports"),
+            "label": _("Pipe Stock Reports"),
             "items": [
                 {
                     "type": "report",
@@ -15,6 +15,21 @@ def get_data():
                     "onboard": 1,
                 },
             ],
+        },
+        {
+            "label": _("Party Reports"),
+            "items": [
+                {
+                    "type": "doctype",
+                    "name": "Supplier Balance Report Generator",
+                    "onboard": 1,
+                },
+                {
+                    "type": "doctype",
+                    "name": "Customer Balance Report Generator",
+                    "onboard": 1,
+                }
+            ]
         },
         {
             "label": _("Dashboards"),
@@ -26,6 +41,16 @@ def get_data():
                     "description": _("Show pipe qty length and weight as a summary."),
                     "onboard": 1,
                 },
+            ]
+        },
+        {
+            "label": _("Settings"),
+            "items": [
+                {
+                    "type": "doctype",
+                    "name": "Pipe Stock Summary Setting",
+                    "onboard": 1,
+                }
             ]
         }
     ]
