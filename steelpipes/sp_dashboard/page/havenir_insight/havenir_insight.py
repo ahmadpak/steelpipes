@@ -68,7 +68,7 @@ def generate_total_pipe_labels_and_data_sets(period='This Month', resolution='1'
     temp_individual_pipe_sold_data_dict = {}
     temp_individual_pipe_sold_data_dict['name'] = "Pipes Sold"
     temp_individual_pipe_sold_data_array = [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     # Defining temporary dict and array for Individual Pipe Sold
     temp_thickness_pipe_sold_data_dict = {}
     temp_thickness_pipe_sold_data_dict['name'] = "Pipes Sold"
