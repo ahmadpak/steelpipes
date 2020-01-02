@@ -79,13 +79,16 @@ def generate_total_pipe_labels_and_data_sets(period='This Month', resolution='1'
     if period == 'This Month':
         from_date = datetime(today.year, today.month, 1)
         to_date = today
-        days = days_between(from_date, to_date)
+        if from_date == to_date:
+            days = 1
+        else:
+            days = days_between(from_date, to_date)
     # From date, to date and days between for period 'This Quarter'
     elif period == 'This Quarter':
         if today.month - 3 <= 0:
-            from_date = datetime(today.year - 1, 12 - 3 + today.month, 1)
+            from_date = datetime(today.year - 1, 12 - 3 + 1 + today.month, 1)
         else:
-            from_date = datetime(today.year, today.month - 3, 1)
+            from_date = datetime(today.year, today.month + 1, 1) - timedelta(1)
         to_date = today
         days = days_between(from_date, to_date)
     # From date, to date and days between for period 'This Year
@@ -99,27 +102,27 @@ def generate_total_pipe_labels_and_data_sets(period='This Month', resolution='1'
             from_date = datetime(today.year - 1, 12, 1)
         else:
             from_date = datetime(today.year, today.month - 1, 1)
-        temp_date = datetime(today.year, today.month, 1)
-        to_date = today - timedelta(days_between(temp_date, today))
-        days = days_between(from_date, to_date)
+        to_date = datetime(today.year, today.month, 1) - timedelta(1)
+        days = days_between(from_date, to_date) + 1
     # From date, to date and days between for period 'Last Quarter'
     elif period == 'Last Quarter':
         if today.month - 3 <= 0:
-            from_date = datetime(today.year - 1, 12 - 6 + today.month, 1)
+            from_date = datetime(today.year - 1, 12 - 6 + 1 + today.month, 1)
             to_date = datetime(
-                today.year - 1, today.month - 3 + today.month, 1)
+                today.year - 1, 12 - 3 + 1 + today.month, 1) -timedelta(1)
         else:
-            from_date = datetime(today.year, today.month - 6, 1)
-            to_date = datetime(today.year, today.month - 3, 1)
-        days = days_between(from_date, to_date)
+            from_date = datetime(today.year, today.month - 6 + 1, 1) - timedelta(1)
+            to_date = datetime(today.year, today.month - 3 + 1, 1) - timedelta(1)
+        days = days_between(from_date, to_date) + 1
     # From date, to date and days between for period 'Last Year'
     elif period == 'Last Year':
         from_date = datetime(today.year - 1, 1, 1)
         to_date = datetime(today.year - 1, 12, 31)
         days = days_between(from_date, to_date)
-
+    print(days)
     for day in range(days):
         date = from_date + timedelta(day)
+        print(date)
         pipe_sold = frappe.db.get_list('Sales Invoice',
                                        filters={
                                            'posting_date': date,
