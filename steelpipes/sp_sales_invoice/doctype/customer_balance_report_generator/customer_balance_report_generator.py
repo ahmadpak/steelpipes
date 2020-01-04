@@ -112,12 +112,19 @@ def generate_customer_balance(company=None, customer_group=None, territory=None,
         company, customer_group, territory, sales_person, balance_less_than, get_advances, all_balances)
     cell_col = 0
 
+    # Format for Dead Balances
+    dead_format_arial = workbook.add_format(
+        {'align': 'center', 'bold': True, 'font': 'Arial', 'font_size': 10, 'num_format': '#,##,###'})
+    dead_format_arial.set_align('vcenter')
+    dead_format_arial.set_border()
+    dead_format_arial.set_bg_color('#ffafb0')
+
     # Format for Danger Balances
     danger_format_arial = workbook.add_format(
         {'align': 'center', 'bold': True, 'font': 'Arial', 'font_size': 10, 'num_format': '#,##,###'})
     danger_format_arial.set_align('vcenter')
     danger_format_arial.set_border()
-    danger_format_arial.set_bg_color('#ffafb0')
+    danger_format_arial.set_bg_color('#ed8240')
 
     # Format for Caution
     caution_format_arial = workbook.add_format(
@@ -178,24 +185,22 @@ def generate_customer_balance(company=None, customer_group=None, territory=None,
                     if i.last_payment_amount == None or i.last_payment_amount == 0:
                         worksheet.write(current_row, 2, '-', cell_format_arial)
                         worksheet.write(
-                        current_row, 3, i.outstanding_balance, danger_format_arial)
+                        current_row, 3, i.outstanding_balance, dead_format_arial)
                     else:
                         worksheet.write(
                             current_row, 2, i.last_payment_amount, cell_format_arial)
-                        if date_diff(frappe.utils.today(),i.last_payment_date)>30:
-                            if wpip == 1:
-                                worksheet.write(
-                                    current_row, 3, i.outstanding_balance, next_purchase_format_arial)
-                            else:    
-                                worksheet.write(
-                                    current_row, 3, i.outstanding_balance, danger_format_arial)
+                        if wpip == 1:
+                            worksheet.write(
+                                current_row, 3, i.outstanding_balance, next_purchase_format_arial)
+                        elif date_diff(frappe.utils.today(),i.last_payment_date)>60:
+                            worksheet.write(
+                                current_row, 3, i.outstanding_balance, dead_format_arial)
+                        elif date_diff(frappe.utils.today(),i.last_payment_date)>30:
+                            worksheet.write(
+                                current_row, 3, i.outstanding_balance, danger_format_arial)
                         elif date_diff(frappe.utils.today(),i.last_payment_date)>15:
-                            if wpip == 1:
-                                worksheet.write(
-                                    current_row, 3, i.outstanding_balance, next_purchase_format_arial)
-                            else:    
-                                worksheet.write(
-                                    current_row, 3, i.outstanding_balance, caution_format_arial)
+                            worksheet.write(
+                                current_row, 3, i.outstanding_balance, caution_format_arial)
                         else:
                             worksheet.write(
                                 current_row, 3, i.outstanding_balance, cell_format_arial)
@@ -213,24 +218,22 @@ def generate_customer_balance(company=None, customer_group=None, territory=None,
                     if i.last_payment_amount == None or i.last_payment_amount == 0:
                         worksheet.write(current_row, 6, '-', cell_format_arial)
                         worksheet.write(
-                        current_row, 7, i.outstanding_balance, danger_format_arial)
+                        current_row, 7, i.outstanding_balance, dead_format_arial)
                     else:
                         worksheet.write(
                             current_row, 6, i.last_payment_amount, cell_format_arial)
-                        if date_diff(frappe.utils.today(),i.last_payment_date)>30:
-                            if wpip == 1 :
-                                worksheet.write(
-                                    current_row, 7, i.outstanding_balance, next_purchase_format_arial)
-                            else:
-                                worksheet.write(
-                                    current_row, 7, i.outstanding_balance, danger_format_arial)
+                        if wpip == 1 :
+                            worksheet.write(
+                                current_row, 7, i.outstanding_balance, next_purchase_format_arial)
+                        elif date_diff(frappe.utils.today(),i.last_payment_date)>60:
+                            worksheet.write(
+                                current_row, 7, i.outstanding_balance, dead_format_arial)
+                        elif date_diff(frappe.utils.today(),i.last_payment_date)>30:
+                            worksheet.write(
+                                current_row, 7, i.outstanding_balance, danger_format_arial)
                         elif date_diff(frappe.utils.today(),i.last_payment_date)>15:
-                            if wpip == 1 :
-                                worksheet.write(
-                                    current_row, 7, i.outstanding_balance, next_purchase_format_arial)
-                            else:
-                                worksheet.write(
-                                    current_row, 7, i.outstanding_balance, caution_format_arial)
+                            worksheet.write(
+                                current_row, 7, i.outstanding_balance, caution_format_arial)
                         else:
                             worksheet.write(
                                 current_row, 7, i.outstanding_balance, cell_format_arial)
@@ -252,24 +255,22 @@ def generate_customer_balance(company=None, customer_group=None, territory=None,
                 if i.last_payment_amount == None or i.last_payment_amount == 0:
                     worksheet.write(current_row, 2, '-', cell_format_arial)
                     worksheet.write(
-                    current_row, 3, i.outstanding_balance, danger_format_arial)
+                    current_row, 3, i.outstanding_balance, dead_format_arial)
                 else:
                     worksheet.write(
                         current_row, 2, i.last_payment_amount, cell_format_arial)
-                    if date_diff(frappe.utils.today(),i.last_payment_date)>30:
-                        if wpip == 1:
-                            worksheet.write(
-                                current_row, 3, i.outstanding_balance, next_purchase_format_arial)
-                        else:    
-                            worksheet.write(
-                                current_row, 3, i.outstanding_balance, danger_format_arial)
+                    if wpip == 1:
+                        worksheet.write(
+                            current_row, 3, i.outstanding_balance, next_purchase_format_arial)
+                    elif date_diff(frappe.utils.today(),i.last_payment_date)>60:
+                        worksheet.write(
+                            current_row, 3, i.outstanding_balance, dead_format_arial)    
+                    elif date_diff(frappe.utils.today(),i.last_payment_date)>30:
+                        worksheet.write(
+                            current_row, 3, i.outstanding_balance, danger_format_arial)
                     elif date_diff(frappe.utils.today(),i.last_payment_date)>15:
-                        if wpip == 1:
-                            worksheet.write(
-                                current_row, 3, i.outstanding_balance, next_purchase_format_arial)
-                        else:    
-                            worksheet.write(
-                                current_row, 3, i.outstanding_balance, caution_format_arial)
+                        worksheet.write(
+                            current_row, 3, i.outstanding_balance, caution_format_arial)
                     else:
                         worksheet.write(
                             current_row, 3, i.outstanding_balance, cell_format_arial)                
@@ -287,24 +288,22 @@ def generate_customer_balance(company=None, customer_group=None, territory=None,
                 if i.last_payment_amount == None or i.last_payment_amount == 0:
                     worksheet.write(current_row, 6, '-', cell_format_arial)
                     worksheet.write(
-                        current_row, 7, i.outstanding_balance, danger_format_arial)
+                        current_row, 7, i.outstanding_balance, dead_format_arial)
                 else:
                     worksheet.write(
                         current_row, 6, i.last_payment_amount, cell_format_arial)
-                    if date_diff(frappe.utils.today(),i.last_payment_date)>30:
-                        if wpip == 1 :
-                            worksheet.write(
-                                current_row, 7, i.outstanding_balance, next_purchase_format_arial)
-                        else:
-                            worksheet.write(
-                                current_row, 7, i.outstanding_balance, danger_format_arial)
+                    if wpip == 1 :
+                        worksheet.write(
+                            current_row, 7, i.outstanding_balance, next_purchase_format_arial)
+                    elif date_diff(frappe.utils.today(),i.last_payment_date)>60:
+                        worksheet.write(
+                            current_row, 7, i.outstanding_balance, dead_format_arial)
                     elif date_diff(frappe.utils.today(),i.last_payment_date)>30:
-                        if wpip == 1 :
-                            worksheet.write(
-                                current_row, 7, i.outstanding_balance, next_purchase_format_arial)
-                        else:
-                            worksheet.write(
-                                current_row, 7, i.outstanding_balance, caution_format_arial)
+                        worksheet.write(
+                            current_row, 7, i.outstanding_balance, danger_format_arial)
+                    elif date_diff(frappe.utils.today(),i.last_payment_date)>15:
+                        worksheet.write(
+                            current_row, 7, i.outstanding_balance, caution_format_arial)
                     else:
                         worksheet.write(
                             current_row, 7, i.outstanding_balance, cell_format_arial)
@@ -370,7 +369,7 @@ def get_filters(company=None, customer_group=None, territory=None, sales_person=
     elif all_balances == 1 and get_advances == 0:
         sql_query_str += ' outstanding_balance BETWEEN 1 AND 1000000000000  ORDER BY outstanding_balance ASC LIMIT 1000000000;'
     elif all_balances == 1 and get_advances == 1:
-        sql_query_str += ' outstanding_balance BETWEEN -1000000000000 AND -1  ORDER BY outstanding_balance DESC LIMIT 1000000000;'
+        sql_query_str += ' outstanding_balance BETWEEN -1000000000000 AND 1000000000000  ORDER BY outstanding_balance DESC LIMIT 1000000000;'
     return sql_query_str
 
 

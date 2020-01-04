@@ -242,7 +242,7 @@ def get_balances(data, supplier_list):
             if temp_dict['balance']>0:
                 balances.append(temp_dict)
         if data['all_balances'] == 1 and data['get_advances'] == 1:
-            if temp_dict['balance']<0:
+            if temp_dict['balance']!=0:
                 balances.append(temp_dict)
         temp_dict = {}
 
