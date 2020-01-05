@@ -117,14 +117,14 @@ def generate_customer_balance(company=None, customer_group=None, territory=None,
         {'align': 'center', 'bold': True, 'font': 'Arial', 'font_size': 10, 'num_format': '#,##,###'})
     dead_format_arial.set_align('vcenter')
     dead_format_arial.set_border()
-    dead_format_arial.set_bg_color('#ffafb0')
+    dead_format_arial.set_bg_color('#cccccc')
 
     # Format for Danger Balances
     danger_format_arial = workbook.add_format(
         {'align': 'center', 'bold': True, 'font': 'Arial', 'font_size': 10, 'num_format': '#,##,###'})
     danger_format_arial.set_align('vcenter')
     danger_format_arial.set_border()
-    danger_format_arial.set_bg_color('#ed8240')
+    danger_format_arial.set_bg_color('#ffafb0')
 
     # Format for Caution
     caution_format_arial = workbook.add_format(
