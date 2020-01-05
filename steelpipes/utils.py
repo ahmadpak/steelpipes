@@ -1,5 +1,5 @@
 import frappe
-# import mysql.connector
+from erpnext.accounts.utils import get_balance_on
 import json
 import xlsxwriter
 import time
@@ -163,3 +163,6 @@ def update_received_item_weight_statistics(self, cdt):
 def update_wpip(self,cdt):
     customer = frappe.get_doc('Customer',self.customer)
     customer.db_set('will_pay_with_next_purchase',0)
+    balance = get_balance_on(date=self.posting_date,party_type='Customer',party=self.customer,company=self.company)
+    if balance <=0:
+        customer.db_set('last_payment_date', self.posting_date)
