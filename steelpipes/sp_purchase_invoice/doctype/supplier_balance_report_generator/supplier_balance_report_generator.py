@@ -178,7 +178,6 @@ def generate_supplier_balance(data=None):
             if sup[0].supplier_type != data['supplier_type']:
                 goahead = 0
         if goahead == 1:
-            print("{0} {1}".format(balance['name'],sup[0].supplier_group))
             worksheet.set_row(current_row, 19.5)
             # name,last_payment_date,last_payment_amount,balance
             worksheet.write(current_row, 0, balance['name'],
@@ -217,7 +216,7 @@ def generate_supplier_balance(data=None):
             else:
                 worksheet.write(
                     current_row, 4, balance['balance'], cell_format_arial)
-        current_row += 1
+            current_row += 1
 
     workbook.close()
 
