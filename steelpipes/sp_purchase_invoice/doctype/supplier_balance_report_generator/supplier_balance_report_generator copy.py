@@ -10,7 +10,6 @@ import xlsxwriter
 from datetime import date, datetime
 import io
 from datetime import date, datetime
-from frappe.utils import today,date_diff
 from string import ascii_uppercase
 import json
 
@@ -27,20 +26,17 @@ def generate_supplier_balance(data=None):
     workbook = xlsxwriter.Workbook(
         '{0}'.format(file_name))			# Creating a xlsx file
     worksheet = workbook.add_worksheet(
-        name='supplier-balance')		    # Adding new worksheet
-    
-    # Setting row heights
+        name='supplier-balance')		# Adding new worksheet
+    # Setting column widths
+    worksheet.set_column(0, 0, 30.5)
+    worksheet.set_column(1, 1, 17.78)
     worksheet.set_row(0, 20.25)
     worksheet.set_row(1, 20.25)
     worksheet.set_row(2, 20.25)
-    
-    # Setting column widths
-    worksheet.set_column(3, 0, 30.5)        # Parties
-    worksheet.set_column(3, 1, 17.78)       # Last Comparison Date
-    worksheet.set_column(3, 2, 17.78)       # Last Payment Date
-    worksheet.set_column(3, 3, 12.65)       # Last Paid
-    worksheet.set_column(3, 4, 12.65)       # Outstanding
-    
+    worksheet.set_column(4, 4, 30.5)
+    worksheet.set_column(5, 5, 17.78)
+    worksheet.set_column(2, 3, 12.67)
+    worksheet.set_column(6, 7, 12.67)
     # Creating Border formats
     cell_format_font_14 = workbook.add_format(
         {'bold': True, 'font': 'Calibri', 'font_size': 11})
@@ -59,37 +55,6 @@ def generate_supplier_balance(data=None):
     merge_center.set_border()
     merge_center.set_align('vcenter')
 
-    # Format for Matched Balances
-    matched_format_arial = workbook.add_format(
-        {'align': 'center', 'bold': True, 'font': 'Arial', 'font_size': 10, 'num_format': '#,##,###'})
-    matched_format_arial.set_align('vcenter')
-    matched_format_arial.set_border()
-    matched_format_arial.set_bg_color('#a3f7bf')
-
-    # Format for Matched Balances Till date
-    matched_format_arial_date = workbook.add_format(
-        {'align': 'center', 'bold': True, 'font': 'Arial', 'font_size': 10, 'num_format': '#,##,###'})
-    matched_format_arial_date.set_align('vcenter')
-    matched_format_arial_date.set_border()
-    matched_format_arial_date.set_bg_color('#a3f7bf')
-    matched_format_arial_date.set_num_format('d mmmm yyyy')
-
-    # Format for Danger Balances
-    danger_format_arial_date = workbook.add_format(
-        {'align': 'center', 'bold': True, 'font': 'Arial', 'font_size': 10, 'num_format': '#,##,###'})
-    danger_format_arial_date.set_align('vcenter')
-    danger_format_arial_date.set_border()
-    danger_format_arial_date.set_bg_color('#ffafb0')
-    danger_format_arial_date.set_num_format('d mmmm yyyy')
-
-    # Format for Caution
-    caution_format_arial_date = workbook.add_format(
-        {'align': 'center', 'bold': True, 'font': 'Arial', 'font_size': 10, 'num_format': '#,##,###'})
-    caution_format_arial_date.set_align('vcenter')
-    caution_format_arial_date.set_border()
-    caution_format_arial_date.set_bg_color('#fbe555')
-    caution_format_arial_date.set_num_format('d mmmm yyyy')
-
     # Todays Time and date
     now = datetime.now()
     worksheet.write(0, 0,  now.strftime("%B %d, %Y %H:%M:%S"), format6)
@@ -101,7 +66,7 @@ def generate_supplier_balance(data=None):
     if data['supplier_type'] not in ['', None]:
         partystr += 'Supplier Type: {0} | '.format(data['supplier_type'])
 
-    worksheet.merge_range('B1:E1', partystr, merge_right)
+    worksheet.merge_range('B1:H1', partystr, merge_right)
 
     # Creating balance string
     balancestr = ''
@@ -113,7 +78,7 @@ def generate_supplier_balance(data=None):
         balancestr = 'Balance less than ' + str(data['balance_less_than'])
     elif data['all_balances'] == 0 and data['get_advances'] == 1:
         balancestr = 'Advances less than ' + str(data['balance_less_than'])
-    worksheet.merge_range('A2:E2', balancestr, merge_center)
+    worksheet.merge_range('A2:H2', balancestr, merge_center)
 
     # Creating Balance section
     cell_format = workbook.add_format(
@@ -121,19 +86,23 @@ def generate_supplier_balance(data=None):
     cell_format.set_border()
     cell_format.set_align('vcenter')
     worksheet.write(2, 0, 'Parties', cell_format)
+    worksheet.write(2, 4, 'Parties', cell_format)
     cell_format = workbook.add_format(
         {'align': 'center', 'bold': True, 'font': 'Calibri', 'font_size': 9})
     cell_format.set_border()
     cell_format.set_align('vcenter')
-    worksheet.write(2, 1, 'LAST COMPAIRED', cell_format)
-    worksheet.write(2, 2, 'LAST PAID DATE', cell_format)
-    worksheet.write(2, 3, 'LAST PAID', cell_format)
+    worksheet.write(2, 1, 'LAST DATE', cell_format)
+    worksheet.write(2, 2, 'LAST PAID', cell_format)
+    worksheet.write(2, 5, 'LAST DATE', cell_format)
+    worksheet.write(2, 6, 'LAST PAID', cell_format)
     cell_format = workbook.add_format(
         {'align': 'center', 'bold': True, 'font': 'Arial', 'font_size': 9})
     cell_format.set_align('vcenter')
     cell_format.set_border()
-    worksheet.write(2, 4, 'OUTSTANDING', cell_format)
+    worksheet.write(2, 3, 'OUTSTANDING', cell_format)
+    worksheet.write(2, 7, 'OUTSTANDING', cell_format)
 
+    cell_col = 0
     cell_format_arial = workbook.add_format(
         {'align': 'center', 'bold': True, 'font': 'Arial', 'font_size': 10, 'num_format': '#,##,###'})
     cell_format_arial.set_align('vcenter')
@@ -166,6 +135,7 @@ def generate_supplier_balance(data=None):
                 balances[i]['balance'] = balances[i+j]['balance']
                 balances[i+j]['balance'] = a
             j +=1
+
     # Inserting data into Sheet
     for balance in balances:
         sup = frappe.db.get_list('Supplier', filters={'name': balance['name']}, fields=[
@@ -178,46 +148,63 @@ def generate_supplier_balance(data=None):
             if sup[0].supplier_type != data['supplier_type']:
                 goahead = 0
         if goahead == 1:
-            print("{0} {1}".format(balance['name'],sup[0].supplier_group))
             worksheet.set_row(current_row, 19.5)
-            # name,last_payment_date,last_payment_amount,balance
-            worksheet.write(current_row, 0, balance['name'],
-                            cell_format_comic_sans_ms)
-            if sup[0].last_balance_comparison_date == None:
-                worksheet.write(current_row, 1, '-',
-                                cell_format_arial_date)
-            else:
-                if sup[0].balance_matched in ['Matched till last comparison date','Matched']:
-                    if frappe.utils.date_diff(frappe.utils.today(),sup[0].last_balance_comparison_date)>30:
-                        worksheet.write(
-                            current_row, 1, sup[0].last_balance_comparison_date, caution_format_arial_date)
-                    else:     
-                        worksheet.write(
-                            current_row, 1, sup[0].last_balance_comparison_date, matched_format_arial_date)
-                elif sup[0].balance_matched in ['Not Matched']:
-                    worksheet.write(
-                        current_row, 1, sup[0].last_balance_comparison_date, danger_format_arial_date)
+            if cell_col == 0:
+                # name,last_payment_date,last_payment_amount,balance
+                worksheet.write(current_row, 0, balance['name'],
+                                cell_format_comic_sans_ms)
+                if sup[0].last_payment_date == None:
+                    worksheet.write(current_row, 1, '-',
+                                    cell_format_arial_date)
                 else:
                     worksheet.write(
-                        current_row, 1, sup[0].last_balance_comparison_date, cell_format_arial_date)
-            if sup[0].last_payment_date == None:
-                worksheet.write(current_row, 2, '-',
-                                cell_format_arial_date)
+                        current_row, 1, sup[0].last_payment_date, cell_format_arial_date)
+                if sup[0].last_payment_amount == None or sup[0].last_payment_amount == 0:
+                    worksheet.write(current_row, 2, '-', cell_format_arial)
+                else:
+                    worksheet.write(
+                        current_row, 2, sup[0].last_payment_amount, cell_format_arial)
+                if sup[0].balance_matched == 'Matched':
+                    matched_format_arial = workbook.add_format(
+                        {'align': 'center', 'bold': True, 'font': 'Arial', 'font_size': 10, 'num_format': '#,##,###'})
+                    matched_format_arial.set_align('vcenter')
+                    matched_format_arial.set_border()
+                    matched_format_arial.set_bg_color('#a3f7bf')
+                    worksheet.write(
+                        current_row, 3, balance['balance'], matched_format_arial)
+                else:
+                    worksheet.write(
+                        current_row, 3, balance['balance'], cell_format_arial)
+                cell_col = 1
             else:
-                worksheet.write(
-                    current_row, 2, sup[0].last_payment_date, cell_format_arial_date)
-            if sup[0].last_payment_amount == None or sup[0].last_payment_amount == 0:
-                worksheet.write(current_row, 3, '-', cell_format_arial)
-            else:
-                worksheet.write(
-                    current_row, 3, sup[0].last_payment_amount, cell_format_arial)
-            if sup[0].balance_matched == 'Matched':
-                worksheet.write(
-                    current_row, 4, balance['balance'], matched_format_arial)
-            else:
-                worksheet.write(
-                    current_row, 4, balance['balance'], cell_format_arial)
-        current_row += 1
+                    # name,last_payment_date,last_payment_amount,balance
+                worksheet.write(current_row, 4, balance['name'],
+                                cell_format_comic_sans_ms)
+                if sup[0].last_payment_date == None:
+                    worksheet.write(current_row, 5, '-',
+                                    cell_format_arial_date)
+                else:
+                    worksheet.write(
+                        current_row, 5, sup[0].last_payment_date, cell_format_arial_date)
+                if sup[0].last_payment_amount == None or sup[0].last_payment_amount == 0:
+                    worksheet.write(current_row, 6, '-', cell_format_arial)
+                else:
+                    worksheet.write(
+                        current_row, 6, sup[0].last_payment_amount, cell_format_arial)
+                if sup[0].balance_matched == 'Matched':
+                    matched_format_arial = workbook.add_format(
+                        {'align': 'center', 'bold': True, 'font': 'Arial', 'font_size': 10, 'num_format': '#,##,###'})
+                    matched_format_arial.set_align('vcenter')
+                    matched_format_arial.set_border()
+                    matched_format_arial.set_bg_color('#a3f7bf')
+                    worksheet.write(
+                        current_row, 7, balance['balance'], matched_format_arial)
+                else:
+                    worksheet.write(
+                        current_row, 7, balance['balance'], cell_format_arial)
+                cell_col = 0
+            if cell_col == 0:
+                current_row += 1
 
     workbook.close()
 
