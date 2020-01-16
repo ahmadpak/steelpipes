@@ -164,5 +164,5 @@ def update_wpip(self,cdt):
     customer = frappe.get_doc('Customer',self.customer)
     customer.db_set('will_pay_with_next_purchase',0)
     balance = get_balance_on(date=self.posting_date,party_type='Customer',party=self.customer,company=self.company)
-    if balance <=0:
+    if balance == self.rounded_total:
         customer.db_set('last_payment_date', self.posting_date)
