@@ -11,7 +11,7 @@ def pipe_barcode(item):
                 item_size_um = str(d.attribute_value)
                 temp_size = ''
                 for character in item_size_um:
-                    if character != '/' and character!=' ':
+                    if character!=' ':
                         temp_size += character
                 # item_code_temp += '-{0} INCH'.format(item_size_um)
                 barcode += temp_size
@@ -48,7 +48,6 @@ def pipe_barcode(item):
                 'barcode':barcode
             })
         item.save()
-        # item.description = item.item_code = item.item_name = item_code_temp
 
 def create_strip_width(attribute,thickness,step,width):
     while (thickness< 8.04):
