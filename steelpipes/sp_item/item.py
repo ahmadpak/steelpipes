@@ -12,7 +12,7 @@ def pipe_custom_name(self,cdt):
                 item_size_um = str(d.attribute_value)
                 temp_size = ''
                 for character in item_size_um:
-                    if character != '/' and character!=' ':
+                    if character!=' ':
                         temp_size += character
                 item_code_temp += '-{0} INCH'.format(item_size_um)
                 barcode += temp_size
@@ -48,6 +48,7 @@ def pipe_custom_name(self,cdt):
             self.append('barcodes',{
                 'barcode':barcode
             })
+        print("barcode: {0}".format(barcode))
         self.description = self.item_code = self.item_name = item_code_temp    
 
 def pipe_item_weight_detail(self,cdt):
