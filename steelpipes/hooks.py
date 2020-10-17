@@ -242,7 +242,10 @@ doctype_js = {
     "Stock Entry":      [
                             "sp_stock_entry/sp_stock_entry.js",
                             "sp_stock_entry/sp_stock_entry_item.js"
-    ]                                                            
+                        ],
+    "Payment Entry":    [
+                            "sp_payment_entry/sp_payment_entry.js"
+                        ]                                                            
 }
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
