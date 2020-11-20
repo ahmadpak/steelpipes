@@ -242,7 +242,10 @@ doctype_js = {
     "Stock Entry":      [
                             "sp_stock_entry/sp_stock_entry.js",
                             "sp_stock_entry/sp_stock_entry_item.js"
-    ]                                                            
+                        ],
+    "Payment Entry":    [
+                            "sp_payment_entry/sp_payment_entry.js"
+                        ]                                                            
 }
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
@@ -272,7 +275,7 @@ doctype_js = {
 # ------------
 
 # before_install = "steelpipes.install.before_install"
-before_install = "steelpipes.before_install.create_pipe_ms_items"
+# before_install = "steelpipes.before_install.create_pipe_ms_items"
 # after_install = "steelpipes.install.after_install"
 
 # Desk Notifications

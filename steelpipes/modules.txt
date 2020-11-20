@@ -7,3 +7,4 @@ SP Purchase Invoice
 sp_item
 SP Dashboard
 SP Stock Entry
+SP Payment Entry
