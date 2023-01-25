@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from . import __version__ as app_version
 
 app_name = "steelpipes"
 app_title = "Steel Pipes"
@@ -45,7 +44,7 @@ app_include_js = "/assets/js/steelpipes.min.js"
 #}]
 
 fixtures = [{
-    'dt': 'Custom Field', 'filters':[
+    'dt': 'Custom Field', 'filters': [
         [
             'name', 'in', [
                 "Sales Order Item-weight_section",
@@ -216,36 +215,38 @@ fixtures = [{
 }]
 
 doctype_js = {
+    '''
     #"Sales Order"   :   [   "sp_delivery_note/sp_delivery_note_item.js"
      #                   ],
-    "Sales Order"   :   [   
-                            "sp_sales_order/sp_sales_order_item.js",
-                            "sp_sales_order/sp_sales_order.js"
-                        ],
-    "Delivery Note" :   [   
-                            "sp_delivery_note/sp_delivery_note.js",
-                            "sp_delivery_note/sp_delivery_note_item.js"
-                        ],
-    "Sales Invoice" :   [
-                            "sp_sales_invoice/sp_sales_invoice_item.js"
-                        ],                    
-    "Purchase Order":   [
-                            "sp_purchase_order/sp_purchase_order_item.js"
-                        ],
+    '''
+    "Sales Order": [
+        "sp_sales_order/sp_sales_order_item.js",
+        "sp_sales_order/sp_sales_order.js"
+    ],
+    "Delivery Note": [
+        "sp_delivery_note/sp_delivery_note.js",
+        "sp_delivery_note/sp_delivery_note_item.js"
+    ],
+    "Sales Invoice": [
+        "sp_sales_invoice/sp_sales_invoice_item.js"
+    ],
+    "Purchase Order": [
+        "sp_purchase_order/sp_purchase_order_item.js"
+    ],
     "Purchase Receipt": [
-                            "sp_purchase_receipt/sp_purchase_receipt.js",
-                            "sp_purchase_receipt/sp_purchase_receipt_item.js"
-                        ],
+        "sp_purchase_receipt/sp_purchase_receipt.js",
+        "sp_purchase_receipt/sp_purchase_receipt_item.js"
+    ],
     "Purchase Invoice": [
-                            "sp_purchase_invoice/sp_purchase_invoice_item.js"
-                        ],
-    "Stock Entry":      [
-                            "sp_stock_entry/sp_stock_entry.js",
-                            "sp_stock_entry/sp_stock_entry_item.js"
-                        ],
-    "Payment Entry":    [
-                            "sp_payment_entry/sp_payment_entry.js"
-                        ]                                                            
+        "sp_purchase_invoice/sp_purchase_invoice_item.js"
+    ],
+    "Stock Entry": [
+        "sp_stock_entry/sp_stock_entry.js",
+        "sp_stock_entry/sp_stock_entry_item.js"
+    ],
+    "Payment Entry": [
+        "sp_payment_entry/sp_payment_entry.js"
+    ]
 }
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
@@ -259,7 +260,7 @@ doctype_js = {
 
 # website user home page (by Role)
 # role_home_page = {
-#	"Role": "home_page"
+# #	"Role": "home_page"
 # }
 
 # Website user home page (by function)
