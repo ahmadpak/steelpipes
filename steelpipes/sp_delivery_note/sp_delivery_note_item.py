@@ -2,6 +2,29 @@ import frappe
 from frappe.utils import add_days, today
 
 
+def calculate_weight_pipe(self, method):
+    '''On validate calculate weight of pipes'''
+    estimate_weight_um = 0
+    for row in self.items:
+        result = calculate_pipe_weight_um(row.item_code, row.um)
+        weight_um_temp = result['item_weight_um']
+        length_um_temp = result['item_length_um']
+        if row.qty is None or row.qty == 0:
+            row.qty = 1
+
+        total_weight_um_temp = weight_um_temp * row.qty
+        total_length_um_temp = length_um_temp * row.qty
+
+        row.weight_um = weight_um_temp
+        row.total_weight_um = total_weight_um_temp
+        row.length_um = length_um_temp
+        row.total_length_um = total_length_um_temp
+
+        estimate_weight_um += total_weight_um_temp
+
+    self.estimate_weight_um = estimate_weight_um
+
+
 @frappe.whitelist()
 def calculate_pipe_weight_um(itemcode, um):
     # Calculating Pipe Weight using Attributes

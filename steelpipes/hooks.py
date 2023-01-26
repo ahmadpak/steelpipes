@@ -311,10 +311,13 @@ doctype_js = {
 
 doc_events = {
     "Sales Order":{
-        "validate"  :   "steelpipes.sp_sales_order.sp_sales_order.update_estimate_weight"
+        "validate": "steelpipes.sp_sales_order.sp_sales_order.update_estimate_weight"
     },
-    "Delivery Note":{
-        "validate"  :   "steelpipes.sp_delivery_note.sp_delivery_note_item.update_pipe_weight_um",
+    "Delivery Note": {
+        "validate": [
+            "steelpipes.sp_delivery_note.sp_delivery_note_item.calculate_weight_pipe",
+            "steelpipes.sp_delivery_note.sp_delivery_note_item.update_pipe_weight_um"
+        ],
         "on_submit" :   [   "steelpipes.sp_delivery_note.sp_delivery_note_item.validate_weight_threshold",
                             "steelpipes.sp_item.item.pipe_item_weight_detail"
                         ]
