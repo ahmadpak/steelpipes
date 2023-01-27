@@ -7,6 +7,9 @@ def calculate_weight_pipe(self, method):
     estimate_weight_um = 0
     for row in self.items:
         result = calculate_pipe_weight_um(row.item_code, row.um)
+        if not result:
+            continue
+
         weight_um_temp = result['item_weight_um']
         length_um_temp = result['item_length_um']
         if row.qty is None or row.qty == 0:
